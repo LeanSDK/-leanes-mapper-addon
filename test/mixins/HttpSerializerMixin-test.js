@@ -3,7 +3,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 const _ = require('lodash');
-const LeanES = require('@leansdk/leanes/src/leanes/leanes').default;
+const LeanES = require('@leansdk/leanes/src/leanes').default;
 const {
   RecordInterface,
   initialize, partOf, nameBy, resolver, meta, attribute, mixin, constant, method, property

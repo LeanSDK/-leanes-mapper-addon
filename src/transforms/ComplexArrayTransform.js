@@ -14,7 +14,7 @@
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
 import type { RecordStaticInterface } from '../interfaces/RecordStaticInterface';
-import type { JoiT } from '@leansdk/leanes/src/leanes';
+import type { JoiT } from '@leansdk/leanes/src';
 
 export default (Module) => {
   const {

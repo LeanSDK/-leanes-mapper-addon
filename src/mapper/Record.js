@@ -26,7 +26,7 @@ import type { AttributeConfigT } from '../types/AttributeConfigT';
 // console.log('>?>?>??? 666');
 import type { ComputedConfigT } from '../types/ComputedConfigT';
 // console.log('>?>?>??? 777');
-import type { JoiT } from '@leansdk/leanes/src/leanes';
+import type { JoiT } from '@leansdk/leanes/src';
 
 const hasProp = {}.hasOwnProperty;
 

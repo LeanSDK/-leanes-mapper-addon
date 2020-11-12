@@ -57,7 +57,7 @@
     "sinon": "^9.0.3"
   },
   "dependencies": {
-    "@leansdk/leanes": "https://github.com/LeanSDK/leanes.git#develop",
+    "@leansdk/leanes": "https://github.com/LeanSDK/leanes.git#feature/cleaning_moved_code",
     "accepts": "^1.3.5",
     "assert": "^2.0.0",
     "axios": "^0.18.0",
