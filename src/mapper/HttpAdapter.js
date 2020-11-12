@@ -17,7 +17,7 @@ export default (Module) => {
   const {
     Adapter,
     HttpAdapterMixin,
-    initialize, partOf, meta, nameBy. mixin
+    initialize, partOf, meta, nameBy, mixin
   } = Module.NS;
 
   @initialize

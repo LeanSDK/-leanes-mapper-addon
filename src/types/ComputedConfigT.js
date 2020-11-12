@@ -14,7 +14,7 @@
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
 import type { TransformStaticInterface } from '../interfaces/TransformStaticInterface';
-import type { JoiT } from '@leansdk/leanes/src';
+import type { JoiT } from '@leansdk/leanes/src/leanes';
 
 export type ComputedConfigT = {
   type: (

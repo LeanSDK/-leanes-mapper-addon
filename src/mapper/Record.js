@@ -26,7 +26,7 @@ import type { AttributeConfigT } from '../types/AttributeConfigT';
 // console.log('>?>?>??? 666');
 import type { ComputedConfigT } from '../types/ComputedConfigT';
 // console.log('>?>?>??? 777');
-import type { JoiT } from '@leansdk/leanes/src';
+import type { JoiT } from '@leansdk/leanes/src/leanes';
 
 const hasProp = {}.hasOwnProperty;
 
@@ -142,7 +142,7 @@ export default (Module) => {
       return vhResult;
     }
 
-    @method static async recoverize(ahPayload: ?object, ?aoCollection: CollectionInterface<RecordInterface>): Promise<?[Class<*>, object]> {
+    @method static async recoverize(ahPayload: ?object, aoCollection: ?CollectionInterface<RecordInterface>): Promise<?[Class<*>, object]> {
       if (ahPayload == null) return null;
       const vhAttributes = {};
       assert(ahPayload.type != null, 'Attribute `type` is required and format \'ModuleName::RecordClassName\'');

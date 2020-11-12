@@ -15,7 +15,7 @@
 
 import type { CollectionInterface } from './CollectionInterface';
 import type { RecordInterface } from './RecordInterface';
-import type { JoiT } from '@leansdk/leanes/src';
+import type { JoiT } from '@leansdk/leanes/src/leanes';
 
 export interface RecordStaticInterface<
   R = RecordInterface, C = CollectionInterface<R>

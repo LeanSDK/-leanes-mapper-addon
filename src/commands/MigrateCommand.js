@@ -16,7 +16,7 @@
 import type { CollectionInterface } from '../interfaces/CollectionInterface';
 import type { RecordInterface } from '../interfaces/RecordInterface';
 
-import type { NotificationInterface } from '@leansdk/leanes/src';
+import type { NotificationInterface } from '@leansdk/leanes/src/leanes';
 
 export default (Module) => {
   const {

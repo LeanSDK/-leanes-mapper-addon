@@ -18,7 +18,7 @@ import assert from 'assert';
 const hasProp = {}.hasOwnProperty;
 
 export default function customFilters(config) {
-  return (acTarget) {
+  return (acTarget) => {
     assert(acTarget[cpoMetaObject] != null, 'Target for `customFilters` decorator must be a Class');
     for (const asFilterName in config) {
       if (!hasProp.call(config, asFilterName)) continue;

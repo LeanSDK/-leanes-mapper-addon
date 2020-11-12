@@ -18,7 +18,7 @@ import type { HttpRequestHashT } from '../types/HttpRequestHashT';
 
 import type {
   RequestArgumentsT, LegacyResponseInterface, AxiosResponse,
-} from '@leansdk/leanes/src/types/RequestT';
+} from '@leansdk/leanes/src/leanes/leanes/types/RequestT';
 
 export default (Module) => {
   const {
