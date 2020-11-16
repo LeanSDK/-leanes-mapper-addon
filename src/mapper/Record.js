@@ -18,15 +18,15 @@ import type { CollectionInterface } from '../interfaces/CollectionInterface';
 // console.log('>?>?>??? 111');
 import type { RecordInterface } from '../interfaces/RecordInterface';
 // console.log('>?>?>??? 222');
-import type { RecordStaticInterface } from '../interfaces/RecordStaticInterface';
+// import type { RecordStaticInterface } from '../interfaces/RecordStaticInterface';
 // console.log('>?>?>??? 333');
-import type { TransformStaticInterface } from '../interfaces/TransformStaticInterface';
+// import type { TransformStaticInterface } from '../interfaces/TransformStaticInterface';
 // console.log('>?>?>??? 444');
 import type { AttributeConfigT } from '../types/AttributeConfigT';
 // console.log('>?>?>??? 666');
 import type { ComputedConfigT } from '../types/ComputedConfigT';
 // console.log('>?>?>??? 777');
-import type { JoiT } from '@leansdk/leanes/src';
+import type { JoiT } from '../types/JoiT';
 
 const hasProp = {}.hasOwnProperty;
 
@@ -114,7 +114,8 @@ export default (Module) => {
       for (const asAttr in voAttrs) {
         if (!hasProp.call(voAttrs, asAttr)) continue;
         const { transform } = voAttrs[asAttr];
-        const vcTransform: $Diff<TransformStaticInterface, {}> = transform.call(RecordClass);
+        // const vcTransform: TransformStaticInterface = transform.call(RecordClass);
+        const vcTransform: Class<*> = transform.call(RecordClass);
         vhAttributes[asAttr] = await vcTransform.normalize(
           ahPayload[asAttr]
         );
@@ -134,7 +135,8 @@ export default (Module) => {
       for (const asAttr in voAttrs) {
         if (!hasProp.call(voAttrs, asAttr)) continue;
         const { transform } = voAttrs[asAttr];
-        const vcTransform: $Diff<TransformStaticInterface, {}> = transform.call(this);
+        // const vcTransform: TransformStaticInterface = transform.call(this);
+        const vcTransform: Class<*> = transform.call(this);
         vhResult[asAttr] = await vcTransform.serialize(
           aoRecord[asAttr]
         );
@@ -151,7 +153,8 @@ export default (Module) => {
       for (const asAttr in voAttrs) {
         if (!hasProp.call(voAttrs, asAttr)) continue;
         const { transform } = voAttrs[asAttr];
-        const vcTransform: $Diff<TransformStaticInterface, {}> = transform.call(RecordClass);
+        // const vcTransform: TransformStaticInterface = transform.call(RecordClass);
+        const vcTransform: Class<*> = transform.call(RecordClass);
         if (asAttr in ahPayload) {
           vhAttributes[asAttr] = await vcTransform.normalize(
             ahPayload[asAttr]
@@ -172,7 +175,8 @@ export default (Module) => {
       for (const asAttr in voAttrs) {
         if (!hasProp.call(voAttrs, asAttr)) continue;
         const { transform: attrTransform } = voAttrs[asAttr];
-        const vcAttrTransform: $Diff<TransformStaticInterface, {}> = attrTransform.call(this);
+        // const vcAttrTransform: TransformStaticInterface = attrTransform.call(this);
+        const vcAttrTransform: Class<*> = attrTransform.call(this);
         vhResult[asAttr] = vcAttrTransform.objectize(
           aoRecord[asAttr]
         );
@@ -181,7 +185,8 @@ export default (Module) => {
       for (const asComp in voComps) {
         if (!hasProp.call(voComps, asComp)) continue;
         const { transform: compTransform } = voComps[asComp];
-        const vcCompTransform: $Diff<TransformStaticInterface, {}> = compTransform.call(this);
+        // const vcCompTransform: TransformStaticInterface = compTransform.call(this);
+        const vcCompTransform: Class<*> = compTransform.call(this);
         vhResult[asComp] = vcCompTransform.objectize(
           aoRecord[asComp]
         );
@@ -197,7 +202,8 @@ export default (Module) => {
       for (const asAttr in voAttributes) {
         if (!hasProp.call(voAttributes, asAttr)) continue;
         const { transform } = voAttributes[asAttr];
-        const vcTransform: $Diff<TransformStaticInterface, {}> = transform.call(this);
+        // const vcTransform: TransformStaticInterface = transform.call(this);
+        const vcTransform: Class<*> = transform.call(this);
         vhResult[asAttr] = vcTransform.objectize(
           aoRecord[asAttr]
         );
@@ -222,12 +228,14 @@ export default (Module) => {
       return this.constructor.parseRecordName(...args);
     }
 
-    @method static findRecordByName(asName: string): $Diff<RecordStaticInterface, {}> {
+    // @method static findRecordByName(asName: string): RecordStaticInterface {
+    @method static findRecordByName(asName: string): Class<*> {
       const [ vsModuleName, vsRecordName ] = this.parseRecordName(asName);
       return this.Module.NS[vsRecordName] || this;
     }
 
-    @method findRecordByName(asName: string): $Diff<RecordStaticInterface, {}> {
+    // @method findRecordByName(asName: string): RecordStaticInterface {
+    @method findRecordByName(asName: string): Class<*> {
       return this.constructor.findRecordByName(asName);
     }
 
@@ -256,7 +264,8 @@ export default (Module) => {
     //   }
     // }
 
-    @method static parentClassNames(AbstractClass: ?($Diff<RecordStaticInterface, {}> | Class<Object>) = null): string[] {
+    // @method static parentClassNames(AbstractClass: ?(RecordStaticInterface | Class<Object>) = null): string[] {
+    @method static parentClassNames(AbstractClass: ?Class<*> = null): string[] {
       if (AbstractClass == null) {
         AbstractClass = this;
       }
@@ -505,7 +514,8 @@ export default (Module) => {
         const { transform } = voAttributes[vsAttrName];
         const internalRecord = this._internalRecord;
         const voOldValue = internalRecord && internalRecord[vsAttrName] || undefined;
-        const vcTransform: $Diff<TransformStaticInterface, {}> = transform.call(this.constructor);
+        // const vcTransform: TransformStaticInterface = transform.call(this.constructor);
+        const vcTransform: Class<*> = transform.call(this.constructor);
         const voNewValue = vcTransform.objectize(
           this[vsAttrName]
         );
@@ -521,7 +531,8 @@ export default (Module) => {
         const attrConf = this.constructor.attributes[asAttribute];
         if (attrConf != null) {
           const { transform } = attrConf;
-          const vcTransform: $Diff<TransformStaticInterface, {}> = transform.call(this.constructor);
+          // const vcTransform: TransformStaticInterface = transform.call(this.constructor);
+          const vcTransform: Class<*> = transform.call(this.constructor);
           this[asAttribute] = await vcTransform.normalize(
             this._internalRecord[asAttribute]
           );
@@ -536,7 +547,8 @@ export default (Module) => {
           if (!hasProp.call(voAttributes, vsAttrName)) continue;
           const { transform } = voAttributes[vsAttrName];
           const voOldValue = this._internalRecord[vsAttrName];
-          const vcTransform: $Diff<TransformStaticInterface, {}> = transform.call(this.constructor);
+          // const vcTransform: TransformStaticInterface = transform.call(this.constructor);
+          const vcTransform: Class<*> = transform.call(this.constructor);
           this[vsAttrName] = await vcTransform.normalize(
             voOldValue
           );

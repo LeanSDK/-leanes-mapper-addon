@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-import type { AdapterInterface } from '@leansdk/leanes/src';
+export interface DriverInterface<R, T> {
+  _cleanType: 'adapter';
 
-export interface DriverInterface<R, T> extends AdapterInterface {
   push(delegate: R, aoRecord: object): Promise<T>;
 
   remove(delegate: R, id: string | number): Promise<void>;

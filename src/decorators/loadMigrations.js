@@ -18,26 +18,33 @@ import assert from 'assert';
 const cpoMetaObject = Symbol.for('~metaObject');
 const cphMigrationsMap = Symbol.for('~migrationsMap');
 
-export default function loadMigrations({ filesTreeSync }) {
+export default function loadMigrations(Module) {
+  assert(Module[cpoMetaObject] != null, 'Target for `loadMigrations` decorator must be a Class');
+  const {
+    FsUtils
+  } = Module.NS;
+  assert(FsUtils != null, 'Target for `loadMigrations` decorator should has FsUtilsAddon');
+  const {
+    Utils: { filesTreeSync }
+  } = FsUtils.NS;
+
   (filesTreeSync: (string, ?object) => string[]);
-  return target => {
-    assert(target[cpoMetaObject] != null, 'Target for `loadMigrations` decorator must be a Class');
-    const vsRoot = target.prototype.ROOT != null ? target.prototype.ROOT : '.';
-    const vsMigratonsDir = `${vsRoot}/migrations`;
-    const files = filesListSync(vsMigratonsDir);
-    const migrationsMap = (files != null ? files : []).reduce((mp, i) => {
-      const vsPathMatch = i.match(/([\w\-\_]+)\.js$/);
-      const [blackhole, migrationName] = vsPathMatch != null ? vsPathMatch : [];
-      if (migrationName != null && migrationName !== 'BaseMigration' && !/^\./.test(i)) {
-        mp[migrationName] = `${vsMigratonsDir}/${migrationName}`;
-      }
-      return mp;
-    }, {});
-    Reflect.defineProperty(target, cphMigrationsMap, {
-      enumerable: true,
-      writable: true,
-      value: migrationsMap
-    });
-    return target;
-  }
-};
+
+  const vsRoot = Module.prototype.ROOT != null ? Module.prototype.ROOT : '.';
+  const vsMigratonsDir = `${vsRoot}/migrations`;
+  const files = filesListSync(vsMigratonsDir);
+  const migrationsMap = (files != null ? files : []).reduce((mp, i) => {
+    const vsPathMatch = i.match(/([\w\-\_]+)\.js$/);
+    const [blackhole, migrationName] = vsPathMatch != null ? vsPathMatch : [];
+    if (migrationName != null && migrationName !== 'BaseMigration' && !/^\./.test(i)) {
+      mp[migrationName] = `${vsMigratonsDir}/${migrationName}`;
+    }
+    return mp;
+  }, {});
+  Reflect.defineProperty(Module, cphMigrationsMap, {
+    enumerable: true,
+    writable: true,
+    value: migrationsMap
+  });
+  return Module;
+}

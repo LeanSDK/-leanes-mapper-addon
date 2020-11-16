@@ -7,7 +7,6 @@ module.exports = {
   ],
   plugins: [
     "@babel/plugin-syntax-flow",
-    // "flow-runtime",
     ["flow-runtime", {
       "assert": true,
       "annotate": true

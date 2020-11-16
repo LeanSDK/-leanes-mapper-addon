@@ -14,7 +14,7 @@
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
 import type { RecordInterface } from '../interfaces/RecordInterface';
-import type { TransformStaticInterface } from '../interfaces/TransformStaticInterface';
+// import type { TransformStaticInterface } from '../interfaces/TransformStaticInterface';
 
 export default (Module) => {
   const {
@@ -27,7 +27,8 @@ export default (Module) => {
     class Mixin extends BaseClass {
       @meta static object = {};
 
-      @method async normalize(acRecord: $Diff<TransformStaticInterface, {}>, ahPayload: ?any): Promise<?RecordInterface> {
+      // @method async normalize(acRecord: TransformStaticInterface, ahPayload: ?any): Promise<?RecordInterface> {
+      @method async normalize(acRecord: Class<*>, ahPayload: ?any): Promise<?RecordInterface> {
         if (ahPayload == null) return null;
         if (_.isString(ahPayload)) {
           ahPayload = JSON.parse(ahPayload);
