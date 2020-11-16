@@ -34,10 +34,8 @@ export default (Module) => {
     > extends BaseClass implements DriverInterface<R, T> {
       @meta static object = {};
 
-      // ipsRecordMultipleName = PointerT(_Class.private({
       @property _recordMultipleName: ?string = null;
 
-      // ipsRecordSingleName = PointerT(_Class.private({
       @property _recordSingleName: ?string = null;
 
       @property headers: ?{[key: string]: string} = null;

@@ -78,10 +78,5 @@ export default (Module) => {
       replica.collectionName = instance.collection.getName();
       return replica;
     }
-
-    // constructor(collection: CollectionInterface<D>) {
-    //   super(... arguments);
-    //   this.collection = collection;
-    // }
   }
 }

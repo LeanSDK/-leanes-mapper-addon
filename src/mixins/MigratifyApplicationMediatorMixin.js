@@ -50,7 +50,6 @@ export default (Module) => {
 
       @method async migrate(opts: ?{|until: ?string|}): Promise<void> {
         return await new Promise((resolve, reject) => {
-          // resolve('async migrate(opts)');
           try {
             const reverse = genRandomAlphaNumbers(32);
             this.emitter.once(reverse, ({ error }) => {
@@ -69,7 +68,6 @@ export default (Module) => {
 
       @method async rollback(opts: ?{|steps: ?number, until: ?string|}): Promise<void> {
         return await new Promise((resolve, reject) => {
-          // resolve();
           try {
             const reverse = genRandomAlphaNumbers(32);
             this.emitter.once(reverse, ({ error }) => {

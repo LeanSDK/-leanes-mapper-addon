@@ -1,7 +1,9 @@
 const chai = require("chai");
 const expect = chai.expect;
 const assert = chai.assert;
-const LeanES = require("../../../src/leanes/index.js").default;
+const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/index.js";
+const MapperAddon = require(path).default;
+const LeanES = require('@leansdk/leanes/src').default;
 const { joi } = LeanES.NS.Utils;
 const ArrayTransform = LeanES.NS.ArrayTransform;
 

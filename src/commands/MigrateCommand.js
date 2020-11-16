@@ -20,20 +20,16 @@ import type { NotificationInterface } from '../interfaces/NotificationInterface'
 export default (Module) => {
   const {
     APPLICATION_MEDIATOR, STOPPED_MIGRATE, MIGRATIONS, UP,
-    // SimpleCommand,
     Command,
-    // ConfigurableMixin,
     initialize, partOf, meta, property, method, nameBy, mixin,
     Utils: { _, inflect }
   } = Module.NS;
 
   @initialize
   @partOf(Module)
-  // @mixin(ConfigurableMixin)
   class MigrateCommand<
     D = RecordInterface
   > extends Command {
-  // > extends SimpleCommand {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 

@@ -1,5 +1,7 @@
 const { expect, assert } = require('chai');
-const LeanES = require("../../../src/leanes/index.js").default;
+const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/index.js";
+const MapperAddon = require(path).default;
+const LeanES = require('@leansdk/leanes/src').default;
 const {
   initialize, partOf, nameBy, meta, attribute
 } = LeanES.NS;

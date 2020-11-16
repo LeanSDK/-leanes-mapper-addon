@@ -25,7 +25,6 @@ export default (Module) => {
     Utils: { _, joi, moment }
   } = Module.NS;
 
-
   @initialize
   @partOf(Module)
   class ObjectTransform extends CoreObject {

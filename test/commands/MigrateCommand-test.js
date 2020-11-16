@@ -3,7 +3,9 @@ const sinon = require('sinon');
 const _ = require('lodash');
 const EventEmitter = require('events');
 const httpErrors = require('http-errors');
-const LeanES = require("../../../src/leanes/index.js").default;
+const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/index.js";
+const MapperAddon = require(path).default;
+const LeanES = require('@leansdk/leanes/src').default;
 const {
   Resource,
   initialize, partOf, nameBy, meta, constant, mixin, property, method, attribute, resolver

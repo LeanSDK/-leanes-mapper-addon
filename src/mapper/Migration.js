@@ -31,9 +31,6 @@ export default (Module) => {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
-    // iplSteps = PointerT(Migration.private({
-    // @property _steps: ?Array<{|args: Array, method: $Keys<typeof REVERSE_MAP> | 'reversible'|}> = null;
-
     @property get steps(): Array<{|args: Array, method: $Keys<typeof REVERSE_MAP> | 'reversible'|}> {
       return assign([], (this._steps && [... this._steps]) || []);
     }
@@ -419,9 +416,7 @@ export default (Module) => {
 
     @method static onInitialize(...args) {
       super.onInitialize(...args);
-      // if (this.prototype._steps == null) {
       this.prototype._steps = [];
-      // }
       if (this === Migration) return;
       const changeReturn = this.change();
       if (changeReturn === NON_OVERRIDDEN) {

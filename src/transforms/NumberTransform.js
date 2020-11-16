@@ -23,7 +23,6 @@ export default (Module) => {
     Utils: { _, joi }
   } = Module.NS;
 
-
   @initialize
   @partOf(Module)
   class NumberTransform extends CoreObject {

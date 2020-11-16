@@ -30,13 +30,7 @@ export default (Module) => {
     > extends BaseClass {
       @meta static object = {};
 
-      // ipoCollection = PointerT(this.protected({
-      @property _collection: {[key: string | number]: ?object} = {};//null;
-
-      // @method onRegister() {
-      //   super.onRegister(... arguments);
-      //   this._collection = {};
-      // }
+      @property _collection: {[key: string | number]: ?object} = {};
 
       @method async push(aoRecord: D): Promise<D> {
         const id = aoRecord.id;

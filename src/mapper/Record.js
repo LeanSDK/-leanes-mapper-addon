@@ -239,30 +239,9 @@ export default (Module) => {
       return this.constructor.findRecordByName(asName);
     }
 
-    /*
-    // At End of SomeRecord class definition
-    SomeRecord.customFilters = {
-      reason: {
-        '$eq': (value) => {
-          // string of some aql/sql code for example
-        },
-        '$neq': (value) => {
-          // string of some aql/sql code for example
-        },
-      },
-    };
-    */
     @property static get customFilters(): object {
       return this.metaObject.getGroup('customFilters', false);
     }
-
-    // @property static set customFilters(config): void {
-    //   for (const asFilterName in config) {
-    //     if (!hasProp.call(config, asFilterName)) continue;
-    //     const aoStatement = config[asFilterName];
-    //     this.metaObject.addMetaData('customFilters', asFilterName, aoStatement);
-    //   }
-    // }
 
     // @method static parentClassNames(AbstractClass: ?(RecordStaticInterface | Class<Object>) = null): string[] {
     @method static parentClassNames(AbstractClass: ?Class<*> = null): string[] {
@@ -593,7 +572,6 @@ export default (Module) => {
         const voAttrValue = aoProperties[vsAttrName];
         this[vsAttrName] = voAttrValue;
       }
-      // this._internalRecord = this.constructor.makeSnapshot(this);
     }
 
     @method toJSON() {

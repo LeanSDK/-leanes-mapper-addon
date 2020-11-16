@@ -36,13 +36,10 @@ export default (Module) => {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
-    // ipnCurrentIndex = PointerT(Cursor.private({
     @property _currentIndex: number = 0;
 
-    // iplArray = PointerT(Cursor.private({
     @property _array: any;
 
-    // ipoCollection = PointerT(Cursor.private({
     @property _collection: ?C;
 
     @property isClosed: boolean = false;
@@ -231,13 +228,5 @@ export default (Module) => {
     @method static async replicateObject() {
       assert.fail(`replicateObject method not supported for ${this.name}`);
     }
-
-    // constructor(aoCollection: ?C = null, alArray: ?T = []) {
-    //   super(... arguments);
-    //   if (aoCollection != null) {
-    //     this._collection = aoCollection;
-    //   }
-    //   this._array = alArray;
-    // }
   }
 }

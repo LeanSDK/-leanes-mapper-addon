@@ -3,9 +3,10 @@ const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 const _ = require('lodash');
-const LeanES = require('@leansdk/leanes/src/leanes').default;
+const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/index.js";
+const MapperAddon = require(path).default;
+const LeanES = require('@leansdk/leanes/src').default;
 const {
-  RecordInterface,
   initialize, partOf, nameBy, resolver, meta, attribute, mixin, constant, method, property
 } = LeanES.NS;
 

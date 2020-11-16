@@ -21,18 +21,15 @@ export default (Module) => {
   const {
     APPLICATION_MEDIATOR, STOPPED_ROLLBACK, MIGRATIONS, DOWN,
     Command,
-    // ConfigurableMixin,
     initialize, partOf, meta, property, method, nameBy, mixin,
     Utils: { _, inflect }
   } = Module.NS;
 
   @initialize
   @partOf(Module)
-  // @mixin(ConfigurableMixin)
   class RollbackCommand<
     D = RecordInterface
   > extends Command {
-  // > extends SimpleCommand {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 

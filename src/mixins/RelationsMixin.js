@@ -26,7 +26,6 @@ export default (Module) => {
     class Mixin extends BaseClass {
       @meta static object = {};
 
-      // Cucumber.inverseFor 'tomato' #-> {recordClass: App::Tomato, attrName: 'cucumbers', relation: 'hasMany'}
       @method static inverseFor(asAttrName: string): RelationInverseT {
         const opts = this.relations[asAttrName];
         const RecordClass = this.findRecordByName(opts.recordName.call(this));
