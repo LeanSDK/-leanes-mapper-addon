@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-import type { RecordStaticInterface } from '../interfaces/RecordStaticInterface';
-import type { JoiT } from '@leansdk/leanes/src';
+// import type { RecordStaticInterface } from '../interfaces/RecordStaticInterface';
+import type { JoiT } from '../types/JoiT';
 
 const hasProp = {}.hasOwnProperty;
 
@@ -45,7 +45,8 @@ export default (Module) => {
       return [vsModuleName, vsRecordName];
     }
 
-    @method static findRecordByName(asName: string): $Diff<RecordStaticInterface, {}> {
+    // @method static findRecordByName(asName: string): RecordStaticInterface {
+    @method static findRecordByName(asName: string): Class<*> {
       const [ vsModuleName, vsRecordName ] = this.parseRecordName(asName);
       return this.Module.NS[vsRecordName];
     }

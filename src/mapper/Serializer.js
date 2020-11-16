@@ -16,7 +16,7 @@
 import type { SerializerInterface } from '../interfaces/SerializerInterface';
 import type { CollectionInterface } from '../interfaces/CollectionInterface';
 import type { RecordInterface } from '../interfaces/RecordInterface';
-import type { TransformStaticInterface } from '../interfaces/TransformStaticInterface';
+// import type { TransformStaticInterface } from '../interfaces/TransformStaticInterface';
 
 import { injectable, inject } from 'inversify';
 
@@ -30,7 +30,8 @@ export default (Module) => {
   @injectable()
   @partOf(Module)
   class Serializer<
-    R = $Diff<RecordStaticInterface, {}>, D = RecordInterface
+    // R = RecordStaticInterface, D = RecordInterface
+    R = Class<*>, D = RecordInterface
   > extends CoreObject implements SerializerInterface<R, D> {
     @nameBy static  __filename = __filename;
     @meta static object = {};

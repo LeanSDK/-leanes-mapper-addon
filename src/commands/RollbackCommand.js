@@ -15,8 +15,7 @@
 
 import type { CollectionInterface } from '../interfaces/CollectionInterface';
 import type { RecordInterface } from '../interfaces/RecordInterface';
-
-import type { NotificationInterface } from '@leansdk/leanes/src';
+import type { NotificationInterface } from '../interfaces/NotificationInterface';
 
 export default (Module) => {
   const {
@@ -26,7 +25,6 @@ export default (Module) => {
     initialize, partOf, meta, property, method, nameBy, mixin,
     Utils: { _, inflect }
   } = Module.NS;
-
 
   @initialize
   @partOf(Module)

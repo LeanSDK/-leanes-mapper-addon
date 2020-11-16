@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-import type { TransformStaticInterface } from '../interfaces/TransformStaticInterface';
-import type { JoiT } from '@leansdk/leanes/src';
+// import type { TransformStaticInterface } from '../interfaces/TransformStaticInterface';
+import type { JoiT } from './JoiT';
 
 export type ComputedConfigT = {
   type: (
@@ -35,6 +35,7 @@ export type ComputedConfigT = {
     'array' |
     'hash'
   ),
-  transform: () => $Diff<TransformStaticInterface, {}>,
+  // transform: () => TransformStaticInterface,
+  transform: () => Class<*>,
   validate: () => JoiT
 }

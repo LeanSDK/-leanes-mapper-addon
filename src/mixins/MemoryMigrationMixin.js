@@ -22,7 +22,6 @@ export default (Module) => {
     Utils: { _, inflect }
   } = Module.NS;
 
-
   Module.defineMixin(__filename, (BaseClass) => {
     @initializeMixin
     class Mixin extends BaseClass {

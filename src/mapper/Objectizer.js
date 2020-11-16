@@ -14,7 +14,7 @@
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
 import type { CollectionInterface } from '../interfaces/CollectionInterface';
-import type { RecordStaticInterface } from '../interfaces/RecordStaticInterface';
+// import type { RecordStaticInterface } from '../interfaces/RecordStaticInterface';
 import type { RecordInterface } from '../interfaces/RecordInterface';
 import type { ObjectizerInterface } from '../interfaces/ObjectizerInterface';
 
@@ -30,7 +30,8 @@ export default (Module) => {
   @injectable()
   @partOf(Module)
   class Objectizer<
-    R = $Diff<RecordStaticInterface, {}>, D = RecordInterface
+    // R = RecordStaticInterface, D = RecordInterface
+    R = Class<*>, D = RecordInterface
   > extends CoreObject implements ObjectizerInterface<R, D> {
     @nameBy static  __filename = __filename;
     @meta static object = {};

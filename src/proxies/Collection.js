@@ -19,7 +19,7 @@
 
 import type { CollectionInterface } from '../interfaces/CollectionInterface';
 import type { RecordInterface } from '../interfaces/RecordInterface';
-import type { RecordStaticInterface } from '../interfaces/RecordStaticInterface';
+// import type { RecordStaticInterface } from '../interfaces/RecordStaticInterface';
 import type { CursorInterface } from '../interfaces/CursorInterface';
 import type { SerializerInterface } from '../interfaces/SerializerInterface';
 import type { ObjectizerInterface } from '../interfaces/ObjectizerInterface';
@@ -33,7 +33,7 @@ const hasProp = {}.hasOwnProperty;
 export default (Module) => {
   const {
     RECORD_CHANGED,
-    Proxy, Serializer, Objectizer,
+    Proxy,
     assert,
     initialize, partOf, meta, property, method, nameBy, mixin,
     Utils: { _, inflect }
@@ -43,7 +43,8 @@ export default (Module) => {
   @injectable()
   @partOf(Module)
   class Collection<
-    D = RecordInterface, R = $Diff<RecordStaticInterface, {}>
+    // D = RecordInterface, R = RecordStaticInterface
+    D = RecordInterface, R = Class<*>
   > extends Proxy implements CollectionInterface<D>, SerializableInterface<D> {
     @nameBy static  __filename = __filename;
     @meta static object = {};
@@ -60,10 +61,10 @@ export default (Module) => {
     @inject('RecordNewable<*>')
     @property _recordNewable: (string) => R;
 
-    @property get delegate(): $Diff<RecordStaticInterface, {}> {
+    @property get delegate(): R {
       const proxyData = this.getData();
       const delegate = proxyData != null ? proxyData.delegate : undefined;
-      (delegate: ?(string | Function | $Diff<RecordStaticInterface, {}>));
+      (delegate: ?(string | Function | R));
       if (_.isString(delegate)) {
         return this._recordNewable(delegate);
       } else if (!/Migration$|Record$/.test(delegate.name)) {

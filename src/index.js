@@ -88,11 +88,49 @@ export type { TransformStaticInterface } from './interfaces/TransformStaticInter
 
 export default (Module) => {
   const {
-    Module: BaseModule,
     initializeMixin, meta, constant, method, patch, decorator,
   } = Module.NS;
 
-  return ['MapperAddon', (BaseClass: Class<BaseModule>) => {
+  return ['MapperAddon', (BaseClass) => {
+    @CollectionTF
+    @MigrateCommandTF
+    @RollbackCommandTF
+
+    @HttpAdapterTF
+    @HttpSerializerTF
+
+    @EditableRecordMixinTF
+    @GenerateUuidIdMixinTF
+    @HideableRecordMixinTF
+    @HttpAdapterMixinTF
+    @HttpSerializerMixinTF
+    @IterableMixinTF
+    @MemoryCollectionMixinTF
+    @MemoryMigrationMixinTF
+    @MigratifyApplicationMediatorMixinTF
+    @MigratifyApplicationMixinTF
+    @OwnerableRecordMixinTF
+    @RelationsMixinTF
+    @SchemaModuleMixinTF
+    @TimestampsRecordMixinTF
+
+    @MigrationTF
+    @RecordTF
+    @ObjectizerTF
+    @SerializerTF
+    @TransformTF
+    @CursorTF
+
+    @ComplexArrayTransformTF
+    @ComplexObjectTransformTF
+    @ArrayTransformTF
+    @BooleanTransformTF
+    @DateTransformTF
+    @NumberTransformTF
+    @ObjectTransformTF
+    @PrimaryKeyTransformTF
+    @StringTransformTF
+
     @initializeMixin
     class Mixin extends BaseClass {
       @meta static object = {};
@@ -153,46 +191,6 @@ export default (Module) => {
       @decorator loadMigrations = loadMigrations;
       @decorator relatedTo = relatedTo;
     }
-
-    ArrayTransformTF(Mixin);
-    BooleanTransformTF(Mixin);
-    DateTransformTF(Mixin);
-    NumberTransformTF(Mixin);
-    ObjectTransformTF(Mixin);
-    PrimaryKeyTransformTF(Mixin);
-    StringTransformTF(Mixin);
-    ComplexArrayTransformTF(Mixin);
-    ComplexObjectTransformTF(Mixin);
-
-    CursorTF(Mixin);
-    TransformTF(Mixin);
-    SerializerTF(Mixin);
-    ObjectizerTF(Mixin);
-    RecordTF(Mixin);
-    MigrationTF(Mixin);
-
-    EditableRecordMixinTF(Mixin);
-    GenerateUuidIdMixinTF(Mixin);
-    HideableRecordMixinTF(Mixin);
-    HttpAdapterMixinTF(Mixin);
-    HttpSerializerMixinTF(Mixin);
-    IterableMixinTF(Mixin);
-    MemoryCollectionMixinTF(Mixin);
-    MemoryMigrationMixinTF(Mixin);
-    MigratifyApplicationMediatorMixinTF(Mixin);
-    MigratifyApplicationMixinTF(Mixin);
-    OwnerableRecordMixinTF(Mixin);
-    RelationsMixinTF(Mixin);
-    SchemaModuleMixinTF(Mixin);
-    TimestampsRecordMixinTF(Mixin);
-
-    HttpAdapterTF(Mixin);
-    HttpSerializerTF(Mixin);
-
-    CollectionTF(Mixin);
-    MigrateCommandTF(Mixin);
-    RollbackCommandTF(Mixin);
-
     return Mixin;
   }]
 }
