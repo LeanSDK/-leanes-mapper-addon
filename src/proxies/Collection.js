@@ -56,7 +56,7 @@ export default (Module) => {
     @property _objectizerFactory: (string, ?string) => ObjectizerInterface<R, D>;
 
     @inject('AdapterFactory<*>')
-    @property _adapterFactory: () => DriverInterface<Class<{name: string}>, object>;
+    @property _adapterFactory: () => DriverInterface<Class<*>, object>;
 
     @inject('RecordNewable<*>')
     @property _recordNewable: (string) => R;
@@ -87,7 +87,7 @@ export default (Module) => {
       return this._objectizerFactory(this.getName(), objectizer);
     }
 
-    @property get adapter(): DriverInterface<Class<{name: string}>, object> {
+    @property get adapter(): DriverInterface<Class<*>, object> {
       const proxyData = this.getData();
       const adapter = proxyData != null ? proxyData.adapter : undefined;
       (adapter: ?string);

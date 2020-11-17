@@ -30,7 +30,7 @@ export default (Module) => {
   Module.defineMixin(__filename, (BaseClass) => {
     @initializeMixin
     class Mixin<
-      R = Class<{name: string}>, T = object
+      R = Class<*>, T = object
     > extends BaseClass implements DriverInterface<R, T> {
       @meta static object = {};
 

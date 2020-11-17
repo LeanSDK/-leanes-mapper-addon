@@ -535,7 +535,7 @@ export default (Module) => {
       }
     }
 
-    @method static async restoreObject(acModule: Class<Module>, replica: object): Promise<RecordInterface> {
+    @method static async restoreObject(acModule: Class<*>, replica: object): Promise<RecordInterface> {
       if ((replica != null ? replica.class : void 0) === this.name && (replica != null ? replica.type : void 0) === 'instance') {
         const Facade = acModule.NS.ApplicationFacade || acModule.NS.Facade;
         const facade = Facade.getInstance(replica.multitonKey);

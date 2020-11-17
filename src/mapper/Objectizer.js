@@ -67,7 +67,7 @@ export default (Module) => {
       return vcRecord.objectize(aoRecord, options);
     }
 
-    @method static async restoreObject(acModule: Class<Module>, replica: object): Promise<ObjectizerInterface<R, D>> {
+    @method static async restoreObject(acModule: Class<*>, replica: object): Promise<ObjectizerInterface<R, D>> {
       if ((replica != null ? replica.class : void 0) === this.name && (replica != null ? replica.type : void 0) === 'instance') {
         const Facade = acModule.NS.ApplicationFacade || acModule.NS.Facade;
         const facade = Facade.getInstance(replica.multitonKey);
