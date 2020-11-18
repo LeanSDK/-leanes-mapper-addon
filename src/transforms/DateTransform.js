@@ -41,7 +41,7 @@ export default (Module) => {
       return this.serializeSync(...args);
     }
 
-    @method static normalizeSync(serialized: ?any): ?date {
+    @method static normalizeSync(serialized: ?string): ?date {
       return (_.isNil(serialized) ? null : new Date(serialized));
     }
 

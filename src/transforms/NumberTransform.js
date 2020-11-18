@@ -41,7 +41,7 @@ export default (Module) => {
       return this.serializeSync(...args);
     }
 
-    @method static normalizeSync(serialized: ?any): ?number {
+    @method static normalizeSync(serialized: ?number): ?number {
       if (_.isNil(serialized)) {
         return null;
       } else {
@@ -50,7 +50,7 @@ export default (Module) => {
       }
     }
 
-    @method static serializeSync(deserialized: ?any): ?number {
+    @method static serializeSync(deserialized: ?number): ?number {
       if (_.isNil(deserialized)) {
         return null;
       } else {
@@ -59,7 +59,7 @@ export default (Module) => {
       }
     }
 
-    @method static objectize(deserialized: ?any): ?number {
+    @method static objectize(deserialized: ?number): ?number {
       if (_.isNil(deserialized)) {
         return null;
       } else {
