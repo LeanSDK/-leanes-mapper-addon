@@ -25,22 +25,22 @@ export interface MigrationStaticInterface<
   ): void;
 
   createEdgeCollection(
-    collection_1: string,
-    collection_2: string,
+    collectionName1: string,
+    collectionName2: string,
     options: ?object
   ): void;
 
   addField(
-    collection_name: string,
-    field_name: string,
+    collectionName: string,
+    fieldName: string,
     options: $Values<SUPPORTED_TYPES> | {
       type: $Values<SUPPORTED_TYPES>, 'default': any
     }
   ): void;
 
   addIndex(
-    collection_name: string,
-    field_names: string[],
+    collectionName: string,
+    fieldNames: string[],
     options: {
       type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
       unique: ?boolean,
@@ -49,7 +49,7 @@ export interface MigrationStaticInterface<
   ): void;
 
   addTimestamps(
-    collection_name: string,
+    collectionName: string,
     options: ?object
   ): void;
 
@@ -59,47 +59,47 @@ export interface MigrationStaticInterface<
   ): void;
 
   changeField(
-    collection_name: string,
-    field_name: string,
+    collectionName: string,
+    fieldName: string,
     options: $Values<SUPPORTED_TYPES> | {
       type: $Values<SUPPORTED_TYPES>
     }
   ): void;
 
   renameField(
-    collection_name: string,
-    field_name: string,
-    new_field_name: string
+    collectionName: string,
+    fieldName: string,
+    newFieldName: string
   ): void;
 
   renameIndex(
-    collection_name: string,
-    old_name: string,
-    new_name: string
+    collectionName: string,
+    oldCollectionName: string,
+    newCollectionName: string
   ): void;
 
   renameCollection(
-    collection_name: string,
-    new_name: string
+    collectionName: string,
+    newCollectionName: string
   ): void;
 
   dropCollection(
-    collection_name: string
+    collectionName: string
   ): void;
 
   dropEdgeCollection(
-    collection_1: string,
-    collection_2: string
+    collectionName1: string,
+    collectionName2: string
   ): void;
 
   removeField(
-    collection_name: string,
-    field_name: string
+    collectionName: string,
+    fieldName: string
   ): void;
 
   removeIndex(
-    collection_name: string,
-    field_names: string[],
+    collectionName: string,
+    fieldNames: string[],
     options: {
       type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
       unique: ?boolean,
@@ -108,7 +108,7 @@ export interface MigrationStaticInterface<
   ): void;
 
   removeTimestamps(
-    collection_name: string,
+    collectionName: string,
     options: ?object
   ): void;
 
