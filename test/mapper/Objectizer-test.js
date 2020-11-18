@@ -11,6 +11,10 @@ const {
 
 describe('Objectizer', () => {
   describe('recoverize', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it("should recoverize object value", async () => {
 
       @initialize
@@ -28,7 +32,7 @@ describe('Objectizer', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
@@ -73,6 +77,10 @@ describe('Objectizer', () => {
     });
   });
   describe('objectize', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it("should objectize Record.NS value", async () => {
 
       @initialize
@@ -90,7 +98,7 @@ describe('Objectizer', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)

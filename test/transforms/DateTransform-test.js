@@ -32,14 +32,8 @@ describe('DateTransform', () => {
       const date = new Date();
       assert.deepEqual(await DateTransform.normalize(date.toISOString()), date);
     });
-    it('should deserialize boolean value', async () => {
-      assert.deepEqual(await DateTransform.normalize(true), new Date(1));
-    });
     it('should deserialize string value', async () => {
       assert.deepEqual(await DateTransform.normalize('True'), new Date(''));
-    });
-    it('should deserialize number value', async () => {
-      assert.deepEqual(await DateTransform.normalize(1), new Date(1));
     });
   });
   describe('.serialize', () => {

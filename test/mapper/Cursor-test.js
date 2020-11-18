@@ -84,6 +84,10 @@ describe('Cursor', () => {
     });
   });
   describe('next', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it('should get next values one by one', async () => {
 
       @initialize
@@ -100,7 +104,7 @@ describe('Cursor', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
@@ -149,10 +153,13 @@ describe('Cursor', () => {
       assert.equal((await cursor.next()).data, 'in', 'Third item is incorrect');
       assert.equal((await cursor.next()).data, 'a boat', 'Fourth item is incorrect');
       assert.isUndefined(await cursor.next(), 'Unexpected item is present');
-      facade.remove();
     });
   });
   describe('hasNext', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it('should check if next value is present', async () => {
 
       @initialize
@@ -169,14 +176,14 @@ describe('Cursor', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) data = '';
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
@@ -184,7 +191,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
@@ -204,10 +211,13 @@ describe('Cursor', () => {
       assert.isTrue(await cursor.hasNext(), 'There is no next value');
       const data = await cursor.next();
       assert.isFalse(await cursor.hasNext(), 'There is something else');
-      facade.remove();
     });
   });
   describe('toArray', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it('should get array from cursor', async () => {
 
       @initialize
@@ -224,14 +234,14 @@ describe('Cursor', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) data = '';
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
@@ -239,7 +249,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
@@ -292,9 +302,9 @@ describe('Cursor', () => {
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) data = '';
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
@@ -302,7 +312,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       const voMemoryCollection = MemoryCollection.new();
@@ -350,9 +360,9 @@ describe('Cursor', () => {
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) data = '';
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
@@ -360,7 +370,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       const voMemoryCollection = MemoryCollection.new();
@@ -393,6 +403,10 @@ describe('Cursor', () => {
     });
   });
   describe('forEach', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it('should call lambda in each record in cursor', async () => {
 
       @initialize
@@ -409,14 +423,14 @@ describe('Cursor', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) data = '';
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
@@ -424,7 +438,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
@@ -461,10 +475,13 @@ describe('Cursor', () => {
       assert.equal(spyLambda.args[1][0].data, 'men', 'Lambda 2nd call is not match');
       assert.equal(spyLambda.args[2][0].data, 'in', 'Lambda 3rd call is not match');
       assert.equal(spyLambda.args[3][0].data, 'a boat', 'Lambda 4th call is not match');
-      facade.remove();
     });
   });
   describe('map', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it('should map records using lambda', async () => {
 
       @initialize
@@ -481,14 +498,14 @@ describe('Cursor', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) data = '';
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
@@ -496,7 +513,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
@@ -527,17 +544,20 @@ describe('Cursor', () => {
       cursor.setIterable(array);
       const records = await cursor.map(async (record) => {
         record.data = '+' + record.data + '+';
-      return await Promise.resolve(record);
+        return await Promise.resolve(record);
       });
       assert.lengthOf(records, 4, 'Records count is not match');
       assert.equal(records[0].data, '+three+', '1st record is not match');
       assert.equal(records[1].data, '+men+', '2nd record is not match');
       assert.equal(records[2].data, '+in+', '3rd record is not match');
       assert.equal(records[3].data, '+a boat+', '4th record is not match');
-      facade.remove();
     });
   });
   describe('filter', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it('should filter records using lambda', async () => {
 
       @initialize
@@ -554,14 +574,14 @@ describe('Cursor', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) data = '';
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
@@ -569,7 +589,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
@@ -604,10 +624,13 @@ describe('Cursor', () => {
       assert.lengthOf(records, 2, 'Records count is not match');
       assert.equal(records[0].data, 'three', '1st record is not match');
       assert.equal(records[1].data, 'a boat', '2nd record is not match');
-      facade.remove();
     });
   });
   describe('find', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it('should find record using lambda', async () => {
 
       @initialize
@@ -624,14 +647,14 @@ describe('Cursor', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) name = 'Unknown';
+        @attribute({ type: 'string' }) name = 'Unknown';
       }
 
       @initialize
@@ -639,7 +662,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
@@ -669,10 +692,13 @@ describe('Cursor', () => {
       });
 
       assert.equal(record.name, 'George', 'Record is not match');
-      facade.remove();
     });
   });
   describe('compact', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it('should get non-empty records from cursor', async () => {
 
       @initialize
@@ -689,14 +715,14 @@ describe('Cursor', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) data = '';
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
@@ -704,7 +730,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
@@ -734,6 +760,10 @@ describe('Cursor', () => {
     });
   });
   describe('reduce', () => {
+    let facade = null;
+    after(function () {
+      typeof facade != "undefined" && facade !== null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    })
     it('should reduce records using lambda', async () => {
 
       @initialize
@@ -750,14 +780,14 @@ describe('Cursor', () => {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
       }
-      const facade = ApplicationFacade.getInstance('Test');
+      facade = ApplicationFacade.getInstance('Test');
 
       @initialize
       @partOf(Test)
       class TestRecord extends Test.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+        @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({type: 'string'}) data = '';
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
@@ -765,7 +795,7 @@ describe('Cursor', () => {
       @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
