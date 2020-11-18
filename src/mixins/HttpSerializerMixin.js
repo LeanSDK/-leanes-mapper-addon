@@ -19,7 +19,7 @@ import type { RecordInterface } from '../interfaces/RecordInterface';
 export default (Module) => {
   const {
     initializeMixin, meta, method,
-    Utils: { _, inflect }
+    Utils: { _, inflect, assert }
   } = Module.NS;
 
   Module.defineMixin(__filename, (BaseClass) => {
@@ -30,19 +30,17 @@ export default (Module) => {
       // @method async normalize(acRecord: TransformStaticInterface, ahPayload: ?any): Promise<?RecordInterface> {
       @method async normalize(acRecord: Class<*>, ahPayload: ?any): Promise<?RecordInterface> {
         if (ahPayload == null) return null;
-        if (_.isString(ahPayload)) {
-          ahPayload = JSON.parse(ahPayload);
-        }
-        return await acRecord.normalize(ahPayload, this.collection);
+        assert(_.isString(ahPayload), 'Payload should be a string');
+        return await super.normalize(acRecord, JSON.parse(ahPayload));
       }
 
       @method async serialize(aoRecord: ?RecordInterface, options: ?object = null): Promise<?any> {
-        if (aoRecord == null) return { [`${singular}`]: null };
+        if (aoRecord == null) return null;
         const vcRecord = aoRecord.constructor;
         const recordName = vcRecord.name.replace(/Record$/, '');
         const singular = inflect.singularize(inflect.underscore(recordName));
         return {
-          [`${singular}`]: await vcRecord.serialize(aoRecord, options)
+          [`${singular}`]: await super.serialize(aoRecord, options)
         };
       }
     }

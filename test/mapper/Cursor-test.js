@@ -3,10 +3,8 @@ const sinon = require('sinon');
 const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/index.js";
 const MapperAddon = require(path).default;
 const LeanES = require('@leansdk/leanes/src').default;
-const Cursor = LeanES.NS.Cursor;
 const {
-  Record,
-  initialize, partOf, nameBy, meta, method, property, mixin, attribute
+  initialize, partOf, nameBy, meta, method, property, mixin, plugin
 } = LeanES.NS;
 
 
@@ -14,30 +12,30 @@ describe('Cursor', () => {
   describe('.new', () => {
     it('should create cursor instance', () => {
       expect(() => {
+
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
-          @nameBy static  __filename = 'Test';
+          @nameBy static __filename = 'Test';
+          @meta static object = {};
+        }
+        const Cursor = Test.NS.Cursor;
+
+        @initialize
+        @partOf(Test)
+        class TestRecord extends Test.NS.Record {
+          @nameBy static __filename = 'TestRecord';
           @meta static object = {};
         }
 
         @initialize
+        @mixin(Test.NS.MemoryCollectionMixin)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
-          @nameBy static  __filename = 'TestRecord';
+        class MemoryCollection extends Test.NS.Collection {
+          @nameBy static __filename = 'MemoryCollection';
           @meta static object = {};
         }
-
-        @initialize
-        @mixin(LeanES.NS.MemoryCollectionMixin)
-        @mixin(LeanES.NS.GenerateUuidIdMixin)
-        @partOf(Test)
-        class MemoryCollection extends LeanES.NS.Collection {
-          @nameBy static  __filename = 'MemoryCollection';
-          @meta static object = {};
-        }
-        // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-        //   delegate: TestRecord
-        // });
         const voMemoryCollection = MemoryCollection.new();
         voMemoryCollection.setName('MemoryCollection');
         voMemoryCollection.setData({
@@ -51,30 +49,30 @@ describe('Cursor', () => {
   describe('.setCollection', () => {
     it('should setup record', () => {
       expect(() => {
+
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
-          @nameBy static  __filename = 'Test';
+          @nameBy static __filename = 'Test';
+          @meta static object = {};
+        }
+        const Cursor = Test.NS.Cursor;
+
+        @initialize
+        @partOf(Test)
+        class TestRecord extends Test.NS.Record {
+          @nameBy static __filename = 'TestRecord';
           @meta static object = {};
         }
 
         @initialize
+        @mixin(Test.NS.MemoryCollectionMixin)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
-          @nameBy static  __filename = 'TestRecord';
+        class MemoryCollection extends Test.NS.Collection {
+          @nameBy static __filename = 'MemoryCollection';
           @meta static object = {};
         }
-
-        @initialize
-        @mixin(LeanES.NS.MemoryCollectionMixin)
-        @mixin(LeanES.NS.GenerateUuidIdMixin)
-        @partOf(Test)
-        class MemoryCollection extends LeanES.NS.Collection {
-          @nameBy static  __filename = 'MemoryCollection';
-          @meta static object = {};
-        }
-        // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-        //   delegate: TestRecord
-        // });
         const voMemoryCollection = MemoryCollection.new();
         voMemoryCollection.setName('MemoryCollection');
         voMemoryCollection.setData({
@@ -87,26 +85,37 @@ describe('Cursor', () => {
   });
   describe('next', () => {
     it('should get next values one by one', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
+      }
+      const { attribute, Cursor } = Test.NS;
+
+      @initialize
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      const facade = ApplicationFacade.getInstance('Test');
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
+        @nameBy static __filename = 'TestRecord';
+        @meta static object = {};
+        @attribute({ type: 'string' }) data = '';
       }
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
-        @meta static object = {};
-        @attribute({type: 'string'}) data = '';
-      }
-
-      @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
-      @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
-        @nameBy static  __filename = 'MemoryCollection';
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
+      class MemoryCollection extends Test.NS.Collection {
+        @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       const array = [
@@ -127,98 +136,117 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
-      const voMemoryCollection = MemoryCollection.new();
-      voMemoryCollection.setName('MemoryCollection');
-      voMemoryCollection.setData({
-        delegate: TestRecord
+      facade.addProxy('MemoryCollection', 'MemoryCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       assert.equal((await cursor.next()).data, 'three', 'First item is incorrect');
       assert.equal((await cursor.next()).data, 'men', 'Second item is incorrect');
       assert.equal((await cursor.next()).data, 'in', 'Third item is incorrect');
       assert.equal((await cursor.next()).data, 'a boat', 'Fourth item is incorrect');
       assert.isUndefined(await cursor.next(), 'Unexpected item is present');
+      facade.remove();
     });
   });
   describe('hasNext', () => {
     it('should check if next value is present', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      const facade = ApplicationFacade.getInstance('Test');
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) data = '';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
-      const voMemoryCollection = MemoryCollection.new();
-      voMemoryCollection.setName('MemoryCollection');
-      voMemoryCollection.setData({
-        delegate: TestRecord
+      facade.addProxy('MemoryCollection', 'MemoryCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
+      const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
         {
           data: 'data',
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       assert.isTrue(await cursor.hasNext(), 'There is no next value');
       const data = await cursor.next();
       assert.isFalse(await cursor.hasNext(), 'There is something else');
+      facade.remove();
     });
   });
   describe('toArray', () => {
     it('should get array from cursor', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      const facade = ApplicationFacade.getInstance('Test');
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) data = '';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
-      const voMemoryCollection = MemoryCollection.new();
-      voMemoryCollection.setName('MemoryCollection');
-      voMemoryCollection.setData({
-        delegate: TestRecord
+      facade.addProxy('MemoryCollection', 'MemoryCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
+      const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
         {
           data: 'three',
@@ -237,8 +265,11 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       const records = await cursor.toArray();
+
       assert.equal(records.length, array.length, 'Counts of input and output data are different');
       for (let i = 0; i < records.length; i++) {
         let record = records[i];
@@ -249,31 +280,31 @@ describe('Cursor', () => {
   });
   describe('close', () => {
     it('should remove records from cursor', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) data = '';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
       const voMemoryCollection = MemoryCollection.new();
       voMemoryCollection.setName('MemoryCollection');
       voMemoryCollection.setData({
@@ -297,7 +328,9 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       assert.isTrue(await cursor.hasNext(), 'There is no next value');
       await cursor.close();
       assert.isFalse(await cursor.hasNext(), 'There is something else');
@@ -305,31 +338,31 @@ describe('Cursor', () => {
   });
   describe('count', () => {
     it('should count records in cursor', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) data = '';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
       const voMemoryCollection = MemoryCollection.new();
       voMemoryCollection.setName('MemoryCollection');
       voMemoryCollection.setData({
@@ -353,42 +386,52 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       assert.equal(await cursor.count(), 4, 'Count works incorrectly');
     });
   });
   describe('forEach', () => {
     it('should call lambda in each record in cursor', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      const facade = ApplicationFacade.getInstance('Test');
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) data = '';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
-      const voMemoryCollection = MemoryCollection.new();
-      voMemoryCollection.setName('MemoryCollection');
-      voMemoryCollection.setData({
-        delegate: TestRecord
+      facade.addProxy('MemoryCollection', 'MemoryCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
+      const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
         {
           data: 'three',
@@ -407,7 +450,9 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       const spyLambda = sinon.spy(async () => { });
       await cursor.forEach(spyLambda);
       assert.isTrue(spyLambda.called, 'Lambda never called');
@@ -416,40 +461,49 @@ describe('Cursor', () => {
       assert.equal(spyLambda.args[1][0].data, 'men', 'Lambda 2nd call is not match');
       assert.equal(spyLambda.args[2][0].data, 'in', 'Lambda 3rd call is not match');
       assert.equal(spyLambda.args[3][0].data, 'a boat', 'Lambda 4th call is not match');
+      facade.remove();
     });
   });
   describe('map', () => {
     it('should map records using lambda', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      const facade = ApplicationFacade.getInstance('Test');
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) data = '';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
-      const voMemoryCollection = MemoryCollection.new();
-      voMemoryCollection.setName('MemoryCollection');
-      voMemoryCollection.setData({
-        delegate: TestRecord
+      facade.addProxy('MemoryCollection', 'MemoryCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
+      const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
         {
           data: 'three',
@@ -468,7 +522,9 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       const records = await cursor.map(async (record) => {
         record.data = '+' + record.data + '+';
       return await Promise.resolve(record);
@@ -478,40 +534,49 @@ describe('Cursor', () => {
       assert.equal(records[1].data, '+men+', '2nd record is not match');
       assert.equal(records[2].data, '+in+', '3rd record is not match');
       assert.equal(records[3].data, '+a boat+', '4th record is not match');
+      facade.remove();
     });
   });
   describe('filter', () => {
     it('should filter records using lambda', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      const facade = ApplicationFacade.getInstance('Test');
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) data = '';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
-      const voMemoryCollection = MemoryCollection.new();
-      voMemoryCollection.setName('MemoryCollection');
-      voMemoryCollection.setData({
-        delegate: TestRecord
+      facade.addProxy('MemoryCollection', 'MemoryCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
+      const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
         {
           data: 'three',
@@ -530,47 +595,58 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       const records = await cursor.filter(async (record) => {
         return await Promise.resolve(record.data.length > 3);
       });
       assert.lengthOf(records, 2, 'Records count is not match');
       assert.equal(records[0].data, 'three', '1st record is not match');
       assert.equal(records[1].data, 'a boat', '2nd record is not match');
+      facade.remove();
     });
   });
   describe('find', () => {
     it('should find record using lambda', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      const facade = ApplicationFacade.getInstance('Test');
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) name = 'Unknown';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
-      const voMemoryCollection = MemoryCollection.new();
-      voMemoryCollection.setName('MemoryCollection');
-      voMemoryCollection.setData({
-        delegate: TestRecord
+      facade.addProxy('MemoryCollection', 'MemoryCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
+      const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
         {
           name: 'Jerome',
@@ -585,45 +661,57 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       const record = await cursor.find(async (record) => {
         return await Promise.resolve(record.name === 'George');
       });
+
       assert.equal(record.name, 'George', 'Record is not match');
+      facade.remove();
     });
   });
   describe('compact', () => {
     it('should get non-empty records from cursor', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      const facade = ApplicationFacade.getInstance('Test');
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) data = '';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
-      const voMemoryCollection = MemoryCollection.new();
-      voMemoryCollection.setName('MemoryCollection');
-      voMemoryCollection.setData({
-        delegate: TestRecord
+      facade.addProxy('MemoryCollection', 'MemoryCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
+      const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
         null,
         {
@@ -636,7 +724,9 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       const records = await cursor.compact();
       assert.lengthOf(records, 2, 'Records count not match');
       assert.equal(records[0].data, 'men', '1st record is not match');
@@ -645,36 +735,44 @@ describe('Cursor', () => {
   });
   describe('reduce', () => {
     it('should reduce records using lambda', async () => {
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute, Cursor } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      const facade = ApplicationFacade.getInstance('Test');
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
         @nameBy static  __filename = 'TestRecord';
         @meta static object = {};
         @attribute({type: 'string'}) data = '';
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class MemoryCollection extends LeanES.NS.Collection {
+      class MemoryCollection extends Test.NS.Collection {
         @nameBy static  __filename = 'MemoryCollection';
         @meta static object = {};
       }
-      // const voMemoryCollection = MemoryCollection.new('MemoryCollection', {
-      //   delegate: TestRecord
-      // });
-      const voMemoryCollection = MemoryCollection.new();
-      voMemoryCollection.setName('MemoryCollection');
-      voMemoryCollection.setData({
-        delegate: TestRecord
+      facade.addProxy('MemoryCollection', 'MemoryCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
+      const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
         {
           data: 'one',
@@ -693,7 +791,9 @@ describe('Cursor', () => {
           type: 'TestRecord'
         }
       ];
-      const cursor = Cursor.new(voMemoryCollection, array);
+      const cursor = Cursor.new();
+      cursor.setCollection(voMemoryCollection);
+      cursor.setIterable(array);
       const records = await cursor.reduce(async (accumulator, item) => {
         accumulator[item.data] = item;
         return await Promise.resolve(accumulator);

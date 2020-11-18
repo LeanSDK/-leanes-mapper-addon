@@ -4,10 +4,21 @@ const assert = chai.assert;
 const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/index.js";
 const MapperAddon = require(path).default;
 const LeanES = require('@leansdk/leanes/src').default;
-const { joi } = LeanES.NS.Utils;
-const StringTransform = LeanES.NS.StringTransform;
+const {
+  initialize, nameBy, meta, plugin,
+  Utils: { joi }
+} = LeanES.NS;
 
 describe('StringTransform', () => {
+
+  @initialize
+  @plugin(MapperAddon)
+  class Test extends LeanES {
+    @nameBy static __filename = 'Test';
+    @meta static object = {};
+  }
+  const StringTransform = Test.NS.StringTransform;
+
   describe('.schema', () => {
     it('should has correct schema value', () => {
       expect(StringTransform.schema).deep.equal(joi.string().allow(null).optional());

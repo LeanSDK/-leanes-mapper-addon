@@ -41,15 +41,15 @@ export default (Module) => {
       return this.serializeSync(...args);
     }
 
-    @method static normalizeSync(serialized: ?string): ?string {
+    @method static normalizeSync(serialized: ?any): ?string {
       return (_.isNil(serialized) ? null : String(serialized));
     }
 
-    @method static serializeSync(deserialized: ?string): ?string {
+    @method static serializeSync(deserialized: ?any): ?string {
       return (_.isNil(deserialized) ? null : String(deserialized));
     }
 
-    @method static objectize(deserialized: ?string): ?string {
+    @method static objectize(deserialized: ?any): ?string {
       if (_.isNil(deserialized)) {
         return null;
       } else {

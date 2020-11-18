@@ -31,9 +31,9 @@ export default (Module) => {
   @injectable()
   @partOf(Module)
   class Cursor<
-    D = {}, C = {normalize: (ahData: any) => Promise<D>}, T = D[]
-  > extends CoreObject implements CursorInterface<C, D> {
-    @nameBy static  __filename = __filename;
+    D = {}, C = { normalize: (ahData: any) => Promise<D> }, T = D[]
+    > extends CoreObject implements CursorInterface<C, D> {
+    @nameBy static __filename = __filename;
     @meta static object = {};
 
     @property _currentIndex: number = 0;
@@ -105,12 +105,12 @@ export default (Module) => {
       const array = this._array || [];
       const length = typeof array.length === "function" ?
         array.length()
-      :
+        :
         undefined;
       return (await (length || array.length));
     }
 
-    @method async forEach(lambda: (D, number) => ?Promise<void>): Promise<void> {
+    @method async forEach(lambda: (D, number) =>?Promise<void>): Promise<void> {
       let index = 0;
       try {
         while (await this.hasNext()) {
@@ -157,9 +157,9 @@ export default (Module) => {
       let index = 0;
       let _record = null;
       try {
-        while (await this.hasNext()) {
+        while ((await this.hasNext())) {
           const record = (await this.next());
-          if (await lambda(record, index++)) {
+          if ((await lambda(record, index++))) {
             _record = record;
             break;
           }
@@ -178,7 +178,7 @@ export default (Module) => {
           const rawResult = this._array[this._currentIndex];
           ++this._currentIndex;
           if (!_.isEmpty(rawResult)) {
-            const result = (await (async function() {
+            const result = (await (async function () {
               switch (true) {
                 case this.collection != null:
                   return (await this.collection.normalize(rawResult));

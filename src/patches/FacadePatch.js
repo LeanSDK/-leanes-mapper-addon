@@ -15,7 +15,7 @@
 
 export default (Module) => {
   const {
-    HTTP_ADAPTER, HTTP_SERIALIZER,
+    HTTP_ADAPTER, HTTP_SERIALIZER, SERIALIZER,
     initializePatch, meta, method,
     Utils: { _ }
   } = Module.NS;
@@ -33,6 +33,9 @@ export default (Module) => {
               return this.container.get(`Factory<${collectionName}>`)()
             }
           });
+        }
+        if (!this.container.isBound(SERIALIZER)) {
+          this.container.bind(SERIALIZER).to(this.Module.NS.Serializer);
         }
         if (!this.container.isBound(HTTP_SERIALIZER)) {
           this.container.bind(HTTP_SERIALIZER).to(this.Module.NS.HttpSerializer);

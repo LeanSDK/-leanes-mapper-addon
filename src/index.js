@@ -92,6 +92,7 @@ export default (Module) => {
   } = Module.NS;
 
   return ['MapperAddon', (BaseClass) => {
+    @FacadePatchTF
     @CollectionTF
     @MigrateCommandTF
     @RollbackCommandTF
@@ -136,6 +137,7 @@ export default (Module) => {
       @meta static object = {};
 
       @constant HTTP_ADAPTER = 'HTTP_ADAPTER';
+      @constant SERIALIZER = 'SERIALIZER';
       @constant HTTP_SERIALIZER = 'HTTP_SERIALIZER';
       @constant RECORD_CHANGED = 'RECORD_CHANGED';
       @constant MIGRATE = 'MIGRATE';
@@ -190,6 +192,10 @@ export default (Module) => {
       @decorator hasOne = hasOne;
       @decorator loadMigrations = loadMigrations;
       @decorator relatedTo = relatedTo;
+
+      @method static including() {
+        patch(this.NS.FacadePatch)(this.NS.Facade);
+      }
     }
     return Mixin;
   }]

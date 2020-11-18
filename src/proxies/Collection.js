@@ -77,6 +77,7 @@ export default (Module) => {
       const proxyData = this.getData();
       const serializer = proxyData != null ? proxyData.serializer : undefined;
       (serializer: ?string);
+
       return this._serializerFactory(this.getName(), serializer);
     }
 
