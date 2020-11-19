@@ -392,10 +392,9 @@ export default (Module) => {
       return args;
     }
 
-    @method async afterDelete(aoRecord: RecordInterface): Promise<void | RecordInterface> {
-      if (this.collection == null) return this;
-      this.collection.recordHasBeenChanged('deletedRecord', aoRecord);
-      return this;
+    @method async afterDelete(): Promise<void | RecordInterface> {
+      if (this.collection == null) return;
+      this.collection.recordHasBeenChanged('deletedRecord', this);
     }
 
     @method async beforeDestroy(...args) {

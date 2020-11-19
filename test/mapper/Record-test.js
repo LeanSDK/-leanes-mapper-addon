@@ -6,7 +6,7 @@ const MapperAddon = require(path).default;
 const LeanES = require('@leansdk/leanes/src').default;
 const {
   Record,
-  initialize, partOf, nameBy, meta, constant, method, attribute, mixin, computed
+  initialize, partOf, nameBy, meta, constant, method, mixin, plugin, property,
 } = LeanES.NS;
 
 describe('Record', () => {
@@ -19,17 +19,26 @@ describe('Record', () => {
       expect(() => {
         const collectionName = 'TestsCollection';
         const KEY = 'TEST_RECORD_001';
-        facade = LeanES.NS.Facade.getInstance(KEY);
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.MemoryCollectionMixin)
-        @mixin(LeanES.NS.GenerateUuidIdMixin)
+        @partOf(Test)
+        class ApplicationFacade extends Test.NS.Facade {
+          @nameBy static __filename = 'ApplicationFacade';
+          @meta static object = {};
+        }
+        facade = ApplicationFacade.getInstance(KEY);
+
+        @initialize
+        @mixin(Test.NS.MemoryCollectionMixin)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
@@ -46,17 +55,16 @@ describe('Record', () => {
           }
           @attribute({ type: 'string' }) test;
         }
-        const collection = TestsCollection.new();
-        collection.setName(collectionName);
-        collection.setData({
+
+        facade.addProxy(collectionName, 'TestsCollection', {
           delegate: 'TestRecord'
         });
-        facade.registerProxy(collection);
+        const collection = facade.retrieveProxy(collectionName);
         const record = TestRecord.new({
           type: 'Test::TestRecord'
         }, collection);
         assert.instanceOf(record, TestRecord, 'Not a TestRecord');
-        assert.instanceOf(record, LeanES.NS.Record, 'Not a Record');
+        assert.instanceOf(record, Test.NS.Record, 'Not a Record');
       }).to.not.throw(Error);
     });
   });
@@ -65,14 +73,16 @@ describe('Record', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.MemoryCollectionMixin)
-        @mixin(LeanES.NS.GenerateUuidIdMixin)
+        @mixin(Test.NS.MemoryCollectionMixin)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
@@ -105,17 +115,26 @@ describe('Record', () => {
       expect(() => {
         const collectionName = 'TestsCollection';
         const KEY = 'TEST_RECORD_003';
-        facade = LeanES.NS.Facade.getInstance(KEY);
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.MemoryCollectionMixin)
-        @mixin(LeanES.NS.GenerateUuidIdMixin)
+        @partOf(Test)
+        class ApplicationFacade extends Test.NS.Facade {
+          @nameBy static __filename = 'ApplicationFacade';
+          @meta static object = {};
+        }
+        facade = ApplicationFacade.getInstance(KEY);
+
+        @initialize
+        @mixin(Test.NS.MemoryCollectionMixin)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
@@ -132,12 +151,11 @@ describe('Record', () => {
           }
           @attribute({ type: 'string' }) test;
         }
-        const collection = TestsCollection.new();
-        collection.setName(collectionName);
-        collection.setData({
+
+        facade.addProxy(collectionName, 'TestsCollection', {
           delegate: 'TestRecord'
         });
-        facade.registerProxy(collection);
+        const collection = facade.retrieveProxy(collectionName);
         const vsRecord = TestRecord.new({
           type: 'Test::TestRecord'
         }, collection);
@@ -153,14 +171,16 @@ describe('Record', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.MemoryCollectionMixin)
-        @mixin(LeanES.NS.GenerateUuidIdMixin)
+        @mixin(Test.NS.MemoryCollectionMixin)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
@@ -187,14 +207,16 @@ describe('Record', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.MemoryCollectionMixin)
-        @mixin(LeanES.NS.GenerateUuidIdMixin)
+        @mixin(Test.NS.MemoryCollectionMixin)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
@@ -226,14 +248,16 @@ describe('Record', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.MemoryCollectionMixin)
-        @mixin(LeanES.NS.GenerateUuidIdMixin)
+        @mixin(Test.NS.MemoryCollectionMixin)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
@@ -265,17 +289,26 @@ describe('Record', () => {
     it('should create new record', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_007';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -292,12 +325,12 @@ describe('Record', () => {
         }
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord'
       }, collection);
@@ -314,17 +347,26 @@ describe('Record', () => {
     it('should remove record', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_008';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -341,12 +383,12 @@ describe('Record', () => {
         }
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord'
       }, collection);
@@ -365,17 +407,26 @@ describe('Record', () => {
     it('should update record', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_009';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -392,12 +443,12 @@ describe('Record', () => {
         }
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord',
         test: 'test1'
@@ -417,17 +468,26 @@ describe('Record', () => {
     it('should clone record', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_010';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -444,12 +504,12 @@ describe('Record', () => {
         }
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord',
         test: 'test1'
@@ -467,17 +527,26 @@ describe('Record', () => {
     it('should save record', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_011';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -494,12 +563,12 @@ describe('Record', () => {
         }
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord',
         test: 'test1'
@@ -516,17 +585,26 @@ describe('Record', () => {
     it('should create and then delete a record', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_012';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -543,12 +621,12 @@ describe('Record', () => {
         }
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord',
         test: 'test1'
@@ -556,7 +634,7 @@ describe('Record', () => {
       await record.save();
       assert.isTrue((await collection.find(record.id)) != null, 'Record is not saved');
       await record.delete();
-      assert.isTrue((await collection.find(record.id)).isHidden, 'Record is not marked as delete');
+      assert.isTrue((await collection.find(record.id)) == null, 'Record is not marked as delete');
     });
   });
   describe('.copy', () => {
@@ -567,17 +645,26 @@ describe('Record', () => {
     it('should create and then copy the record', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_013';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -594,12 +681,12 @@ describe('Record', () => {
         }
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord',
         test: 'test1'
@@ -618,17 +705,26 @@ describe('Record', () => {
     it('should decrease/increase value of number attribute and toggle boolean', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_014';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -646,12 +742,12 @@ describe('Record', () => {
         @attribute({ type: 'number' }) test;
         @attribute({ type: 'boolean' }) has;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord',
         test: 1000,
@@ -678,17 +774,26 @@ describe('Record', () => {
     it('should update attributes', () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_015';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -707,12 +812,12 @@ describe('Record', () => {
         @attribute({ type: 'boolean' }) has;
         @attribute({ type: 'string' }) word;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord',
         test: 1000,
@@ -738,75 +843,6 @@ describe('Record', () => {
       assert.equal(record.word, 'other', 'String attribue not updated correctly');
     });
   });
-  describe('.touch', () => {
-    let facade = null;
-    afterEach(() => {
-      facade != null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
-    });
-    it('should save data with date', async () => {
-      const collectionName = 'TestsCollection';
-      const KEY = 'TEST_RECORD_016';
-      facade = LeanES.NS.Facade.getInstance(KEY);
-
-      @initialize
-      class Test extends LeanES {
-        @nameBy static __filename = 'Test';
-        @meta static object = {};
-      }
-
-      @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
-      @partOf(Test)
-      class TestsCollection extends Test.NS.Collection {
-        @nameBy static __filename = 'TestsCollection';
-        @meta static object = {};
-      }
-
-      @initialize
-      @partOf(Test)
-      class BasicTestRecord extends Record {
-        @nameBy static __filename = 'BasicTestRecord';
-        @meta static object = {};
-        @method static findRecordByName() {
-          return TestRecord;
-        }
-        @attribute({ type: 'number' }) test;
-        @attribute({ type: 'boolean' }) has;
-        @attribute({ type: 'string' }) word;
-      }
-
-      @initialize
-      @partOf(Test)
-      class TestRecord extends BasicTestRecord {
-        @nameBy static __filename = 'TestRecord';
-        @meta static object = {};
-        @method static findRecordByName() {
-          return TestRecord;
-        }
-        @attribute({ type: 'string' }) name;
-      }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
-      });
-      facade.registerProxy(collection);
-      const record = TestRecord.new({
-        type: 'Test::TestRecord',
-        test: 1000,
-        has: true,
-        word: 'test',
-        name: 'name'
-      }, collection);
-      await record.touch();
-      assert.equal((await collection.find(record.id)).test, 1000, 'Number attribue `test` not updated correctly');
-      assert.equal((await collection.find(record.id)).has, true, 'Boolean attribue `has` not updated correctly');
-      assert.equal((await collection.find(record.id)).word, 'test', 'String attribue `word` not updated correctly');
-      assert.equal((await collection.find(record.id)).name, 'name', 'String attribue `name` not updated correctly');
-      assert.isAtMost((await collection.find(record.id)).updatedAt, new Date(), 'Date attribue not updated correctly');
-    });
-  });
   describe('.changedAttributes, .resetAttribute, .rollbackAttributes', () => {
     let facade = null;
     afterEach(() => {
@@ -815,17 +851,26 @@ describe('Record', () => {
     it('should test, reset and rollback attributes', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_017';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -844,12 +889,12 @@ describe('Record', () => {
         @attribute({ type: 'boolean' }) has;
         @attribute({ type: 'string' }) word;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord',
         test: 1000,
@@ -878,17 +923,26 @@ describe('Record', () => {
     it('should serialize and deserialize attributes', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_018';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -907,35 +961,34 @@ describe('Record', () => {
         @attribute({ type: 'boolean' }) has;
         @attribute({ type: 'string' }) word;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
-      const record = await TestRecord.normalize({
+      const collection = facade.retrieveProxy(collectionName);
+      const [bh, payload] = await TestRecord.normalize({
         type: 'Test::TestRecord',
         test: 1000,
         has: true,
         word: 'test'
       }, collection);
-      assert.propertyVal(record, 'test', 1000, 'Property `test` not defined');
-      assert.propertyVal(record, 'has', true, 'Property `has` not defined');
-      assert.propertyVal(record, 'word', 'test', 'Property `word` not defined');
-      // assert.deepEqual(record.changedAttributes(), {}, 'Attributes are altered');
-      const snapshot = await TestRecord.serialize(record);
+      assert.propertyVal(payload, 'test', 1000, 'Property `test` not defined');
+      assert.propertyVal(payload, 'has', true, 'Property `has` not defined');
+      assert.propertyVal(payload, 'word', 'test', 'Property `word` not defined');
+      const snapshot = await TestRecord.serialize(TestRecord.new(payload, collection));
       assert.deepEqual(snapshot, {
         id: null,
         type: 'Test::TestRecord',
-        isHidden: false,
-        rev: null,
+        // isHidden: false,
+        // rev: null,
         type: 'Test::TestRecord',
         test: 1000,
         has: true,
         word: 'test',
-        createdAt: null,
-        updatedAt: null,
-        deletedAt: null
+        // createdAt: null,
+        // updatedAt: null,
+        // deletedAt: null
       }, 'Snapshot is incorrect');
     });
   });
@@ -947,17 +1000,26 @@ describe('Record', () => {
     it('should recoverize and objectize attributes', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_019';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -976,35 +1038,28 @@ describe('Record', () => {
         @attribute({ type: 'boolean' }) has;
         @attribute({ type: 'string' }) word;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
-      const record = await TestRecord.recoverize({
+      const collection = facade.retrieveProxy(collectionName);
+      const [bh, payload] = await TestRecord.recoverize({
         type: 'Test::TestRecord',
         test: 1000,
         has: true,
         word: 'test'
       }, collection);
-      assert.propertyVal(record, 'test', 1000, 'Property `test` not defined');
-      assert.propertyVal(record, 'has', true, 'Property `has` not defined');
-      assert.propertyVal(record, 'word', 'test', 'Property `word` not defined');
-      // assert.deepEqual(record.changedAttributes(), {}, 'Attributes are altered');
-      const snapshot = TestRecord.objectize(record);
+      assert.propertyVal(payload, 'test', 1000, 'Property `test` not defined');
+      assert.propertyVal(payload, 'has', true, 'Property `has` not defined');
+      assert.propertyVal(payload, 'word', 'test', 'Property `word` not defined');
+      const snapshot = await TestRecord.objectize(TestRecord.new(payload, collection));
       assert.deepEqual(snapshot, {
         id: null,
         type: 'Test::TestRecord',
-        isHidden: false,
-        rev: null,
-        type: 'Test::TestRecord',
         test: 1000,
         has: true,
-        word: 'test',
-        createdAt: null,
-        updatedAt: null,
-        deletedAt: null
+        word: 'test'
       }, 'JSON snapshot is incorrect');
     });
   });
@@ -1016,17 +1071,26 @@ describe('Record', () => {
     it('should make snapshot for ipoInternalRecord', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_020';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -1045,179 +1109,195 @@ describe('Record', () => {
         @attribute({ type: 'boolean' }) has;
         @attribute({ type: 'string' }) word;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
-      const record = await TestRecord.normalize({
+      const collection = facade.retrieveProxy(collectionName);
+      const [bh, payload] = await TestRecord.normalize({
         type: 'Test::TestRecord',
         test: 1000,
         has: true,
         word: 'test'
       }, collection);
-      assert.propertyVal(record, 'test', 1000, 'Property `test` not defined');
-      assert.propertyVal(record, 'has', true, 'Property `has` not defined');
-      assert.propertyVal(record, 'word', 'test', 'Property `word` not defined');
-      // assert.deepEqual(record.changedAttributes(), {}, 'Attributes are altered');
-      const snapshot = TestRecord.makeSnapshot(record);
+      assert.propertyVal(payload, 'test', 1000, 'Property `test` not defined');
+      assert.propertyVal(payload, 'has', true, 'Property `has` not defined');
+      assert.propertyVal(payload, 'word', 'test', 'Property `word` not defined');
+      const snapshot = await TestRecord.makeSnapshot(TestRecord.new(payload, collection));
       assert.deepEqual(snapshot, {
         id: null,
         type: 'Test::TestRecord',
-        isHidden: false,
-        rev: null,
         test: 1000,
         has: true,
-        word: 'test',
-        createdAt: null,
-        updatedAt: null,
-        deletedAt: null
+        word: 'test'
       }, 'JSON snapshot is incorrect');
     });
   });
-  // describe('.replicateObject', () => {
-  //   let facade = null;
-  //   afterEach(() => {
-  //     return facade != null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
-  //   });
-  //   it('should create replica for record', async () => {
-  //     const collectionName = 'TestsCollection';
-  //     const KEY = 'TEST_RECORD_021';
-  //     facade = LeanES.NS.Facade.getInstance(KEY);
+  describe('.replicateObject', () => {
+    let facade = null;
+    afterEach(() => {
+      return facade != null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    });
+    it('should create replica for record', async () => {
+      const collectionName = 'TestsCollection';
+      const KEY = 'TEST_RECORD_021';
 
-  //     @initialize
-  //     class Test extends LeanES {
-  //       @nameBy static __filename = 'Test';
-  //       @meta static object = {};
-  //     }
+      @initialize
+      @plugin(MapperAddon)
+      class Test extends LeanES {
+        @nameBy static __filename = 'Test';
+        @meta static object = {};
+      }
+      const { Record, attribute, computed } = Test.NS;
 
-  //     @initialize
-  //     @mixin(LeanES.NS.MemoryCollectionMixin)
-  //     @mixin(LeanES.NS.GenerateUuidIdMixin)
-  //     @partOf(Test)
-  //     class TestsCollection extends LeanES.NS.Collection {
-  //       @nameBy static __filename = 'TestsCollection';
-  //       @meta static object = {};
-  //     }
+      @initialize
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
 
-  //     @initialize
-  //     @partOf(Test)
-  //     class TestRecord extends Record {
-  //       @nameBy static __filename = 'TestRecord';
-  //       @meta static object = {};
-  //       @method static findRecordByName() {
-  //         return TestRecord;
-  //       }
-  //       @attribute({ type: 'number' }) test;
-  //       @attribute({ type: 'boolean' }) has;
-  //       @attribute({ type: 'string' }) word;
-  //     }
-  //     const collection = TestsCollection.new(collectionName, {
-  //       delegate: 'TestRecord'
-  //     });
-  //     facade.registerProxy(collection);
-  //     const record = await collection.create({
-  //       type: 'Test::TestRecord',
-  //       test: 1000,
-  //       has: true,
-  //       word: 'test'
-  //     });
-  //     const replica = await TestRecord.replicateObject(record);
-  //     assert.deepEqual(replica, {
-  //       type: 'instance',
-  //       class: 'TestRecord',
-  //       multitonKey: KEY,
-  //       collectionName: collectionName,
-  //       isNew: false,
-  //       id: record.id
-  //     });
-  //     facade.remove();
-  //   });
-  // });
-  // describe('.restoreObject', () => {
-  //   let facade = null;
-  //   afterEach(() => {
-  //     facade != null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
-  //   });
-  //   it('should restore record from replica', async () => {
-  //     const collectionName = 'TestsCollection';
-  //     const KEY = 'TEST_RECORD_022';
-  //     facade = LeanES.NS.Facade.getInstance(KEY);
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class TestsCollection extends Test.NS.Collection {
+        @nameBy static __filename = 'TestsCollection';
+        @meta static object = {};
+      }
 
-  //     @initialize
-  //     class Test extends LeanES {
-  //       @nameBy static __filename = 'Test';
-  //       @meta static object = {};
-  //     }
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Record {
+        @nameBy static __filename = 'TestRecord';
+        @meta static object = {};
+        @method static findRecordByName() {
+          return TestRecord;
+        }
+        @attribute({ type: 'number' }) test;
+        @attribute({ type: 'boolean' }) has;
+        @attribute({ type: 'string' }) word;
+      }
 
-  //     @initialize
-  //     @mixin(LeanES.NS.MemoryCollectionMixin)
-  //     @mixin(LeanES.NS.GenerateUuidIdMixin)
-  //     @partOf(Test)
-  //     class TestsCollection extends LeanES.NS.Collection {
-  //       @nameBy static __filename = 'TestsCollection';
-  //       @meta static object = {};
-  //     }
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
+      });
+      const collection = facade.retrieveProxy(collectionName);
+      const record = await collection.create({
+        type: 'Test::TestRecord',
+        test: 1000,
+        has: true,
+        word: 'test'
+      });
+      const replica = await TestRecord.replicateObject(record);
+      assert.deepEqual(replica, {
+        type: 'instance',
+        class: 'TestRecord',
+        multitonKey: KEY,
+        collectionName: collectionName,
+        isNew: false,
+        id: record.id
+      });
+      facade.remove();
+    });
+  });
+  describe('.restoreObject', () => {
+    let facade = null;
+    afterEach(() => {
+      facade != null ? typeof facade.remove === "function" ? facade.remove() : void 0 : void 0;
+    });
+    it('should restore record from replica', async () => {
+      const collectionName = 'TestsCollection';
+      const KEY = 'TEST_RECORD_022';
 
-  //     @initialize
-  //     @partOf(Test)
-  //     class TestRecord extends Record {
-  //       @nameBy static __filename = 'TestRecord';
-  //       @meta static object = {};
-  //       @method static findRecordByName() {
-  //         return TestRecord;
-  //       }
-  //       @attribute({ type: 'number' }) test;
-  //       @attribute({ type: 'boolean' }) has;
-  //       @attribute({ type: 'string' }) word;
-  //     }
-  //     const collection = TestsCollection.new(collectionName, {
-  //       delegate: 'TestRecord'
-  //     });
-  //     facade.registerProxy(collection);
-  //     let record = await collection.create({
-  //       type: 'Test::TestRecord',
-  //       test: 1000,
-  //       has: true,
-  //       word: 'test'
-  //     });
-  //     let restoredRecord = await TestRecord.restoreObject(Test, {
-  //       type: 'instance',
-  //       class: 'TestRecord',
-  //       multitonKey: KEY,
-  //       collectionName: collectionName,
-  //       isNew: false,
-  //       id: record.id
-  //     });
-  //     assert.notEqual(record, restoredRecord);
-  //     assert.deepEqual(record, restoredRecord);
-  //     record = await collection.build({
-  //       id: '123',
-  //       type: 'Test::TestRecord',
-  //       test: 1000,
-  //       has: true,
-  //       word: 'test'
-  //     });
-  //     restoredRecord = await TestRecord.restoreObject(Test, {
-  //       type: 'instance',
-  //       class: 'TestRecord',
-  //       multitonKey: KEY,
-  //       collectionName: collectionName,
-  //       isNew: true,
-  //       attributes: {
-  //         id: '123',
-  //         type: 'Test::TestRecord',
-  //         test: 1000,
-  //         has: true,
-  //         word: 'test'
-  //       }
-  //     });
-  //     assert.notEqual(record, restoredRecord);
-  //     assert.deepEqual(record, restoredRecord);
-  //     facade.remove();
-  //   });
-  // });
+      @initialize
+      @plugin(MapperAddon)
+      class Test extends LeanES {
+        @nameBy static __filename = 'Test';
+        @meta static object = {};
+      }
+      const { Record, attribute, computed } = Test.NS;
+
+      @initialize
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class TestsCollection extends Test.NS.Collection {
+        @nameBy static __filename = 'TestsCollection';
+        @meta static object = {};
+      }
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Record {
+        @nameBy static __filename = 'TestRecord';
+        @meta static object = {};
+        @method static findRecordByName() {
+          return TestRecord;
+        }
+        @attribute({ type: 'number' }) test;
+        @attribute({ type: 'boolean' }) has;
+        @attribute({ type: 'string' }) word;
+      }
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
+      });
+      const collection = facade.retrieveProxy(collectionName);
+      let record = await collection.create({
+        type: 'Test::TestRecord',
+        test: 1000,
+        has: true,
+        word: 'test'
+      });
+      let restoredRecord = await TestRecord.restoreObject(Test, {
+        type: 'instance',
+        class: 'TestRecord',
+        multitonKey: KEY,
+        collectionName: collectionName,
+        isNew: false,
+        id: record.id
+      });
+      assert.notEqual(record, restoredRecord);
+      assert.deepEqual(record, restoredRecord);
+      record = await collection.build({
+        id: '123',
+        type: 'Test::TestRecord',
+        test: 1000,
+        has: true,
+        word: 'test'
+      });
+      restoredRecord = await TestRecord.restoreObject(Test, {
+        type: 'instance',
+        class: 'TestRecord',
+        multitonKey: KEY,
+        collectionName: collectionName,
+        isNew: true,
+        attributes: {
+          id: '123',
+          type: 'Test::TestRecord',
+          test: 1000,
+          has: true,
+          word: 'test'
+        }
+      });
+      assert.notEqual(record, restoredRecord);
+      assert.deepEqual(record, restoredRecord);
+      facade.remove();
+    });
+  });
   describe('.afterCreate', () => {
     let facade = null;
     afterEach(() => {
@@ -1226,19 +1306,28 @@ describe('Record', () => {
     it('should be called after create', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_023';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class TestsCollection extends LeanES.NS.Collection {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
       }
@@ -1249,12 +1338,12 @@ describe('Record', () => {
         @nameBy static __filename = 'TestRecord';
         @meta static object = {};
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const spyRunNotitfication = sinon.spy(collection, 'recordHasBeenChanged');
       const record = await collection.build({
         id: 123
@@ -1271,19 +1360,28 @@ describe('Record', () => {
     it('should be called before update', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_024';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class TestsCollection extends LeanES.NS.Collection {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
       }
@@ -1293,21 +1391,27 @@ describe('Record', () => {
       class TestRecord extends Record {
         @nameBy static __filename = 'TestRecord';
         @meta static object = {};
+
+        @property test = 0;
+
+        @method async beforeUpdate(...args) {
+          this.test = 1;
+          return args;
+        }
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = await collection.build({
         id: 123
       });
       await record.save();
-      const oldUpdatedAt = record.updatedAt;
+      const test = record.test;
       const updated = await record.save();
-      const newUpdatedAt = record.updatedAt;
-      assert.notEqual(oldUpdatedAt, newUpdatedAt, 'Record not updated');
+      assert.notEqual(test, updated.test, 'Record not updated');
       facade.remove();
     });
   });
@@ -1319,19 +1423,28 @@ describe('Record', () => {
     it('should be called before create', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_025';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
       @partOf(Test)
-      class TestsCollection extends LeanES.NS.Collection {
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
       }
@@ -1342,12 +1455,12 @@ describe('Record', () => {
         @nameBy static __filename = 'TestRecord';
         @meta static object = {};
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = await collection.build({
         type: 'Test::TestRecord'
       });
@@ -1365,17 +1478,26 @@ describe('Record', () => {
     it('should be called after update', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_026';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -1389,12 +1511,12 @@ describe('Record', () => {
         @meta static object = {};
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const spyRunNotitfication = sinon.spy(collection, 'recordHasBeenChanged');
       const record = await collection.build({
         id: 123
@@ -1413,17 +1535,26 @@ describe('Record', () => {
     it('should be called before delete', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_027';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -1435,24 +1566,26 @@ describe('Record', () => {
       class TestRecord extends Record {
         @nameBy static __filename = 'TestRecord';
         @meta static object = {};
-        @attribute({ type: 'string' }) test;
+        @property test = 0;
+
+        @method async beforeDelete(...args) {
+          this.test = 1;
+          return args;
+        }
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const record = await collection.build({
         id: 123
       });
       await record.save();
-      const oldUpdatedAt = record.updatedAt;
+      const test = record.test;
       const deleted = await record.delete();
-      const newUpdatedAt = record.updatedAt;
-      assert.notEqual(oldUpdatedAt, newUpdatedAt, 'Record not updated');
-      assert.isDefined(deleted.deletedAt, 'Record not deleted');
-      assert.isTrue(deleted.isHidden, 'Record not hidden');
+      assert.notEqual(test, record.test, 'Record not updated');
       facade.remove();
     });
   });
@@ -1464,17 +1597,26 @@ describe('Record', () => {
     it('should be called after delete', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_028';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -1488,12 +1630,12 @@ describe('Record', () => {
         @meta static object = {};
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const spyRunNotitfication = sinon.spy(collection, 'recordHasBeenChanged');
       const record = await collection.build({
         id: 123
@@ -1512,17 +1654,26 @@ describe('Record', () => {
     it('should be called after destroy', async () => {
       const collectionName = 'TestsCollection';
       const KEY = 'TEST_RECORD_029';
-      facade = LeanES.NS.Facade.getInstance(KEY);
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { Record, attribute, computed } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.GenerateUuidIdMixin)
+      @partOf(Test)
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
+        @meta static object = {};
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @mixin(Test.NS.MemoryCollectionMixin)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
@@ -1536,12 +1687,12 @@ describe('Record', () => {
         @meta static object = {};
         @attribute({ type: 'string' }) test;
       }
-      const collection = TestsCollection.new();
-      collection.setName(collectionName);
-      collection.setData({
-        delegate: 'TestRecord'
+
+      facade.addProxy(collectionName, 'TestsCollection', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER
       });
-      facade.registerProxy(collection);
+      const collection = facade.retrieveProxy(collectionName);
       const spyRunNotitfication = sinon.spy(collection, 'recordHasBeenChanged');
       const record = await collection.build({
         id: 123

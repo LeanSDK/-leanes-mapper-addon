@@ -43,7 +43,7 @@ export default (Module) => {
       }
 
       @method async addField(
-        collectionName: string,
+        name: string,
         fieldName: string,
         options: $Values<SUPPORTED_TYPES> | {
           type: $Values<SUPPORTED_TYPES>, 'default': any
@@ -52,7 +52,7 @@ export default (Module) => {
         if (_.isString(options)) {
           return;
         }
-        const collectionName = `${inflect.camelize(collectionName)}Collection`;
+        const collectionName = `${inflect.camelize(name)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -88,10 +88,10 @@ export default (Module) => {
       }
 
       @method async addTimestamps(
-        collectionName: string,
+        name: string,
         options: ?object = {}
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collectionName)}Collection`;
+        const collectionName = `${inflect.camelize(name)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -119,13 +119,13 @@ export default (Module) => {
       }
 
       @method async changeField(
-        collectionName: string,
+        name: string,
         fieldName: string,
         options: $Values<SUPPORTED_TYPES> | {
           type: $Values<SUPPORTED_TYPES>
         } = {}
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collectionName)}Collection`;
+        const collectionName = `${inflect.camelize(name)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -167,11 +167,11 @@ export default (Module) => {
       }
 
       @method async renameField(
-        collectionName: string,
+        name: string,
         fieldName: string,
         newFieldName: string
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collectionName)}Collection`;
+        const collectionName = `${inflect.camelize(name)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -200,9 +200,9 @@ export default (Module) => {
       }
 
       @method async dropCollection(
-        collectionName: string
+        name: string
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collectionName)}Collection`;
+        const collectionName = `${inflect.camelize(name)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -234,10 +234,10 @@ export default (Module) => {
       }
 
       @method async removeField(
-        collectionName: string,
+        name: string,
         fieldName: string
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collectionName)}Collection`;
+        const collectionName = `${inflect.camelize(name)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -262,10 +262,10 @@ export default (Module) => {
       }
 
       @method async removeTimestamps(
-        collectionName: string,
+        name: string,
         options: ?object = {}
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collectionName)}Collection`;
+        const collectionName = `${inflect.camelize(name)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
