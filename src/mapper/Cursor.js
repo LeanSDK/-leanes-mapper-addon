@@ -78,14 +78,7 @@ export default (Module) => {
     @method async next(): Promise<?D> {
       const data = (await (this._array[this._currentIndex]));
       this._currentIndex++;
-      switch (true) {
-        case data == null:
-          return data;
-        case this.collection != null:
-          return (await this.collection.normalize(data));
-        default:
-          return data;
-      }
+      return await (this.collection != null ? this.collection.normalize(data) : data);
     }
 
     @method async hasNext(): Promise<boolean> {
