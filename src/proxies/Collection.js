@@ -99,11 +99,11 @@ export default (Module) => {
     }
 
     @method collectionPrefix(): string {
-      return `${inflect.underscore(this.Module.name)}_`;
+      return `${inflect.underscore(this.ApplicationModule.name)}_`;
     }
 
     @method collectionFullName(asName: ?string = null): string {
-      return `${this.collectionPrefix()}${asName || this.collectionName()}`;
+      return inflect.underscore(`${this.collectionPrefix()}${asName || this.collectionName()}`);
     }
 
     @method recordHasBeenChanged(asType: string, aoData: object): void {

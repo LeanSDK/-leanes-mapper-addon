@@ -58,40 +58,40 @@ export default (Module) => {
     }
 
     @method static createEdgeCollection(
-      collection_1: string,
-      collection_2: string,
+      collectionName1: string,
+      collectionName2: string,
       options: ?object
     ): void {
       this.prototype._steps.push({
-        args: [collection_1, collection_2, options],
+        args: [collectionName1, collectionName2, options],
         method: 'createEdgeCollection'
       });
     }
 
     @method async createEdgeCollection(
-      collection_1: string,
-      collection_2: string,
+      collectionName1: string,
+      collectionName2: string,
       options: ?object
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
     }
 
     @method static addField(
-      collection_name: string,
-      field_name: string,
+      collectionName: string,
+      fieldName: string,
       options: $Values<SUPPORTED_TYPES> | {
         type: $Values<SUPPORTED_TYPES>, 'default': any
       }
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, field_name, options],
+        args: [collectionName, fieldName, options],
         method: 'addField'
       });
     }
 
     @method async addField(
-      collection_name: string,
-      field_name: string,
+      collectionName: string,
+      fieldName: string,
       options: $Values<SUPPORTED_TYPES> | {
         type: $Values<SUPPORTED_TYPES>, 'default': any
       }
@@ -100,8 +100,8 @@ export default (Module) => {
     }
 
     @method static addIndex(
-      collection_name: string,
-      field_names: string[],
+      collectionName: string,
+      fieldNames: string[],
       options: {
         type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
         unique: ?boolean,
@@ -109,14 +109,14 @@ export default (Module) => {
       }
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, field_names, options],
+        args: [collectionName, fieldNames, options],
         method: 'addIndex'
       });
     }
 
     @method async addIndex(
-      collection_name: string,
-      field_names: string[],
+      collectionName: string,
+      fieldNames: string[],
       options: {
         type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
         unique: ?boolean,
@@ -127,17 +127,17 @@ export default (Module) => {
     }
 
     @method static addTimestamps(
-      collection_name: string,
+      collectionName: string,
       options: ?object
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, options],
+        args: [collectionName, options],
         method: 'addTimestamps'
       });
     }
 
     @method async addTimestamps(
-      collection_name: string,
+      collectionName: string,
       options: ?object
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
@@ -161,21 +161,21 @@ export default (Module) => {
     }
 
     @method static changeField(
-      collection_name: string,
-      field_name: string,
+      collectionName: string,
+      fieldName: string,
       options: $Values<SUPPORTED_TYPES> | {
         type: $Values<SUPPORTED_TYPES>
       }
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, field_name, options],
+        args: [collectionName, fieldName, options],
         method: 'changeField'
       });
     }
 
     @method async changeField(
-      collection_name: string,
-      field_name: string,
+      collectionName: string,
+      fieldName: string,
       options: $Values<SUPPORTED_TYPES> | {
         type: $Values<SUPPORTED_TYPES>
       }
@@ -184,112 +184,112 @@ export default (Module) => {
     }
 
     @method static renameField(
-      collection_name: string,
-      field_name: string,
-      new_field_name: string
+      collectionName: string,
+      fieldName: string,
+      newFieldName: string
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, field_name, new_field_name],
+        args: [collectionName, fieldName, newFieldName],
         method: 'renameField'
       });
     }
 
     @method async renameField(
-      collection_name: string,
-      field_name: string,
-      new_field_name: string
+      collectionName: string,
+      fieldName: string,
+      newFieldName: string
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
     }
 
     @method static renameIndex(
-      collection_name: string,
-      old_name: string,
-      new_name: string
+      collectionName: string,
+      oldCollectionName: string,
+      newCollectionName: string
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, old_name, new_name],
+        args: [collectionName, oldCollectionName, newCollectionName],
         method: 'renameIndex'
       });
     }
 
     @method async renameIndex(
-      collection_name: string,
-      old_name: string,
-      new_name: string
+      collectionName: string,
+      oldCollectionName: string,
+      newCollectionName: string
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
     }
 
     @method static renameCollection(
-      collection_name: string,
-      new_name: string
+      collectionName: string,
+      newCollectionName: string
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, new_name],
+        args: [collectionName, newCollectionName],
         method: 'renameCollection'
       });
     }
 
     @method async renameCollection(
-      collection_name: string,
-      new_name: string
+      collectionName: string,
+      newCollectionName: string
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
     }
 
     @method static dropCollection(
-      collection_name: string
+      collectionName: string
     ): void {
       this.prototype._steps.push({
-        args: [collection_name],
+        args: [collectionName],
         method: 'dropCollection'
       });
     }
 
     @method async dropCollection(
-      collection_name: string
+      collectionName: string
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
     }
 
     @method static dropEdgeCollection(
-      collection_1: string,
-      collection_2: string
+      collectionName1: string,
+      collectionName2: string
     ): void {
       this.prototype._steps.push({
-        args: [collection_1, collection_2],
+        args: [collectionName1, collectionName2],
         method: 'dropEdgeCollection'
       });
     }
 
     @method async dropEdgeCollection(
-      collection_1: string,
-      collection_2: string
+      collectionName1: string,
+      collectionName2: string
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
     }
 
     @method static removeField(
-      collection_name: string,
-      field_name: string
+      collectionName: string,
+      fieldName: string
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, field_name],
+        args: [collectionName, fieldName],
         method: 'removeField'
       });
     }
 
     @method async removeField(
-      collection_name: string,
-      field_name: string
+      collectionName: string,
+      fieldName: string
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
     }
 
     @method static removeIndex(
-      collection_name: string,
-      field_names: string[],
+      collectionName: string,
+      fieldNames: string[],
       options: {
         type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
         unique: ?boolean,
@@ -297,14 +297,14 @@ export default (Module) => {
       }
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, field_names, options],
+        args: [collectionName, fieldNames, options],
         method: 'removeIndex'
       });
     }
 
     @method async removeIndex(
-      collection_name: string,
-      field_names: string[],
+      collectionName: string,
+      fieldNames: string[],
       options: {
         type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
         unique: ?boolean,
@@ -315,17 +315,17 @@ export default (Module) => {
     }
 
     @method static removeTimestamps(
-      collection_name: string,
+      collectionName: string,
       options: ?object
     ): void {
       this.prototype._steps.push({
-        args: [collection_name, options],
+        args: [collectionName, options],
         method: 'removeTimestamps'
       });
     }
 
     @method async removeTimestamps(
-      collection_name: string,
+      collectionName: string,
       options: ?object
     ): Promise<void> {
       return assert.fail('Not implemented specific method');

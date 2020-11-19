@@ -24,22 +24,22 @@ export interface MigrationInterface<
   ): Promise<void>;
 
   createEdgeCollection(
-    collection_1: string,
-    collection_2: string,
+    collectionName1: string,
+    collectionName2: string,
     options: ?object
   ): Promise<void>;
 
   addField(
-    collection_name: string,
-    field_name: string,
+    collectionName: string,
+    fieldName: string,
     options: $Values<SUPPORTED_TYPES> | {
       type: $Values<SUPPORTED_TYPES>, 'default': any
     }
   ): Promise<void>;
 
   addIndex(
-    collection_name: string,
-    field_names: string[],
+    collectionName: string,
+    fieldNames: string[],
     options: {
       type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
       unique: ?boolean,
@@ -48,7 +48,7 @@ export interface MigrationInterface<
   ): Promise<void>;
 
   addTimestamps(
-    collection_name: string,
+    collectionName: string,
     options: ?object
   ): Promise<void>;
 
@@ -58,47 +58,47 @@ export interface MigrationInterface<
   ): Promise<void>;
 
   changeField(
-    collection_name: string,
-    field_name: string,
+    collectionName: string,
+    fieldName: string,
     options: $Values<SUPPORTED_TYPES> | {
       type: $Values<SUPPORTED_TYPES>
     }
   ): Promise<void>;
 
   renameField(
-    collection_name: string,
-    field_name: string,
-    new_field_name: string
+    collectionName: string,
+    fieldName: string,
+    newFieldName: string
   ): Promise<void>;
 
   renameIndex(
-    collection_name: string,
-    old_name: string,
-    new_name: string
+    collectionName: string,
+    oldCollectionName: string,
+    newCollectionName: string
   ): Promise<void>;
 
   renameCollection(
-    collection_name: string,
-    new_name: string
+    collectionName: string,
+    newCollectionName: string
   ): Promise<void>;
 
   dropCollection(
-    collection_name: string
+    collectionName: string
   ): Promise<void>;
 
   dropEdgeCollection(
-    collection_1: string,
-    collection_2: string
+    collectionName1: string,
+    collectionName2: string
   ): Promise<void>;
 
   removeField(
-    collection_name: string,
-    field_name: string
+    collectionName: string,
+    fieldName: string
   ): Promise<void>;
 
   removeIndex(
-    collection_name: string,
-    field_names: string[],
+    collectionName: string,
+    fieldNames: string[],
     options: {
       type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
       unique: ?boolean,
@@ -107,7 +107,7 @@ export interface MigrationInterface<
   ): Promise<void>;
 
   removeTimestamps(
-    collection_name: string,
+    collectionName: string,
     options: ?object
   ): Promise<void>;
 

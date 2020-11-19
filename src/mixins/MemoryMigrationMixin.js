@@ -35,16 +35,16 @@ export default (Module) => {
       }
 
       @method async createEdgeCollection(
-        collection_1: string,
-        collection_2: string,
+        collectionName1: string,
+        collectionName2: string,
         options: ?object
       ): Promise<void> {
         return;
       }
 
       @method async addField(
-        collection_name: string,
-        field_name: string,
+        collectionName: string,
+        fieldName: string,
         options: $Values<SUPPORTED_TYPES> | {
           type: $Values<SUPPORTED_TYPES>, 'default': any
         }
@@ -52,7 +52,7 @@ export default (Module) => {
         if (_.isString(options)) {
           return;
         }
-        const collectionName = `${inflect.camelize(collection_name)}Collection`;
+        const collectionName = `${inflect.camelize(collectionName)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -69,15 +69,15 @@ export default (Module) => {
         for (const id in collection) {
           if (!hasProp.call(collection, id)) continue;
           const doc = collection[id];
-          if (doc[field_name] == null) {
-            doc[field_name] = initial;
+          if (doc[fieldName] == null) {
+            doc[fieldName] = initial;
           }
         }
       }
 
       @method async addIndex(
-        collection_name: string,
-        field_names: string[],
+        collectionName: string,
+        fieldNames: string[],
         options: {
           type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
           unique: ?boolean,
@@ -88,10 +88,10 @@ export default (Module) => {
       }
 
       @method async addTimestamps(
-        collection_name: string,
+        collectionName: string,
         options: ?object = {}
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collection_name)}Collection`;
+        const collectionName = `${inflect.camelize(collectionName)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -119,13 +119,13 @@ export default (Module) => {
       }
 
       @method async changeField(
-        collection_name: string,
-        field_name: string,
+        collectionName: string,
+        fieldName: string,
         options: $Values<SUPPORTED_TYPES> | {
           type: $Values<SUPPORTED_TYPES>
         } = {}
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collection_name)}Collection`;
+        const collectionName = `${inflect.camelize(collectionName)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -136,42 +136,42 @@ export default (Module) => {
           const doc = collection[id];
           switch (type) {
             case SUPPORTED_TYPES.boolean:
-              doc[field_name] = Boolean(doc[field_name]);
+              doc[fieldName] = Boolean(doc[fieldName]);
               break;
             case SUPPORTED_TYPES.decimal:
             case SUPPORTED_TYPES.float:
             case SUPPORTED_TYPES.integer:
             case SUPPORTED_TYPES.number:
-              doc[field_name] = Number(doc[field_name]);
+              doc[fieldName] = Number(doc[fieldName]);
               break;
             case SUPPORTED_TYPES.string:
             case SUPPORTED_TYPES.text:
             case SUPPORTED_TYPES.primary_key:
             case SUPPORTED_TYPES.binary:
-              doc[field_name] = String(JSON.stringify(doc[field_name]));
+              doc[fieldName] = String(JSON.stringify(doc[fieldName]));
               break;
             case SUPPORTED_TYPES.json:
             case SUPPORTED_TYPES.hash:
             case SUPPORTED_TYPES.array:
-              doc[field_name] = JSON.parse(String(doc[field_name]));
+              doc[fieldName] = JSON.parse(String(doc[fieldName]));
               break;
             case SUPPORTED_TYPES.date:
             case SUPPORTED_TYPES.datetime:
-              doc[field_name] = new Date(String(doc[field_name])).toISOString();
+              doc[fieldName] = new Date(String(doc[fieldName])).toISOString();
               break;
             case SUPPORTED_TYPES.time:
             case SUPPORTED_TYPES.timestamp:
-              doc[field_name] = new Date(String(doc[field_name])).getTime();
+              doc[fieldName] = new Date(String(doc[fieldName])).getTime();
           }
         }
       }
 
       @method async renameField(
-        collection_name: string,
-        field_name: string,
-        new_field_name: string
+        collectionName: string,
+        fieldName: string,
+        newFieldName: string
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collection_name)}Collection`;
+        const collectionName = `${inflect.camelize(collectionName)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -179,30 +179,30 @@ export default (Module) => {
         for (const id in collection) {
           if (!hasProp.call(collection, id)) continue;
           const doc = collection[id];
-          doc[new_field_name] = doc[field_name];
-          delete doc[field_name];
+          doc[newFieldName] = doc[fieldName];
+          delete doc[fieldName];
         }
       }
 
       @method async renameIndex(
-        collection_name: string,
-        old_name: string,
-        new_name: string
+        collectionName: string,
+        oldCollectionName: string,
+        newCollectionName: string
       ): Promise<void> {
         return;
       }
 
       @method async renameCollection(
-        collection_name: string,
-        new_name: string
+        collectionName: string,
+        newCollectionName: string
       ): Promise<void> {
         return;
       }
 
       @method async dropCollection(
-        collection_name: string
+        collectionName: string
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collection_name)}Collection`;
+        const collectionName = `${inflect.camelize(collectionName)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -216,10 +216,10 @@ export default (Module) => {
       }
 
       @method async dropEdgeCollection(
-        collection_1: string,
-        collection_2: string
+        collectionName1: string,
+        collectionName2: string
       ): Promise<void> {
-        const qualifiedName = `${collection_1}_${collection_2}`;
+        const qualifiedName = `${collectionName1}_${collectionName2}`;
         const collectionName = `${inflect.camelize(qualifiedName)}Collection`;
         const memCollection = this.collection
           .facade
@@ -234,10 +234,10 @@ export default (Module) => {
       }
 
       @method async removeField(
-        collection_name: string,
-        field_name: string
+        collectionName: string,
+        fieldName: string
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collection_name)}Collection`;
+        const collectionName = `${inflect.camelize(collectionName)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
@@ -245,13 +245,13 @@ export default (Module) => {
         for (const id in collection) {
           if (!hasProp.call(collection, id)) continue;
           const doc = collection[id];
-          delete doc[field_name];
+          delete doc[fieldName];
         }
       }
 
       @method async removeIndex(
-        collection_name: string,
-        field_names: string[],
+        collectionName: string,
+        fieldNames: string[],
         options: {
           type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
           unique: ?boolean,
@@ -262,10 +262,10 @@ export default (Module) => {
       }
 
       @method async removeTimestamps(
-        collection_name: string,
+        collectionName: string,
         options: ?object = {}
       ): Promise<void> {
-        const collectionName = `${inflect.camelize(collection_name)}Collection`;
+        const collectionName = `${inflect.camelize(collectionName)}Collection`;
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);

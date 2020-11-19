@@ -178,14 +178,7 @@ export default (Module) => {
           const rawResult = this._array[this._currentIndex];
           ++this._currentIndex;
           if (!_.isEmpty(rawResult)) {
-            const result = (await (async function () {
-              switch (true) {
-                case this.collection != null:
-                  return (await this.collection.normalize(rawResult));
-                default:
-                  return rawResult;
-              }
-            }).call(this));
+            const result = await (this.collection != null ? this.collection.normalize(rawResult) : rawResult);
             results.push(result);
           }
         }
