@@ -16,7 +16,7 @@
 export interface MigrationInterface<
   REVERSE_MAP, SUPPORTED_TYPES, UP, DOWN
 > {
-  +steps: Array<{|args: Array, method: $Keys<typeof REVERSE_MAP> | 'reversible'|}>;
+  +steps: Array<{|args: Array, method: REVERSE_MAP | 'reversible'|}>;
 
   createCollection(
     name: string,
@@ -32,8 +32,8 @@ export interface MigrationInterface<
   addField(
     collectionName: string,
     fieldName: string,
-    options: $Values<SUPPORTED_TYPES> | {
-      type: $Values<SUPPORTED_TYPES>, 'default': any
+    options: SUPPORTED_TYPES | {
+      type: SUPPORTED_TYPES, 'default': ?any
     }
   ): Promise<void>;
 
@@ -60,8 +60,8 @@ export interface MigrationInterface<
   changeField(
     collectionName: string,
     fieldName: string,
-    options: $Values<SUPPORTED_TYPES> | {
-      type: $Values<SUPPORTED_TYPES>
+    options: SUPPORTED_TYPES | {
+      type: SUPPORTED_TYPES
     }
   ): Promise<void>;
 

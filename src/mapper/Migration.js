@@ -24,10 +24,13 @@ export default (Module) => {
     initialize, partOf, meta, property, method, nameBy,
     Utils: { _, assign, forEach }
   } = Module.NS;
+  const test = 'test';
+  // (test: $Keys<typeof SUPPORTED_TYPES>);
+  // console.log('>>>>>>>>>>>>>', SUPPORTED_TYPES);
 
   @initialize
   @partOf(Module)
-  class Migration extends Record implements MigrationInterface<REVERSE_MAP, SUPPORTED_TYPES, UP, DOWN> {
+  class Migration extends Record implements MigrationInterface<$Keys<typeof REVERSE_MAP>, $Keys<typeof SUPPORTED_TYPES>, UP, DOWN> {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
@@ -79,8 +82,8 @@ export default (Module) => {
     @method static addField(
       collectionName: string,
       fieldName: string,
-      options: $Values<SUPPORTED_TYPES> | {
-        type: $Values<SUPPORTED_TYPES>, 'default': any
+      options: $Keys<typeof SUPPORTED_TYPES> | {
+        type: $Keys<typeof SUPPORTED_TYPES>, 'default': ?any
       }
     ): void {
       this.prototype._steps.push({
@@ -92,8 +95,8 @@ export default (Module) => {
     @method async addField(
       collectionName: string,
       fieldName: string,
-      options: $Values<SUPPORTED_TYPES> | {
-        type: $Values<SUPPORTED_TYPES>, 'default': any
+      options: $Keys<typeof SUPPORTED_TYPES> | {
+        type: $Keys<typeof SUPPORTED_TYPES>, 'default': any
       }
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
@@ -163,8 +166,8 @@ export default (Module) => {
     @method static changeField(
       collectionName: string,
       fieldName: string,
-      options: $Values<SUPPORTED_TYPES> | {
-        type: $Values<SUPPORTED_TYPES>
+      options: $Keys<typeof SUPPORTED_TYPES> | {
+        type: $Keys<typeof SUPPORTED_TYPES>
       }
     ): void {
       this.prototype._steps.push({
@@ -176,8 +179,8 @@ export default (Module) => {
     @method async changeField(
       collectionName: string,
       fieldName: string,
-      options: $Values<SUPPORTED_TYPES> | {
-        type: $Values<SUPPORTED_TYPES>
+      options: $Keys<typeof SUPPORTED_TYPES> | {
+        type: $Keys<typeof SUPPORTED_TYPES>
       }
     ): Promise<void> {
       return assert.fail('Not implemented specific method');

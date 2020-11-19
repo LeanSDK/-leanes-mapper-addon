@@ -45,8 +45,8 @@ export default (Module) => {
       @method async addField(
         name: string,
         fieldName: string,
-        options: $Values<SUPPORTED_TYPES> | {
-          type: $Values<SUPPORTED_TYPES>, 'default': any
+        options: $Keys<typeof SUPPORTED_TYPES> | {
+          type: $Keys<typeof SUPPORTED_TYPES>, 'default': ?any
         }
       ): Promise<void> {
         if (_.isString(options)) {
@@ -121,8 +121,8 @@ export default (Module) => {
       @method async changeField(
         name: string,
         fieldName: string,
-        options: $Values<SUPPORTED_TYPES> | {
-          type: $Values<SUPPORTED_TYPES>
+        options: $Keys<typeof SUPPORTED_TYPES> | {
+          type: $Keys<typeof SUPPORTED_TYPES>
         } = {}
       ): Promise<void> {
         const collectionName = `${inflect.camelize(name)}Collection`;
