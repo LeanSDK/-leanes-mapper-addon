@@ -322,7 +322,7 @@ export default (Module) => {
       return this;
     }
 
-    @method async 'delete'(): Promise<void> {
+    @method async 'delete'(): Promise<void | RecordInterface> {
       if (this.collection == null) return;
       if (await this.isNew()) {
         assert.fail('Document is not exist in collection');
@@ -392,7 +392,7 @@ export default (Module) => {
       return args;
     }
 
-    @method async afterDelete(aoRecord: RecordInterface): Promise<RecordInterface> {
+    @method async afterDelete(aoRecord: RecordInterface): Promise<void | RecordInterface> {
       if (this.collection == null) return this;
       this.collection.recordHasBeenChanged('deletedRecord', aoRecord);
       return this;
@@ -402,7 +402,7 @@ export default (Module) => {
       return args;
     }
 
-    @method async afterDestroy() {
+    @method async afterDestroy(): Promise<void> {
       if (this.collection == null) return;
       this.collection.recordHasBeenChanged('destroyedRecord', this);
     }
