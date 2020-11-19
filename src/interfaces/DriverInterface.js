@@ -16,6 +16,10 @@
 export interface DriverInterface<R, T, A = Array<?T>> {
   _cleanType: 'adapter';
 
+  getName(): string;
+
+  setName(asName: string): void;
+
   push(delegate: R, aoRecord: object): Promise<T>;
 
   remove(delegate: R, id: string | number): Promise<void>;
