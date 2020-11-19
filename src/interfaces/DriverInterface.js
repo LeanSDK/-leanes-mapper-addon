@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-export interface DriverInterface<R, T> {
+export interface DriverInterface<R, T, A = Array<?T>> {
   _cleanType: 'adapter';
 
   push(delegate: R, aoRecord: object): Promise<T>;
@@ -22,9 +22,9 @@ export interface DriverInterface<R, T> {
 
   take(delegate: R, id: string | number): Promise<?T>;
 
-  takeMany(delegate: R, ids: Array<string | number>): Promise<T[]>;
+  takeMany(delegate: R, ids: Array<string | number>): Promise<A>;
 
-  takeAll(delegate: R): Promise<T[]>;
+  takeAll(delegate: R): Promise<A>;
 
   override(delegate: R, id: string | number, aoRecord: object): Promise<T>;
 

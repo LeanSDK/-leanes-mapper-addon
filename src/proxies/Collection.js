@@ -61,6 +61,9 @@ export default (Module) => {
     @inject('RecordNewable<*>')
     @property _recordNewable: (string) => R;
 
+    @inject('CursorFactory<*>')
+    @property _cursorFactory: (?string, array, ?string) => CursorInterface<CollectionInterface<D>, D>;
+
     @property get delegate(): R {
       const proxyData = this.getData();
       const delegate = proxyData != null ? proxyData.delegate : undefined;
