@@ -26,55 +26,47 @@ export default (Module) => {
   Module.defineMixin(__filename, (BaseClass) => {
     @initializeMixin
     class Mixin<
-      D = RecordInterface
-    > extends BaseClass {
+      R = Class<*>, T = object
+      > extends BaseClass implements DriverInterface<R, T> {
       @meta static object = {};
 
-      @property _collection: {[key: string | number]: ?object} = {};
+      @property _collection: { [key: string | number]: ?object } = {};
 
-      @method async push(aoRecord: D): Promise<D> {
+      @method async push(acRecord: R, snapshot: T): Promise<T> {
         const id = aoRecord.id;
         if (id == null) {
           return false;
         }
-        this._collection[id] = await this.serializer.serialize(aoRecord);
-        return await this.serializer.normalize(
-          this.delegate, this._collection[id]
-        );
+        this._collection[id] = snapshot;
+        return this._collection[id];
       }
 
-      @method async remove(id: string | number): Promise<void> {
+      @method async remove(acRecord: R, id: string | number): Promise<void> {
         delete this._collection[id];
       }
 
-      @method async take(id: string | number): Promise<?D> {
-        return await this.serializer.normalize(
-          this.delegate, this._collection[id]
-        );
+      @method async take(acRecord: R, id: string | number): Promise<?T> {
+        return this._collection[id];
       }
 
-      @method async takeMany(ids: Array<string | number>): Promise<CursorInterface<CollectionInterface<D>, D>> {
-        return Module.NS.Cursor.new(
-          this, ids.map((id) => this._collection[id])
-        );
+      @method async takeMany(acRecord: R, ids: Array<string | number>): Promise<T[]> {
+        return ids.map((id) => this._collection[id])
       }
 
-      @method async takeAll(): Promise<CursorInterface<CollectionInterface<D>, D>> {
-        return Module.NS.Cursor.new(this, _.values(this._collection));
+      @method async takeAll(acRecord: R): Promise<T[]> {
+        return _.values(this._collection)
       }
 
-      @method async override(id: string | number, aoRecord: D): Promise<D> {
-        this._collection[id] = await this.serializer.serialize(aoRecord);
-        return await this.serializer.normalize(
-          this.delegate, this._collection[id]
-        );
+      @method async override(acRecord: R, id: string | number, snapshot: T): Promise<T> {
+        this._collection[id] = snapshot;
+        return this._collection[id]
       }
 
-      @method async includes(id: string | number): Promise<boolean> {
+      @method async includes(acRecord: R, id: string | number): Promise<boolean> {
         return this._collection[id] != null;
       }
 
-      @method async length(): Promise<number> {
+      @method async length(acRecord: R): Promise<number> {
         return Object.keys(this._collection).length;
       }
     }

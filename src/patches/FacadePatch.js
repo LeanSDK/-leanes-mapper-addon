@@ -15,7 +15,7 @@
 
 export default (Module) => {
   const {
-    HTTP_ADAPTER, HTTP_SERIALIZER, SERIALIZER,
+    HTTP_ADAPTER, HTTP_SERIALIZER, SERIALIZER, MEMORY_ADAPTER,
     initializePatch, meta, method,
     Utils: { _ }
   } = Module.NS;
@@ -94,11 +94,12 @@ export default (Module) => {
             }
           });
         }
+        this.addAdapter(MEMORY_ADAPTER, 'MemoryAdapter');
         this.addAdapter(HTTP_ADAPTER, 'HttpAdapter');
         if (!this.container.isBound('AdapterFactory<*>')) {
           this.container.bind('AdapterFactory<*>').toFactory((context) => {
             return (name: ?string, customAdapter: ?string = HTTP_ADAPTER) => {
-              return this.container.get(customAdapter);
+              return this.container.get(`Factory<${customAdapter}>`)();
             }
           });
         }

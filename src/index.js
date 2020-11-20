@@ -28,7 +28,8 @@ import HideableRecordMixinTF from './mixins/HideableRecordMixin';
 import HttpAdapterMixinTF from './mixins/HttpAdapterMixin';
 import HttpSerializerMixinTF from './mixins/HttpSerializerMixin';
 import IterableMixinTF from './mixins/IterableMixin';
-import MemoryCollectionMixinTF from './mixins/MemoryCollectionMixin';
+// import MemoryCollectionMixinTF from './mixins/MemoryCollectionMixin';
+import MemoryAdapterMixinTF from './mixins/MemoryAdapterMixin';
 import MemoryMigrationMixinTF from './mixins/MemoryMigrationMixin';
 import MigratifyApplicationMediatorMixinTF from './mixins/MigratifyApplicationMediatorMixin';
 import MigratifyApplicationMixinTF from './mixins/MigratifyApplicationMixin';
@@ -56,6 +57,7 @@ import ObjectizerTF from './mapper/Objectizer';
 import RecordTF from './mapper/Record';
 import MigrationTF from './mapper/Migration';
 import HttpAdapterTF from './mapper/HttpAdapter';
+import MemoryAdapterTF from './mapper/MemoryAdapter';
 import HttpSerializerTF from './mapper/HttpSerializer';
 
 import CollectionTF from './proxies/Collection';
@@ -98,6 +100,7 @@ export default (Module) => {
     @RollbackCommandTF
 
     @HttpAdapterTF
+    @MemoryAdapterTF
     @HttpSerializerTF
 
     @EditableRecordMixinTF
@@ -106,7 +109,8 @@ export default (Module) => {
     @HttpAdapterMixinTF
     @HttpSerializerMixinTF
     @IterableMixinTF
-    @MemoryCollectionMixinTF
+    // @MemoryCollectionMixinTF
+    @MemoryAdapterMixinTF
     @MemoryMigrationMixinTF
     @MigratifyApplicationMediatorMixinTF
     @MigratifyApplicationMixinTF
@@ -137,6 +141,7 @@ export default (Module) => {
       @meta static object = {};
 
       @constant HTTP_ADAPTER = 'HTTP_ADAPTER';
+      @constant MEMORY_ADAPTER = 'MEMORY_ADAPTER';
       @constant SERIALIZER = 'SERIALIZER';
       @constant HTTP_SERIALIZER = 'HTTP_SERIALIZER';
       @constant RECORD_CHANGED = 'RECORD_CHANGED';
