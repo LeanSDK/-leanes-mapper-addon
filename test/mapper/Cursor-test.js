@@ -29,9 +29,8 @@ describe('Cursor', () => {
         }
 
         @initialize
-        @mixin(Test.NS.MemoryCollectionMixin)
-        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         class MemoryCollection extends Test.NS.Collection {
           @nameBy static __filename = 'MemoryCollection';
           @meta static object = {};
@@ -39,7 +38,9 @@ describe('Cursor', () => {
         const voMemoryCollection = MemoryCollection.new();
         voMemoryCollection.setName('MemoryCollection');
         voMemoryCollection.setData({
-          delegate: TestRecord
+          delegate: 'TestRecord',
+          serializer: Test.NS.SERIALIZER,
+          adapter: Test.NS.MEMORY_ADAPTER
         });
         const array = [{}, {}, {}];
         const cursor = Cursor.new(voMemoryCollection, array);
@@ -66,9 +67,8 @@ describe('Cursor', () => {
         }
 
         @initialize
-        @mixin(Test.NS.MemoryCollectionMixin)
-        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         class MemoryCollection extends Test.NS.Collection {
           @nameBy static __filename = 'MemoryCollection';
           @meta static object = {};
@@ -76,7 +76,9 @@ describe('Cursor', () => {
         const voMemoryCollection = MemoryCollection.new();
         voMemoryCollection.setName('MemoryCollection');
         voMemoryCollection.setData({
-          delegate: TestRecord
+          delegate: 'TestRecord',
+          serializer: Test.NS.SERIALIZER,
+          adapter: Test.NS.MEMORY_ADAPTER
         });
         const cursor = Cursor.new();
         cursor.setCollection(voMemoryCollection);
@@ -115,9 +117,8 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @partOf(Test)
-      @mixin(Test.NS.MemoryCollectionMixin)
       @mixin(Test.NS.GenerateUuidIdMixin)
+      @partOf(Test)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
@@ -142,7 +143,8 @@ describe('Cursor', () => {
       ];
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const cursor = Cursor.new();
@@ -152,7 +154,7 @@ describe('Cursor', () => {
       assert.equal((await cursor.next()).data, 'men', 'Second item is incorrect');
       assert.equal((await cursor.next()).data, 'in', 'Third item is incorrect');
       assert.equal((await cursor.next()).data, 'a boat', 'Fourth item is incorrect');
-      assert.isUndefined(await cursor.next(), 'Unexpected item is present');
+      assert.isNull(await cursor.next(), 'Unexpected item is present');
     });
   });
   describe('hasNext', () => {
@@ -187,16 +189,16 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
@@ -245,16 +247,16 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
@@ -308,9 +310,8 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
@@ -318,7 +319,9 @@ describe('Cursor', () => {
       const voMemoryCollection = MemoryCollection.new();
       voMemoryCollection.setName('MemoryCollection');
       voMemoryCollection.setData({
-        delegate: TestRecord
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const array = [
         {
@@ -366,9 +369,8 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
@@ -376,7 +378,9 @@ describe('Cursor', () => {
       const voMemoryCollection = MemoryCollection.new();
       voMemoryCollection.setName('MemoryCollection');
       voMemoryCollection.setData({
-        delegate: TestRecord
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const array = [
         {
@@ -434,16 +438,16 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
@@ -509,16 +513,16 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
@@ -585,16 +589,16 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
@@ -658,16 +662,16 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
@@ -726,16 +730,16 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [
@@ -791,16 +795,16 @@ describe('Cursor', () => {
       }
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MemoryCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MemoryCollection';
         @meta static object = {};
       }
       facade.addProxy('MemoryCollection', 'MemoryCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const voMemoryCollection = facade.retrieveProxy('MemoryCollection');
       const array = [

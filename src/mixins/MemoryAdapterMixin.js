@@ -20,7 +20,7 @@ import type { CursorInterface } from '../interfaces/CursorInterface';
 export default (Module) => {
   const {
     initializeMixin, meta, property, method,
-    Utils: { _ }
+    Utils: { _, assert }
   } = Module.NS;
 
   Module.defineMixin(__filename, (BaseClass) => {
@@ -32,11 +32,9 @@ export default (Module) => {
 
       @property _collection: { [key: string | number]: ?object } = {};
 
-      @method async push(acRecord: R, snapshot: T): Promise<T> {
-        const id = aoRecord.id;
-        if (id == null) {
-          return false;
-        }
+      @method async push(aoRecord: R, snapshot: T): Promise<T> {
+        const id = snapshot.id;
+        assert(id != null, '`id` should be not null');
         this._collection[id] = snapshot;
         return this._collection[id];
       }

@@ -167,7 +167,6 @@ describe('Objectizer', () => {
 
       @initialize
       @partOf(Test)
-      @mixin(Test.NS.MemoryCollectionMixin)
       @mixin(Test.NS.GenerateUuidIdMixin)
       class MyCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MyCollection';
@@ -187,7 +186,8 @@ describe('Objectizer', () => {
       facade.addProxy(COLLECTION, 'MyCollection', {
         delegate: Test.NS.Record,
         objectizer: 'MyObjectizer',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(COLLECTION);
 
@@ -228,7 +228,6 @@ describe('Objectizer', () => {
 
       @initialize
       @partOf(Test)
-      @mixin(Test.NS.MemoryCollectionMixin)
       @mixin(Test.NS.GenerateUuidIdMixin)
       class MyCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MyCollection';
@@ -248,7 +247,8 @@ describe('Objectizer', () => {
       facade.addProxy(COLLECTION, 'MyCollection', {
         delegate: Test.NS.Record,
         objectizer: 'MyObjectizer',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(COLLECTION);
       const restored = await MyObjectizer.restoreObject(Test, {

@@ -37,9 +37,8 @@ describe('Record', () => {
         facade = ApplicationFacade.getInstance(KEY);
 
         @initialize
-        @mixin(Test.NS.MemoryCollectionMixin)
-        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
           @meta static object = {};
@@ -57,7 +56,8 @@ describe('Record', () => {
         }
 
         facade.addProxy(collectionName, 'TestsCollection', {
-          delegate: 'TestRecord'
+          delegate: 'TestRecord',
+          adapter: Test.NS.MEMORY_ADAPTER
         });
         const collection = facade.retrieveProxy(collectionName);
         const record = TestRecord.new({
@@ -81,9 +81,8 @@ describe('Record', () => {
         const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(Test.NS.MemoryCollectionMixin)
-        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
           @meta static object = {};
@@ -133,9 +132,8 @@ describe('Record', () => {
         facade = ApplicationFacade.getInstance(KEY);
 
         @initialize
-        @mixin(Test.NS.MemoryCollectionMixin)
-        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
           @meta static object = {};
@@ -153,7 +151,8 @@ describe('Record', () => {
         }
 
         facade.addProxy(collectionName, 'TestsCollection', {
-          delegate: 'TestRecord'
+          delegate: 'TestRecord',
+          adapter: Test.NS.MEMORY_ADAPTER
         });
         const collection = facade.retrieveProxy(collectionName);
         const vsRecord = TestRecord.new({
@@ -179,9 +178,8 @@ describe('Record', () => {
         const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(Test.NS.MemoryCollectionMixin)
-        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
           @meta static object = {};
@@ -215,9 +213,8 @@ describe('Record', () => {
         const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(Test.NS.MemoryCollectionMixin)
-        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
           @meta static object = {};
@@ -256,9 +253,8 @@ describe('Record', () => {
         const { Record, attribute, computed } = Test.NS;
 
         @initialize
-        @mixin(Test.NS.MemoryCollectionMixin)
-        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
+        @mixin(Test.NS.GenerateUuidIdMixin)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
           @meta static object = {};
@@ -307,9 +303,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -328,9 +323,10 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
-      const collection = facade.retrieveProxy(collectionName);
+      const collection = facade.getProxy(collectionName);
       const record = TestRecord.new({
         type: 'Test::TestRecord'
       }, collection);
@@ -365,9 +361,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -386,7 +381,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
@@ -425,9 +421,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -446,7 +441,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
@@ -486,9 +482,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -507,7 +502,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
@@ -545,9 +541,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -566,7 +561,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
@@ -603,9 +599,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -624,7 +619,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
@@ -663,9 +659,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -684,7 +679,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
@@ -723,9 +719,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -745,7 +740,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
@@ -792,9 +788,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -815,7 +810,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
@@ -869,9 +865,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -892,7 +887,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = TestRecord.new({
@@ -941,9 +937,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -964,7 +959,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const [bh, payload] = await TestRecord.normalize({
@@ -980,15 +976,10 @@ describe('Record', () => {
       assert.deepEqual(snapshot, {
         id: null,
         type: 'Test::TestRecord',
-        // isHidden: false,
-        // rev: null,
         type: 'Test::TestRecord',
         test: 1000,
         has: true,
         word: 'test',
-        // createdAt: null,
-        // updatedAt: null,
-        // deletedAt: null
       }, 'Snapshot is incorrect');
     });
   });
@@ -1018,9 +1009,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1041,7 +1031,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const [bh, payload] = await TestRecord.recoverize({
@@ -1089,9 +1080,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1112,7 +1102,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const [bh, payload] = await TestRecord.normalize({
@@ -1160,9 +1151,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1183,7 +1173,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = await collection.create({
@@ -1230,9 +1221,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1253,7 +1243,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       let record = await collection.create({
@@ -1324,9 +1315,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1341,7 +1331,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const spyRunNotitfication = sinon.spy(collection, 'recordHasBeenChanged');
@@ -1378,9 +1369,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1402,7 +1392,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = await collection.build({
@@ -1441,9 +1432,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1458,7 +1448,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = await collection.build({
@@ -1496,9 +1487,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1514,7 +1504,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const spyRunNotitfication = sinon.spy(collection, 'recordHasBeenChanged');
@@ -1553,9 +1544,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1576,7 +1566,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const record = await collection.build({
@@ -1615,9 +1606,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1633,7 +1623,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const spyRunNotitfication = sinon.spy(collection, 'recordHasBeenChanged');
@@ -1672,9 +1663,8 @@ describe('Record', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class TestsCollection extends Test.NS.Collection {
         @nameBy static __filename = 'TestsCollection';
         @meta static object = {};
@@ -1690,7 +1680,8 @@ describe('Record', () => {
 
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord',
-        serializer: Test.NS.SERIALIZER
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(collectionName);
       const spyRunNotitfication = sinon.spy(collection, 'recordHasBeenChanged');

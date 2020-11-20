@@ -163,9 +163,8 @@ describe('Serializer', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MyCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MyCollection';
         @meta static object = {};
@@ -183,7 +182,8 @@ describe('Serializer', () => {
       const COLLECTION = 'COLLECTION';
       facade.addProxy(COLLECTION, 'MyCollection', {
         delegate: Test.NS.Record,
-        serializer: 'MySerializer'
+        serializer: 'MySerializer',
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(COLLECTION);
       const replica = await MySerializer.replicateObject(collection.serializer);
@@ -220,9 +220,8 @@ describe('Serializer', () => {
       facade = ApplicationFacade.getInstance(KEY);
 
       @initialize
-      @mixin(Test.NS.MemoryCollectionMixin)
-      @mixin(Test.NS.GenerateUuidIdMixin)
       @partOf(Test)
+      @mixin(Test.NS.GenerateUuidIdMixin)
       class MyCollection extends Test.NS.Collection {
         @nameBy static __filename = 'MyCollection';
         @meta static object = {};
@@ -240,7 +239,8 @@ describe('Serializer', () => {
       const COLLECTION = 'COLLECTION';
       facade.addProxy(COLLECTION, 'MyCollection', {
         delegate: Test.NS.Record,
-        serializer: 'MySerializer'
+        serializer: 'MySerializer',
+        adapter: Test.NS.MEMORY_ADAPTER
       });
       const collection = facade.retrieveProxy(COLLECTION);
       const restoredRecord = await MySerializer.restoreObject(Test, {
