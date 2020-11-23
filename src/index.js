@@ -26,7 +26,7 @@ import EditableRecordMixinTF from './mixins/EditableRecordMixin';
 import GenerateUuidIdMixinTF from './mixins/GenerateUuidIdMixin';
 import HideableRecordMixinTF from './mixins/HideableRecordMixin';
 import HttpAdapterMixinTF from './mixins/HttpAdapterMixin';
-import HttpSerializerMixinTF from './mixins/HttpSerializerMixin';
+// import HttpSerializerMixinTF from './mixins/HttpSerializerMixin';
 import IterableMixinTF from './mixins/IterableMixin';
 // import MemoryCollectionMixinTF from './mixins/MemoryCollectionMixin';
 import MemoryAdapterMixinTF from './mixins/MemoryAdapterMixin';
@@ -58,7 +58,7 @@ import RecordTF from './mapper/Record';
 import MigrationTF from './mapper/Migration';
 import HttpAdapterTF from './mapper/HttpAdapter';
 import MemoryAdapterTF from './mapper/MemoryAdapter';
-import HttpSerializerTF from './mapper/HttpSerializer';
+// import HttpSerializerTF from './mapper/HttpSerializer';
 
 import CollectionTF from './proxies/Collection';
 import MigrateCommandTF from './commands/MigrateCommand';
@@ -101,13 +101,13 @@ export default (Module) => {
 
     @HttpAdapterTF
     @MemoryAdapterTF
-    @HttpSerializerTF
+    // @HttpSerializerTF
 
     @EditableRecordMixinTF
     @GenerateUuidIdMixinTF
     @HideableRecordMixinTF
     @HttpAdapterMixinTF
-    @HttpSerializerMixinTF
+    // @HttpSerializerMixinTF
     @IterableMixinTF
     // @MemoryCollectionMixinTF
     @MemoryAdapterMixinTF

@@ -37,12 +37,9 @@ export default (Module) => {
         if (!this.container.isBound(SERIALIZER)) {
           this.container.bind(SERIALIZER).to(this.Module.NS.Serializer);
         }
-        if (!this.container.isBound(HTTP_SERIALIZER)) {
-          this.container.bind(HTTP_SERIALIZER).to(this.Module.NS.HttpSerializer);
-        }
         if (!this.container.isBound('SerializerFactory<*>')) {
           this.container.bind('SerializerFactory<*>').toFactory((context) => {
-            return (name: string, customSerializer: ?string = HTTP_SERIALIZER) => {
+            return (name: string, customSerializer: ?string = SERIALIZER) => {
               const serializer = this.container.get(customSerializer);
               serializer.collectionName = name;
               return serializer;

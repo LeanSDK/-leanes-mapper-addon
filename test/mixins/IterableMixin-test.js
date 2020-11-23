@@ -7,7 +7,7 @@ const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/in
 const MapperAddon = require(path).default;
 const LeanES = require('@leansdk/leanes/src').default;
 const {
-  initialize, partOf, nameBy, resolver, meta, attribute, mixin, constant, method, property
+  initialize, partOf, nameBy, resolver, meta, mixin, constant, method, property, plugin
 } = LeanES.NS;
 
 describe('IterableMixin', () => {
@@ -17,20 +17,30 @@ describe('IterableMixin', () => {
       facade != null ? typeof facade.remove === "function" ? await facade.remove() : void 0 : void 0;
     });
     it('should create iterable instance', async () => {
-      const KEY = 'TEST_ITERABLE_MIXIN_001';
-      facade = LeanES.NS.Facade.getInstance(KEY);
+      const KEY = 'Test';
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute } = Test.NS;
 
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
-        @attribute({type: 'string'}) test;
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
+        @nameBy static __filename = 'TestRecord';
+        @meta static object = {};
+        @attribute({ type: 'string' }) test;
         constructor() {
           super(...arguments);
           this.type = 'TestRecord';
@@ -38,25 +48,26 @@ describe('IterableMixin', () => {
       }
 
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.IterableMixin)
       @partOf(Test)
-      class Iterable extends LeanES.NS.Collection {
-        @nameBy static  __filename = 'Iterable';
+      @mixin(Test.NS.IterableMixin)
+      class Iterable extends Test.NS.Collection {
+        @nameBy static __filename = 'Iterable';
         @meta static object = {};
-        @property delegate = TestRecord;
-        @method async takeAll() {
-          return await Promise.resolve(LeanES.NS.Cursor.new(this, this.getData()));
-        }
       }
-      const array = [{}, {}, {}];
+      const payload = {
+        0: {},
+        1: {},
+        2: {}
+      };
       const collectionName = 'TestsCollection';
-      // const collection = Iterable.new(collectionName, array);
-      const collection = Iterable.new();
-      collection.setName(collectionName);
-      collection.setData(array);
-      facade.registerProxy(collection);
+      facade.addProxy(collectionName, 'Iterable', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
+      });
       const iterable = facade.retrieveProxy(collectionName);
+      const tmpAdapter = iterable.adapter;
+      tmpAdapter._collection = payload;
       const cursor = await iterable.takeAll();
       assert.equal(await cursor.count(), 3, 'Records length does not match');
     });
@@ -68,61 +79,69 @@ describe('IterableMixin', () => {
     });
     it('should call lambda in each record in iterable', async () => {
       const KEY = 'TEST_ITERABLE_MIXIN_002';
-      facade = LeanES.NS.Facade.getInstance(KEY);
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute } = Test.NS;
+
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
-        @attribute({type: 'string'}) test;
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
+        @nameBy static __filename = 'TestRecord';
+        @meta static object = {};
+        @attribute({ type: 'string' }) test;
         constructor() {
           super(...arguments);
           this.type = 'TestRecord';
         }
       }
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.IterableMixin)
+      @mixin(Test.NS.IterableMixin)
       @partOf(Test)
-      class Iterable extends LeanES.NS.Collection {
-        @nameBy static  __filename = 'Iterable';
+      class Iterable extends Test.NS.Collection {
+        @nameBy static __filename = 'Iterable';
         @meta static object = {};
-        @property delegate = TestRecord;
-        @method async takeAll() {
-          return await Promise.resolve(LeanES.NS.Cursor.new(this, this.getData()));
-        }
       }
-      const array = [
-        {
+      const payload = {
+        0: {
           test: 'three',
-          type: 'TestRecord'
+          type: 'Test::TestRecord'
         },
-        {
+        1: {
           test: 'men',
-          type: 'TestRecord'
+          type: 'Test::TestRecord'
         },
-        {
+        2: {
           test: 'in',
-          type: 'TestRecord'
+          type: 'Test::TestRecord'
         },
-        {
+        3: {
           test: 'a boat',
-          type: 'TestRecord'
+          type: 'Test::TestRecord'
         }
-      ];
+      };
       const collectionName = 'TestsCollection';
-      // const collection = Iterable.new(collectionName, array);
-      const collection = Iterable.new();
-      collection.setName(collectionName);
-      collection.setData(array);
-      facade.registerProxy(collection);
+      facade.addProxy(collectionName, 'Iterable', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
+      });
       const iterable = facade.retrieveProxy(collectionName);
-      const spyLambda = sinon.spy(async () => {});
+      const tmpAdapter = iterable.adapter;
+      tmpAdapter._collection = payload;
+      const spyLambda = sinon.spy(async () => { });
       await iterable.forEach(spyLambda);
       assert.isTrue(spyLambda.called, 'Lambda never called');
       assert.equal(spyLambda.callCount, 4, 'Lambda calls are not match');
@@ -139,60 +158,68 @@ describe('IterableMixin', () => {
     });
     it('should map records using lambda', async () => {
       const KEY = 'TEST_ITERABLE_MIXIN_003';
-      facade = LeanES.NS.Facade.getInstance(KEY);
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute } = Test.NS;
+
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
-        @attribute({type: 'string'}) test;
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
+        @nameBy static __filename = 'TestRecord';
+        @meta static object = {};
+        @attribute({ type: 'string' }) test;
         constructor() {
           super(...arguments);
           this.type = 'TestRecord';
         }
       }
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.IterableMixin)
+      @mixin(Test.NS.IterableMixin)
       @partOf(Test)
-      class Iterable extends LeanES.NS.Collection {
-        @nameBy static  __filename = 'Iterable';
+      class Iterable extends Test.NS.Collection {
+        @nameBy static __filename = 'Iterable';
         @meta static object = {};
-        @property delegate = TestRecord;
-        @method async takeAll() {
-          return await Promise.resolve(LeanES.NS.Cursor.new(this, this.getData()));
-        }
       }
-      const array = [
-        {
+      const payload = {
+        0: {
           test: 'three',
           type: 'TestRecord'
         },
-        {
+        1: {
           test: 'men',
           type: 'TestRecord'
         },
-        {
+        2: {
           test: 'in',
           type: 'TestRecord'
         },
-        {
+        3: {
           test: 'a boat',
           type: 'TestRecord'
         }
-      ];
+      };
       const collectionName = 'TestsCollection';
-      // const collection = Iterable.new(collectionName, array);
-      const collection = Iterable.new();
-      collection.setName(collectionName);
-      collection.setData(array);
-      facade.registerProxy(collection);
+      facade.addProxy(collectionName, 'Iterable', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
+      });
       const iterable = facade.retrieveProxy(collectionName);
+      const tmpAdapter = iterable.adapter;
+      tmpAdapter._collection = payload;
       const records = await iterable.map(async (record) => {
         record.test = '+' + record.test + '+';
         return await Promise.resolve(record);
@@ -211,60 +238,68 @@ describe('IterableMixin', () => {
     });
     it('should filter records using lambda', async () => {
       const KEY = 'TEST_ITERABLE_MIXIN_004';
-      facade = LeanES.NS.Facade.getInstance(KEY);
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute } = Test.NS;
+
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
-        @attribute({type: 'string'}) test;
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
+        @nameBy static __filename = 'TestRecord';
+        @meta static object = {};
+        @attribute({ type: 'string' }) test;
         constructor() {
           super(...arguments);
           this.type = 'TestRecord';
         }
       }
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.IterableMixin)
+      @mixin(Test.NS.IterableMixin)
       @partOf(Test)
-      class Iterable extends LeanES.NS.Collection {
-        @nameBy static  __filename = 'Iterable';
+      class Iterable extends Test.NS.Collection {
+        @nameBy static __filename = 'Iterable';
         @meta static object = {};
-        @property delegate = TestRecord;
-        @method async takeAll() {
-          return await Promise.resolve(LeanES.NS.Cursor.new(this, this.getData()));
-        }
       }
-      const array = [
-        {
+      const payload = {
+        0: {
           test: 'three',
           type: 'TestRecord'
         },
-        {
+        1: {
           test: 'men',
           type: 'TestRecord'
         },
-        {
+        2: {
           test: 'in',
           type: 'TestRecord'
         },
-        {
+        3: {
           test: 'a boat',
           type: 'TestRecord'
         }
-      ];
+      };
       const collectionName = 'TestsCollection';
-      // const collection = Iterable.new(collectionName, array);
-      const collection = Iterable.new();
-      collection.setName(collectionName);
-      collection.setData(array);
-      facade.registerProxy(collection);
+      facade.addProxy(collectionName, 'Iterable', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
+      });
       const iterable = facade.retrieveProxy(collectionName);
+      const tmpAdapter = iterable.adapter;
+      tmpAdapter._collection = payload;
       const records = await iterable.filter(async (record) => {
         return await Promise.resolve(record.test.length > 3);
       });
@@ -280,60 +315,68 @@ describe('IterableMixin', () => {
     });
     it('should reduce records using lambda', async () => {
       const KEY = 'TEST_ITERABLE_MIXIN_005';
-      facade = LeanES.NS.Facade.getInstance(KEY);
+
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
-        @nameBy static  __filename = 'Test';
+        @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { attribute } = Test.NS;
+
       @initialize
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
-        @nameBy static  __filename = 'TestRecord';
+      class ApplicationFacade extends Test.NS.Facade {
+        @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
-        @attribute({type: 'string'}) test;
+      }
+      facade = ApplicationFacade.getInstance(KEY);
+
+      @initialize
+      @partOf(Test)
+      class TestRecord extends Test.NS.Record {
+        @nameBy static __filename = 'TestRecord';
+        @meta static object = {};
+        @attribute({ type: 'string' }) test;
         constructor() {
           super(...arguments);
           this.type = 'TestRecord';
         }
       }
       @initialize
-      @mixin(LeanES.NS.MemoryCollectionMixin)
-      @mixin(LeanES.NS.IterableMixin)
       @partOf(Test)
-      class Iterable extends LeanES.NS.Collection {
-        @nameBy static  __filename = 'Iterable';
+      @mixin(Test.NS.IterableMixin)
+      class Iterable extends Test.NS.Collection {
+        @nameBy static __filename = 'Iterable';
         @meta static object = {};
-        @property delegate = TestRecord;
-        @method async takeAll() {
-          return await Promise.resolve(LeanES.NS.Cursor.new(this, this.getData()));
-        }
       }
-      const array = [
-        {
+      const payload = {
+        0: {
           test: 'three',
           type: 'TestRecord'
         },
-        {
+        1: {
           test: 'men',
           type: 'TestRecord'
         },
-        {
+        2: {
           test: 'in',
           type: 'TestRecord'
         },
-        {
+        3: {
           test: 'a boat',
           type: 'TestRecord'
         }
-      ];
+      };
       const collectionName = 'TestsCollection';
-      // const collection = Iterable.new(collectionName, array);
-      const collection = Iterable.new();
-      collection.setName(collectionName);
-      collection.setData(array);
-      facade.registerProxy(collection);
+      facade.addProxy(collectionName, 'Iterable', {
+        delegate: 'TestRecord',
+        serializer: Test.NS.SERIALIZER,
+        adapter: Test.NS.MEMORY_ADAPTER
+      });
       const iterable = facade.retrieveProxy(collectionName);
+      const tmpAdapter = iterable.adapter;
+      tmpAdapter._collection = payload;
       const records = await iterable.reduce(async (accumulator, item) => {
         accumulator[item.test] = item;
         return await Promise.resolve(accumulator);

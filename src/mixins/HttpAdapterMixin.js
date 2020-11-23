@@ -24,21 +24,21 @@ export default (Module) => {
   const {
     assert,
     initializeMixin, meta, property, method,
-    Utils: {_, inflect, request}
+    Utils: { _, inflect, request }
   } = Module.NS;
 
   Module.defineMixin(__filename, (BaseClass) => {
     @initializeMixin
     class Mixin<
       R = Class<*>, T = object
-    > extends BaseClass implements DriverInterface<R, T> {
+      > extends BaseClass implements DriverInterface<R, T> {
       @meta static object = {};
 
       @property _recordMultipleName: ?string = null;
 
       @property _recordSingleName: ?string = null;
 
-      @property headers: ?{[key: string]: string} = null;
+      @property headers: ?{ [key: string]: string } = null;
 
       @property host: string = 'http://localhost';
 
@@ -66,7 +66,9 @@ export default (Module) => {
         const params = {};
         params.requestType = 'push';
         params.recordName = acRecord.name;
-        params.snapshot = snapshot;
+        params.snapshot = {
+          [`${this.recordSingleName(acRecord.name)}`]: snapshot
+        };
         const requestObj = this.requestFor(params);
         const res = await this.makeRequest(requestObj);
         assert(res.status < 400, `Request failed with status ${res.status} ${res.message}`);
@@ -136,7 +138,9 @@ export default (Module) => {
         const params = {};
         params.requestType = 'override';
         params.recordName = acRecord.name;
-        params.snapshot = snapshot;
+        params.snapshot = {
+          [`${this.recordSingleName(acRecord.name)}`]: snapshot
+        };
         params.id = id;
         const requestObj = this.requestFor(params);
         const res = await this.makeRequest(requestObj);
@@ -162,7 +166,7 @@ export default (Module) => {
         return items.length;
       }
 
-      @method headersForRequest(params: ?HttpRequestParamsT = {}): {[key: string]: string} {
+      @method headersForRequest(params: ?HttpRequestParamsT = {}): { [key: string]: string } {
         const headers = this.headers || {};
         headers['Accept'] = 'application/json';
         return headers;
@@ -215,7 +219,7 @@ export default (Module) => {
           if (/^\/\//.test(path) || /http(s)?:\/\//.test(path)) {
             // Do nothing, the full @host is already included.
             return path;
-          // Absolute path
+            // Absolute path
           } else if (path.charAt(0) === '/') {
             return `${this.host}${path}`;
           } else {
@@ -311,7 +315,7 @@ export default (Module) => {
       @method async sendRequest<
         T = any, R = T, L = LegacyResponseInterface<AxiosResponse<T, R>>
       >(...args: RequestArgumentsT<T, R>): Promise<L> {
-        const [ method, url, options ] = args;
+        const [method, url, options] = args;
         return await request(method, url, options);
       }
 
@@ -326,7 +330,7 @@ export default (Module) => {
         if (data != null) {
           options.body = data;
         }
-        return [ method, url, options ];
+        return [method, url, options];
       }
 
       @method async makeRequest<
