@@ -3,7 +3,7 @@ const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/in
 const MapperAddon = require(path).default;
 const LeanES = require('@leansdk/leanes/src').default;
 const {
-  initialize, partOf, nameBy, meta, attribute
+  initialize, partOf, nameBy, meta, plugin
 } = LeanES.NS;
 
 describe('attribute', () => {
@@ -12,14 +12,16 @@ describe('attribute', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { attribute } = Test.NS;
 
         @initialize
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @attribute({ type: 'string' }) test = 'test';
@@ -33,14 +35,16 @@ describe('attribute', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { attribute } = Test.NS;
 
         @initialize
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @attribute({ type: 'string' }) static test = 'test';
@@ -54,14 +58,16 @@ describe('attribute', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { attribute } = Test.NS;
 
         @initialize
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @attribute() test;

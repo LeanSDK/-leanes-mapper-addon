@@ -3,7 +3,7 @@ const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/in
 const MapperAddon = require(path).default;
 const LeanES = require('@leansdk/leanes/src').default;
 const {
-  initialize, partOf, nameBy, meta, computed
+  initialize, partOf, nameBy, meta, plugin
 } = LeanES.NS;
 
 describe('computed', () => {
@@ -12,17 +12,19 @@ describe('computed', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { computed } = Test.NS;
 
         @initialize
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
-          @computed({ type: 'string' }) test() {};
+          @computed({ type: 'string' }) test() { };
         }
       }).to.throw(Error);
     });
@@ -30,18 +32,20 @@ describe('computed', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { computed } = Test.NS;
 
         @initialize
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
-          @computed({ type: 'string' }) get test() {};
-          @computed({ type: 'string' }) set test(newVal) {};
+          @computed({ type: 'string' }) get test() { };
+          @computed({ type: 'string' }) set test(newVal) { };
         }
       }).to.throw(Error);
     });
@@ -49,17 +53,19 @@ describe('computed', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { computed } = Test.NS;
 
         @initialize
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
-          @computed({ type: 'string' }) static get test() {};
+          @computed({ type: 'string' }) static get test() { };
         }
       }).to.throw(Error);
     });
@@ -67,17 +73,19 @@ describe('computed', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { computed } = Test.NS;
 
         @initialize
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
-          @computed() test() {};
+          @computed() test() { };
         }
       }).to.throw(Error);
     });
@@ -85,17 +93,19 @@ describe('computed', () => {
       expect(() => {
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { computed } = Test.NS;
 
         @initialize
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
-          @computed({ type: 'string' }) get test() {};
+          @computed({ type: 'string' }) get test() { };
         }
         assert.isOk(TestRecord.metaObject.parent.data.computeds.test);
         assert.isOk(TestRecord.metaObject.parent.data.instanceVariables.test);
