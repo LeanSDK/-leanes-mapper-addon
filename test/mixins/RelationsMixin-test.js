@@ -5,8 +5,7 @@ const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/in
 const MapperAddon = require(path).default;
 const LeanES = require('@leansdk/leanes/src').default;
 const {
-  Record,
-  initialize, partOf, nameBy, meta, constant, mixin, method, hasOne, belongsTo, relatedTo, hasMany
+  initialize, partOf, nameBy, meta, constant, mixin, method, plugin
 } = LeanES.NS;
 
 describe('RelationsMixin', () => {
@@ -19,17 +18,25 @@ describe('RelationsMixin', () => {
       expect(() => {
         const collectionName = 'TestsCollection';
         const KEY = 'TEST_RELATIONS_MIXIN_001';
-        facade = LeanES.NS.Facade.getInstance(KEY);
 
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { hasOne, belongsTo, relatedTo, hasMany } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.MemoryCollectionMixin)
-        @mixin(LeanES.NS.GenerateUuidIdMixin)
+        @partOf(Test)
+        class ApplicationFacade extends Test.NS.Facade {
+          @nameBy static __filename = 'ApplicationFacade';
+          @meta static object = {};
+        }
+        facade = ApplicationFacade.getInstance(KEY);
+
+        @initialize
+        @mixin(Test.NS.GenerateUuidIdMixin)
         @partOf(Test)
         class TestsCollection extends Test.NS.Collection {
           @nameBy static __filename = 'TestsCollection';
@@ -37,21 +44,28 @@ describe('RelationsMixin', () => {
         }
 
         @initialize
-        @mixin(LeanES.NS.RelationsMixin)
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        @mixin(Test.NS.MemoryAdapterMixin)
+        class TestAdapter extends Test.NS.Adapter {
+          @nameBy static __filename = 'TestAdapter';
+          @meta static object = {};
+        }
+
+        @initialize
+        @partOf(Test)
+        @mixin(Test.NS.RelationsMixin)
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @method static findRecordByName() {
             return TestRecord;
           }
         }
-        const collection = TestsCollection.new();
-        collection.setName(collectionName);
-        collection.setData({
-          delegate: 'TestRecord'
-        });
-        facade.registerProxy(collection);
+        facade.addProxy(collectionName, 'TestsCollection', {
+          delegate: 'TestRecord',
+          adapter: 'TestAdapter'
+        })
+        const collection = facade.getProxy(collectionName);
         const record = TestRecord.new({
           type: 'Test::TestRecord'
         }, collection);
@@ -62,16 +76,19 @@ describe('RelationsMixin', () => {
   describe('.relatedTo', () => {
     it('relatedTo: should define one-to-one or one-to-many optional relation for class', () => {
       expect(() => {
+
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { relatedTo } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.RelationsMixin)
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        @mixin(Test.NS.RelationsMixin)
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @method static findRecordByName() {
@@ -82,7 +99,7 @@ describe('RelationsMixin', () => {
             refKey: 'id',
             recordName: () => ('TestRecord'),
             collectionName: () => ('TestsCollection'),
-            through: ['tomatosRels', {by: 'cucumberId'}],
+            through: ['tomatosRels', { by: 'cucumberId' }],
             inverse: 'test'
           }) relation;
         }
@@ -110,16 +127,19 @@ describe('RelationsMixin', () => {
     });
     it('relatedTo: should define options automatically', () => {
       expect(() => {
+
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { relatedTo } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.RelationsMixin)
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        @mixin(Test.NS.RelationsMixin)
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @method static findRecordByName() {
@@ -141,16 +161,19 @@ describe('RelationsMixin', () => {
   describe('.belongsTo', () => {
     it('belongsTo: should define one-to-one or one-to-many parent relation for class', () => {
       expect(() => {
+
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { belongsTo } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.RelationsMixin)
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        @mixin(Test.NS.RelationsMixin)
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @method static findRecordByName() {
@@ -161,7 +184,7 @@ describe('RelationsMixin', () => {
             refKey: 'id',
             recordName: () => ('TestRecord'),
             collectionName: () => ('TestsCollection'),
-            through: ['tomatosRels', {by: 'cucumberId'}],
+            through: ['tomatosRels', { by: 'cucumberId' }],
             inverse: 'test'
           }) relation;
         }
@@ -189,16 +212,19 @@ describe('RelationsMixin', () => {
     });
     it('belongsTo: should define options automatically', () => {
       expect(() => {
+
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { belongsTo } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.RelationsMixin)
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        @mixin(Test.NS.RelationsMixin)
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @method static findRecordByName() {
@@ -220,16 +246,19 @@ describe('RelationsMixin', () => {
   describe('.hasMany', () => {
     it('hasMany: should define one-to-one or one-to-many relation for class', () => {
       expect(() => {
+
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { hasMany } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.RelationsMixin)
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        @mixin(Test.NS.RelationsMixin)
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @method static findRecordByName() {
@@ -239,7 +268,7 @@ describe('RelationsMixin', () => {
             refKey: 'id',
             recordName: () => ('TestRecord'),
             collectionName: () => ('TestsCollection'),
-            through: ['tomatosRels', {by: 'cucumberId'}],
+            through: ['tomatosRels', { by: 'cucumberId' }],
             inverse: 'test'
           }) manyRelation;
         }
@@ -268,16 +297,19 @@ describe('RelationsMixin', () => {
   describe('.hasOne', () => {
     it('hasOne: should define many-to-one or many-to-one relation for class', () => {
       expect(() => {
+
         @initialize
+        @plugin(MapperAddon)
         class Test extends LeanES {
           @nameBy static __filename = 'Test';
           @meta static object = {};
         }
+        const { hasOne } = Test.NS;
 
         @initialize
-        @mixin(LeanES.NS.RelationsMixin)
         @partOf(Test)
-        class TestRecord extends LeanES.NS.Record {
+        @mixin(Test.NS.RelationsMixin)
+        class TestRecord extends Test.NS.Record {
           @nameBy static __filename = 'TestRecord';
           @meta static object = {};
           @method static findRecordByName() {
@@ -287,7 +319,7 @@ describe('RelationsMixin', () => {
             refKey: 'id',
             recordName: () => ('TestRecord'),
             collectionName: () => ('TestsCollection'),
-            through: ['tomatosRels', {by: 'cucumberId'}],
+            through: ['tomatosRels', { by: 'cucumberId' }],
             inverse: 'test'
           }) oneRelation;
         }
@@ -317,24 +349,26 @@ describe('RelationsMixin', () => {
     it('should get inverse info', () => {
 
       @initialize
+      @plugin(MapperAddon)
       class Test extends LeanES {
         @nameBy static __filename = 'Test';
         @meta static object = {};
       }
+      const { hasOne, belongsTo } = Test.NS;
 
       @initialize
-      @mixin(LeanES.NS.RelationsMixin)
       @partOf(Test)
-      class RelationRecord extends LeanES.NS.Record {
+      @mixin(Test.NS.RelationsMixin)
+      class RelationRecord extends Test.NS.Record {
         @nameBy static __filename = 'RelationRecord';
         @meta static object = {};
-        @hasOne({inverse: 'relation_attr'}) test = null;
+        @hasOne({ inverse: 'relation_attr' }) test = null;
       }
 
       @initialize
-      @mixin(LeanES.NS.RelationsMixin)
+      @mixin(Test.NS.RelationsMixin)
       @partOf(Test)
-      class TestRecord extends LeanES.NS.Record {
+      class TestRecord extends Test.NS.Record {
         @nameBy static __filename = 'TestRecord';
         @meta static object = {};
         @belongsTo({
