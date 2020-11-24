@@ -90,7 +90,7 @@ export default (Module) => {
         params.id = id;
         const requestObj = this.requestFor(params);
         const res = await this.makeRequest(requestObj);
-        assert(res.status < 400, `Request failed with status ${res.status} ${res.message}`);
+        assert(res.status < 400 || res.status == 404, `Request failed with status ${res.status} ${res.message}`);
       }
 
       @method async take(acRecord: R, id: string | number): Promise<?T> {
@@ -100,7 +100,8 @@ export default (Module) => {
         params.id = id;
         const requestObj = this.requestFor(params);
         const res = await this.makeRequest(requestObj);
-        assert(res.status < 400, `Request failed with status ${res.status} ${res.message}`);
+        assert(res.status < 400 || res.status == 404, `Request failed with status ${res.status} ${res.message}`);
+        if ( res.status == 404) return null;
         let { body } = res;
         if ((body != null) && body !== '') {
           if (_.isString(body)) {

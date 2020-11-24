@@ -116,7 +116,8 @@ export default (Module) => {
     @method async generateId(): Promise<string | number> { return; }
 
     @method async build(properties: object): Promise<D> {
-      return await this.objectizer.recoverize(this.delegate, properties);
+      const tmp = await this.objectizer.recoverize(this.delegate, properties);
+      return tmp;
     }
 
     @method async create(properties: object): Promise<D> {
