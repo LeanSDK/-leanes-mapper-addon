@@ -42,8 +42,8 @@ export interface MigrationInterface<
     fieldNames: string[],
     options: {
       type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
-      unique: ?boolean,
-      sparse: ?boolean
+      unique?: boolean,
+      sparse?: boolean
     }
   ): Promise<void>;
 
@@ -101,8 +101,8 @@ export interface MigrationInterface<
     fieldNames: string[],
     options: {
       type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
-      unique: ?boolean,
-      sparse: ?boolean
+      unique?: boolean,
+      sparse?: boolean
     }
   ): Promise<void>;
 

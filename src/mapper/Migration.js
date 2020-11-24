@@ -107,8 +107,8 @@ export default (Module) => {
       fieldNames: string[],
       options: {
         type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
-        unique: ?boolean,
-        sparse: ?boolean
+        unique?: boolean,
+        sparse?: boolean
       }
     ): void {
       this.prototype._steps.push({
@@ -122,8 +122,8 @@ export default (Module) => {
       fieldNames: string[],
       options: {
         type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
-        unique: ?boolean,
-        sparse: ?boolean
+        unique?: boolean,
+        sparse?: boolean
       }
     ): Promise<void> {
       return assert.fail('Not implemented specific method');
@@ -295,8 +295,8 @@ export default (Module) => {
       fieldNames: string[],
       options: {
         type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
-        unique: ?boolean,
-        sparse: ?boolean
+        unique?: boolean,
+        sparse?: boolean
       }
     ): void {
       this.prototype._steps.push({
@@ -310,8 +310,8 @@ export default (Module) => {
       fieldNames: string[],
       options: {
         type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
-        unique: ?boolean,
-        sparse: ?boolean
+        unique?: boolean,
+        sparse?: boolean
       }
     ): Promise<void> {
       return assert.fail('Not implemented specific method');

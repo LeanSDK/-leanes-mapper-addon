@@ -80,8 +80,8 @@ export default (Module) => {
         fieldNames: string[],
         options: {
           type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
-          unique: ?boolean,
-          sparse: ?boolean
+          unique?: boolean,
+          sparse?: boolean
         }
       ): Promise<void> {
         return;
@@ -222,15 +222,15 @@ export default (Module) => {
         const qualifiedName = `${collectionName1}_${collectionName2}`;
         const collectionName = `${inflect.camelize(qualifiedName)}Collection`;
         const memCollection = this.collection
-          .facade
-          .retrieveProxy(collectionName);
+        .facade
+        .retrieveProxy(collectionName);
         const collection = this.collection._collection;
         for (const id in collection) {
           if (!hasProp.call(collection, id)) continue;
           const doc = collection[id];
           delete memCollection._collection[id];
         }
-        memCollection._collection = {};
+        memCollection.adapter._collection = {};
       }
 
       @method async removeField(
@@ -241,7 +241,7 @@ export default (Module) => {
         const memCollection = this.collection
           .facade
           .retrieveProxy(collectionName);
-        const collection = memCollection._collection;
+          const collection = memCollection.adapter._collection;
         for (const id in collection) {
           if (!hasProp.call(collection, id)) continue;
           const doc = collection[id];
@@ -254,8 +254,8 @@ export default (Module) => {
         fieldNames: string[],
         options: {
           type: 'hash' | 'skiplist' | 'persistent' | 'geo' | 'fulltext',
-          unique: ?boolean,
-          sparse: ?boolean
+          unique?: boolean,
+          sparse?: boolean
         }
       ): Promise<void> {
         return;
