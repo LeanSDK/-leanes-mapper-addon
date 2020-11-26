@@ -6,7 +6,7 @@ const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/in
 const MapperAddon = require(path).default;
 const LeanES = require('@leansdk/leanes/src').default;
 const {
-  initialize, partOf, nameBy, resolver, meta, attribute, mixin, constant
+  initialize, partOf, nameBy, resolver, meta, mixin, constant, plugin
 } = LeanES.NS;
 
 describe('SchemaModuleMixin', () => {
@@ -16,7 +16,7 @@ describe('SchemaModuleMixin', () => {
       const cphMigrationsMap = Symbol.for('~migrationsMap');
 
       @initialize
-      @mixin(LeanES.NS.SchemaModuleMixin)
+      @plugin(MapperAddon)
       @resolver(require, name => require(name))
       class Test extends LeanES {
         @nameBy static  __filename = 'Test';
@@ -35,9 +35,9 @@ describe('SchemaModuleMixin', () => {
       });
       Test.requireMigrations();
       assert.deepEqual(Test.NS.MIGRATION_NAMES, ['migration_1', 'migration_2', 'migration_3']);
-      assert.instanceOf(Test.NS.Migration1.prototype, LeanES.NS.Migration);
-      assert.instanceOf(Test.NS.Migration2.prototype, LeanES.NS.Migration);
-      assert.instanceOf(Test.NS.Migration3.prototype, LeanES.NS.Migration);
+      assert.instanceOf(Test.NS.Migration1.prototype, Test.NS.Migration);
+      assert.instanceOf(Test.NS.Migration2.prototype, Test.NS.Migration);
+      assert.instanceOf(Test.NS.Migration3.prototype, Test.NS.Migration);
     });
   });
 });

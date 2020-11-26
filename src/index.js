@@ -90,7 +90,7 @@ export type { TransformStaticInterface } from './interfaces/TransformStaticInter
 
 export default (Module) => {
   const {
-    initializeMixin, meta, constant, method, patch, decorator,
+    initializeMixin, meta, constant, method, patch, decorator, plugin,
   } = Module.NS;
 
   return ['MapperAddon', (BaseClass) => {
@@ -200,6 +200,7 @@ export default (Module) => {
 
       @method static including() {
         patch(this.NS.FacadePatch)(this.NS.Facade);
+        // plugin(this.NS.SchemaModuleMixin)(this);
       }
     }
     return Mixin;

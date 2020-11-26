@@ -410,7 +410,6 @@ describe('Collection', () => {
         @nameBy static __filename = 'TestAdapter';
         @meta static object = {};
       }
-
       facade.addProxy(collectionName, 'TestsCollection', {
         delegate: 'TestRecord'
       });
