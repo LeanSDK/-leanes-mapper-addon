@@ -22,47 +22,48 @@ import hasOne from './decorators/hasOne';
 import loadMigrations from './decorators/loadMigrations';
 import relatedTo from './decorators/relatedTo';
 
-import EditableRecordMixinTF from './mixins/EditableRecordMixin';
-import GenerateUuidIdMixinTF from './mixins/GenerateUuidIdMixin';
-import HideableRecordMixinTF from './mixins/HideableRecordMixin';
-import HttpAdapterMixinTF from './mixins/HttpAdapterMixin';
-// import HttpSerializerMixinTF from './mixins/HttpSerializerMixin';
-import IterableMixinTF from './mixins/IterableMixin';
-// import MemoryCollectionMixinTF from './mixins/MemoryCollectionMixin';
-import MemoryAdapterMixinTF from './mixins/MemoryAdapterMixin';
-import MemoryMigrationMixinTF from './mixins/MemoryMigrationMixin';
-import MigratifyApplicationMediatorMixinTF from './mixins/MigratifyApplicationMediatorMixin';
-import MigratifyApplicationMixinTF from './mixins/MigratifyApplicationMixin';
-import OwnerableRecordMixinTF from './mixins/OwnerableRecordMixin';
-import RelationsMixinTF from './mixins/RelationsMixin';
-import SchemaModuleMixinTF from './mixins/SchemaModuleMixin';
-import TimestampsRecordMixinTF from './mixins/TimestampsRecordMixin';
+import EditableRecordMixin from './mixins/EditableRecordMixin';
+import GenerateUuidIdMixin from './mixins/GenerateUuidIdMixin';
+import HideableRecordMixin from './mixins/HideableRecordMixin';
+import HttpAdapterMixin from './mixins/HttpAdapterMixin';
+// import HttpSerializerMixin from './mixins/HttpSerializerMixin';
+import IterableMixin from './mixins/IterableMixin';
+// import MemoryCollectionMixin from './mixins/MemoryCollectionMixin';
+import MemoryAdapterMixin from './mixins/MemoryAdapterMixin';
+import MemoryMigrationMixin from './mixins/MemoryMigrationMixin';
+import MigratifyApplicationMediatorMixin from './mixins/MigratifyApplicationMediatorMixin';
+import MigratifyApplicationMixin from './mixins/MigratifyApplicationMixin';
+import OwnerableRecordMixin from './mixins/OwnerableRecordMixin';
+import RelationsMixin from './mixins/RelationsMixin';
+import TimestampsRecordMixin from './mixins/TimestampsRecordMixin';
 
-import FacadePatchTF from './patches/FacadePatch';
+import FacadePatch from './patches/FacadePatch';
 
-import ArrayTransformTF from './transforms/ArrayTransform';
-import BooleanTransformTF from './transforms/BooleanTransform';
-import DateTransformTF from './transforms/DateTransform';
-import NumberTransformTF from './transforms/NumberTransform';
-import ObjectTransformTF from './transforms/ObjectTransform';
-import PrimaryKeyTransformTF from './transforms/PrimaryKeyTransform';
-import StringTransformTF from './transforms/StringTransform';
-import ComplexArrayTransformTF from './transforms/ComplexArrayTransform';
-import ComplexObjectTransformTF from './transforms/ComplexObjectTransform';
+import ArrayTransform from './transforms/ArrayTransform';
+import BooleanTransform from './transforms/BooleanTransform';
+import DateTransform from './transforms/DateTransform';
+import NumberTransform from './transforms/NumberTransform';
+import ObjectTransform from './transforms/ObjectTransform';
+import PrimaryKeyTransform from './transforms/PrimaryKeyTransform';
+import StringTransform from './transforms/StringTransform';
+import ComplexArrayTransform from './transforms/ComplexArrayTransform';
+import ComplexObjectTransform from './transforms/ComplexObjectTransform';
 
-import CursorTF from './mapper/Cursor';
-import TransformTF from './mapper/Transform';
-import SerializerTF from './mapper/Serializer';
-import ObjectizerTF from './mapper/Objectizer';
-import RecordTF from './mapper/Record';
-import MigrationTF from './mapper/Migration';
-import HttpAdapterTF from './mapper/HttpAdapter';
-import MemoryAdapterTF from './mapper/MemoryAdapter';
-// import HttpSerializerTF from './mapper/HttpSerializer';
+import Cursor from './mapper/Cursor';
+import Transform from './mapper/Transform';
+import Serializer from './mapper/Serializer';
+import Objectizer from './mapper/Objectizer';
+import Record from './mapper/Record';
+import Migration from './mapper/Migration';
+import HttpAdapter from './mapper/HttpAdapter';
+import MemoryAdapter from './mapper/MemoryAdapter';
+// import HttpSerializer from './mapper/HttpSerializer';
 
-import CollectionTF from './proxies/Collection';
-import MigrateCommandTF from './commands/MigrateCommand';
-import RollbackCommandTF from './commands/RollbackCommand';
+import Collection from './proxies/Collection';
+import MigrateCommand from './commands/MigrateCommand';
+import RollbackCommand from './commands/RollbackCommand';
+
+import MigratableModule from './MigratableModule';
 
 export type { AttributeConfigT } from './types/AttributeConfigT';
 export type { AttributeOptionsT } from './types/AttributeOptionsT';
@@ -88,53 +89,54 @@ export type { SerializableInterface } from './interfaces/SerializableInterface';
 export type { SerializerInterface } from './interfaces/SerializerInterface';
 export type { TransformStaticInterface } from './interfaces/TransformStaticInterface';
 
+export { MigratableModule };
+
 export default (Module) => {
   const {
     initializeMixin, meta, constant, method, patch, decorator, plugin,
   } = Module.NS;
 
   return ['MapperAddon', (BaseClass) => {
-    @FacadePatchTF
-    @CollectionTF
-    @MigrateCommandTF
-    @RollbackCommandTF
+    @FacadePatch
+    @Collection
+    @MigrateCommand
+    @RollbackCommand
 
-    @HttpAdapterTF
-    @MemoryAdapterTF
-    // @HttpSerializerTF
+    @HttpAdapter
+    @MemoryAdapter
+    // @HttpSerializer
 
-    @EditableRecordMixinTF
-    @GenerateUuidIdMixinTF
-    @HideableRecordMixinTF
-    @HttpAdapterMixinTF
-    // @HttpSerializerMixinTF
-    @IterableMixinTF
-    // @MemoryCollectionMixinTF
-    @MemoryAdapterMixinTF
-    @MemoryMigrationMixinTF
-    @MigratifyApplicationMediatorMixinTF
-    @MigratifyApplicationMixinTF
-    @OwnerableRecordMixinTF
-    @RelationsMixinTF
-    @SchemaModuleMixinTF
-    @TimestampsRecordMixinTF
+    @EditableRecordMixin
+    @GenerateUuidIdMixin
+    @HideableRecordMixin
+    @HttpAdapterMixin
+    // @HttpSerializerMixin
+    @IterableMixin
+    // @MemoryCollectionMixin
+    @MemoryAdapterMixin
+    @MemoryMigrationMixin
+    @MigratifyApplicationMediatorMixin
+    @MigratifyApplicationMixin
+    @OwnerableRecordMixin
+    @RelationsMixin
+    @TimestampsRecordMixin
 
-    @MigrationTF
-    @RecordTF
-    @ObjectizerTF
-    @SerializerTF
-    @TransformTF
-    @CursorTF
+    @Migration
+    @Record
+    @Objectizer
+    @Serializer
+    @Transform
+    @Cursor
 
-    @ComplexArrayTransformTF
-    @ComplexObjectTransformTF
-    @ArrayTransformTF
-    @BooleanTransformTF
-    @DateTransformTF
-    @NumberTransformTF
-    @ObjectTransformTF
-    @PrimaryKeyTransformTF
-    @StringTransformTF
+    @ComplexArrayTransform
+    @ComplexObjectTransform
+    @ArrayTransform
+    @BooleanTransform
+    @DateTransform
+    @NumberTransform
+    @ObjectTransform
+    @PrimaryKeyTransform
+    @StringTransform
 
     @initializeMixin
     class Mixin extends BaseClass {

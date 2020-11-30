@@ -25,7 +25,7 @@ export default (Module) => {
   const cphPathMap = Symbol.for('~pathMap');
   const cpmMigrationsHandler = Symbol.for('~migrationsHandler');
 
-  Module.defineMixin(__filename, (BaseClass) => {
+  return ['MigratableModule', (BaseClass) => {
     @initializeMixin
     class Mixin extends BaseClass {
       @meta static object = {};
@@ -128,5 +128,5 @@ export default (Module) => {
       }
     });
     return Mixin;
-  });
+  }]
 }
