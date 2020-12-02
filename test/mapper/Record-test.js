@@ -5,7 +5,6 @@ const path = process.env.ENV === 'build' ? "../../lib/index.dev" : "../../src/in
 const MapperAddon = require(path).default;
 const LeanES = require('@leansdk/leanes/src').default;
 const {
-  Record,
   initialize, partOf, nameBy, meta, constant, method, mixin, plugin, property,
 } = LeanES.NS;
 

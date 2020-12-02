@@ -19,8 +19,9 @@ import computed from './decorators/computed';
 import customFilters from './decorators/customFilters';
 import hasMany from './decorators/hasMany';
 import hasOne from './decorators/hasOne';
-import loadMigrations from './decorators/loadMigrations';
 import relatedTo from './decorators/relatedTo';
+import loadMigrations from './decorators/loadMigrations';
+import requireMigrations from './decorators/requireMigrations';
 
 import EditableRecordMixin from './mixins/EditableRecordMixin';
 import GenerateUuidIdMixin from './mixins/GenerateUuidIdMixin';
@@ -90,6 +91,8 @@ export type { SerializerInterface } from './interfaces/SerializerInterface';
 export type { TransformStaticInterface } from './interfaces/TransformStaticInterface';
 
 export { MigratableModule };
+export { loadMigrations };
+export { requireMigrations };
 
 export default (Module) => {
   const {
@@ -197,7 +200,6 @@ export default (Module) => {
       @decorator customFilters = customFilters;
       @decorator hasMany = hasMany;
       @decorator hasOne = hasOne;
-      @decorator loadMigrations = loadMigrations;
       @decorator relatedTo = relatedTo;
 
       @method static including() {

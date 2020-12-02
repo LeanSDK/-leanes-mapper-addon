@@ -14,7 +14,6 @@
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
 import type { MigrationInterface } from '../interfaces/MigrationInterface';
-import type { RecordInterface } from '../interfaces/RecordInterface';
 
 export default (Module) => {
   const {
@@ -30,7 +29,7 @@ export default (Module) => {
 
   @initialize
   @partOf(Module)
-  class Migration extends Record implements MigrationInterface<$Keys<typeof REVERSE_MAP>, $Keys<typeof SUPPORTED_TYPES>, UP, DOWN> {
+  class Migration extends Record implements MigrationInterface<$Keys<typeof REVERSE_MAP>, $Keys<typeof SUPPORTED_TYPES>, typeof UP, typeof DOWN> {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
@@ -347,7 +346,7 @@ export default (Module) => {
       await lambda.apply(this, []);
     }
 
-    @method async migrate(direction: UP | DOWN): Promise<void> {
+    @method async migrate(direction: typeof UP | typeof DOWN): Promise<void> {
       switch (direction) {
         case UP:
           await this.up();

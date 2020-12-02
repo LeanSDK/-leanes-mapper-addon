@@ -32,12 +32,6 @@ describe('DateTransform', () => {
       const date = new Date();
       assert.deepEqual(await DateTransform.normalize(date.toISOString()), date);
     });
-    it('should deserialize boolean value', async () => {
-      assert.deepEqual(await DateTransform.normalize(true), new Date(1));
-    });
-    it('should deserialize string value', async () => {
-      assert.deepEqual(await DateTransform.normalize('True'), new Date(''));
-    });
     it('should deserialize number value', async () => {
       assert.deepEqual(await DateTransform.normalize(1), new Date(1));
     });
@@ -50,15 +44,6 @@ describe('DateTransform', () => {
       const date = new Date();
       assert.equal(await DateTransform.serialize(date), date.toISOString());
     });
-    it('should serialize boolean value', async () => {
-      assert.equal(await DateTransform.serialize(true), null);
-    });
-    it('should serialize string value', async () => {
-      assert.equal(await DateTransform.serialize('True'), null);
-    });
-    it('should serialize number value', async () => {
-      assert.equal(await DateTransform.serialize(1), null);
-    });
   });
   describe('.objectize', () => {
     it('should objectize null value', () => {
@@ -67,15 +52,6 @@ describe('DateTransform', () => {
     it('should objectize date value', () => {
       const date = new Date();
       expect(DateTransform.objectize(date)).to.eql(date.toISOString());
-    });
-    it('should objectize boolean value', () => {
-      expect(DateTransform.objectize(true)).to.be.null;
-    });
-    it('should objectize string value', () => {
-      expect(DateTransform.objectize('True')).to.be.null;
-    });
-    it('should objectize number value', () => {
-      expect(DateTransform.objectize(1)).to.be.null;
     });
   });
 });

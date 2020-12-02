@@ -15,10 +15,11 @@
 
 import type { HttpRequestParamsT } from '../types/HttpRequestParamsT';
 import type { HttpRequestHashT } from '../types/HttpRequestHashT';
+import type { DriverInterface } from '../interfaces/DriverInterface';
 
 import type {
   RequestArgumentsT, LegacyResponseInterface, AxiosResponse,
-} from '@leansdk/leanes/src/leanes/types/RequestT';
+} from '../types/RequestT';
 
 export default (Module) => {
   const {

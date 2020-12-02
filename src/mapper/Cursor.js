@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-// import type { RecordInterface } from '../../interfaces/RecordInterface';
+import type { RecordInterface } from '../interfaces/RecordInterface';
 // import type { CollectionInterface } from '../../interfaces/CollectionInterface';
 import type { CursorInterface } from '../interfaces/CursorInterface';
 
@@ -31,25 +31,25 @@ export default (Module) => {
   @injectable()
   @partOf(Module)
   class Cursor<
-    D = {}, C = { normalize: (ahData: any) => Promise<D> }, T = D[]
-    > extends CoreObject implements CursorInterface<C, D> {
+    C = { normalize: (ahData: any) => Promise<RecordInterface> }, T = Array<?object>
+    > extends CoreObject implements CursorInterface<C, RecordInterface, T> {
     @nameBy static __filename = __filename;
     @meta static object = {};
 
     @property _currentIndex: number = 0;
 
-    @property _array: any;
+    @property _array: T;
 
     @property _collection: ?C;
 
     @property isClosed: boolean = false;
 
-    @method setCollection(aoCollection: C): CursorInterface<C, D> {
+    @method setCollection(aoCollection: C): CursorInterface<C, RecordInterface, T> {
       this._collection = aoCollection;
       return this;
     }
 
-    @method setIterable(alArray: T): CursorInterface<C, D> {
+    @method setIterable(alArray: T): CursorInterface<C, RecordInterface, T> {
       this._array = alArray;
       return this;
     }
@@ -67,7 +67,7 @@ export default (Module) => {
       }
     }
 
-    @method async toArray(): Promise<D[]> {
+    @method async toArray(): Promise<Array<?RecordInterface>> {
       const results = [];
       while ((await this.hasNext())) {
         results.push(await this.next());
@@ -75,7 +75,7 @@ export default (Module) => {
       return results;
     }
 
-    @method async next(): Promise<?D> {
+    @method async next(): Promise<?RecordInterface> {
       const data = (await (this._array[this._currentIndex]));
       this._currentIndex++;
       return await (this.collection != null ? this.collection.normalize(data) : data);
@@ -103,7 +103,7 @@ export default (Module) => {
       return (await (length || array.length));
     }
 
-    @method async forEach(lambda: (D, number) =>?Promise<void>): Promise<void> {
+    @method async forEach(lambda: (RecordInterface, number) =>?Promise<void>): Promise<void> {
       let index = 0;
       try {
         while (await this.hasNext()) {
@@ -115,7 +115,7 @@ export default (Module) => {
       }
     }
 
-    @method async map<R>(lambda: (D, number) => R | Promise<R>): Promise<R[]> {
+    @method async map<R>(lambda: (RecordInterface, number) => R | Promise<R>): Promise<Array<?R>> {
       let index = 0;
       try {
         const results = [];
@@ -129,7 +129,7 @@ export default (Module) => {
       }
     }
 
-    @method async filter(lambda: (D, number) => boolean | Promise<boolean>): Promise<D[]> {
+    @method async filter(lambda: (RecordInterface, number) => boolean | Promise<boolean>): Promise<Array<?RecordInterface>> {
       let index = 0;
       const records = [];
       try {
@@ -146,7 +146,7 @@ export default (Module) => {
       }
     }
 
-    @method async find(lambda: (D, number) => boolean | Promise<boolean>): Promise<?D> {
+    @method async find(lambda: (RecordInterface, number) => boolean | Promise<boolean>): Promise<?RecordInterface> {
       let index = 0;
       let _record = null;
       try {
@@ -164,7 +164,7 @@ export default (Module) => {
       }
     }
 
-    @method async compact(): Promise<D[]> {
+    @method async compact(): Promise<Array<?RecordInterface>> {
       const results = [];
       try {
         while (this._currentIndex < (await this.count())) {
@@ -182,7 +182,7 @@ export default (Module) => {
       }
     }
 
-    @method async reduce<I>(lambda: (I, D, number) => I | Promise<I>, initialValue: I): Promise<I> {
+    @method async reduce<I>(lambda: (I, RecordInterface, number) => I | Promise<I>, initialValue: I): Promise<I> {
       try {
         let index = 0;
         let _initialValue = initialValue;
@@ -196,7 +196,7 @@ export default (Module) => {
       }
     }
 
-    @method async first(): Promise<?D> {
+    @method async first(): Promise<?RecordInterface> {
       try {
         const result = (await this.hasNext()) ? (await this.next()) : null;
         await this.close();

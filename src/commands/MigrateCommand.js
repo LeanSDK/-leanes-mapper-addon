@@ -19,9 +19,10 @@ import type { NotificationInterface } from '../interfaces/NotificationInterface'
 
 export default (Module) => {
   const {
-    APPLICATION_MEDIATOR, STOPPED_MIGRATE, MIGRATIONS, UP,
+    // APPLICATION_MEDIATOR,
+    STOPPED_MIGRATE, MIGRATIONS, UP,
     Command,
-    initialize, partOf, meta, property, method, nameBy, mixin,
+    initialize, partOf, meta, property, method, nameBy, mixin, inject,
     Utils: { _, inflect }
   } = Module.NS;
 
@@ -33,23 +34,30 @@ export default (Module) => {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
-    @property migrationsCollection: CollectionInterface<D> = null;
+    // @property migrationsCollection: CollectionInterface<D> = null;
+
+    @inject(`Factory<${MIGRATIONS}>`)
+    @property migrationsFactory: () => CollectionInterface<D>;
+
+    @property get migrationsCollection(): CollectionInterface<D> {
+      return this.migrationsFactory();
+    }
 
     @property get migrationNames(): string[] {
-      const app = this.facade
-        .getMediator(APPLICATION_MEDIATOR)
-        .getViewComponent();
-      return app.Module.NS.MIGRATION_NAMES || [];
+      // const app = this.facade
+      //   .getMediator(APPLICATION_MEDIATOR)
+      //   .getViewComponent();
+      return this.ApplicationModule.NS.MIGRATION_NAMES || [];
     }
 
     // @property get migrationsDir(): string {
     //   return `${this.configs.ROOT}/migrations`;
     // }
 
-    @method initializeNotifier(...args) {
-      super.initializeNotifier(...args);
-      this.migrationsCollection = this.facade.getProxy(MIGRATIONS);
-    }
+    // @method initializeNotifier(...args) {
+    //   super.initializeNotifier(...args);
+    //   this.migrationsCollection = this.facade.getProxy(MIGRATIONS);
+    // }
 
     @method async execute(aoNotification: NotificationInterface) {
       const voBody = aoNotification.getBody();
@@ -58,19 +66,20 @@ export default (Module) => {
       this.send(STOPPED_MIGRATE, { error }, vsType);
     }
 
-    @method async migrate(options: {|until: ?string|}): ?Error {
+    @method async migrate(options: {|until?: ?string|}): ?Error {
       let voMigration = null;
       let err = null;
-      const app = this.facade
-        .getMediator(APPLICATION_MEDIATOR)
-        .getViewComponent();
+      // const app = this.facade
+      //   .getMediator(APPLICATION_MEDIATOR)
+      //   .getViewComponent();
+      this.ApplicationModule.requireMigrations();
       for (const migrationName of this.migrationNames) {
         if (!(await this.migrationsCollection.includes(migrationName))) {
           const id = String(migrationName);
           const clearedMigrationName = migrationName.replace(/^\d{14}[_]/, '');
           const migrationClassName = inflect.camelize(clearedMigrationName);
-          const vcMigration = app.Module.NS[migrationClassName];
-          const type = `${app.Module.name}::${migrationClassName}`;
+          const vcMigration = this.ApplicationModule.NS[migrationClassName];
+          const type = `${this.ApplicationModule.name}::${migrationClassName}`;
           try {
             voMigration = (await this.migrationsCollection.find(id));
             if (voMigration == null) {

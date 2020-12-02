@@ -19,9 +19,10 @@ import type { NotificationInterface } from '../interfaces/NotificationInterface'
 
 export default (Module) => {
   const {
-    APPLICATION_MEDIATOR, STOPPED_ROLLBACK, MIGRATIONS, DOWN,
+    // APPLICATION_MEDIATOR,
+    STOPPED_ROLLBACK, MIGRATIONS, DOWN,
     Command,
-    initialize, partOf, meta, property, method, nameBy, mixin,
+    initialize, partOf, meta, property, method, nameBy, mixin, inject,
     Utils: { _, inflect }
   } = Module.NS;
 
@@ -33,23 +34,30 @@ export default (Module) => {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
-    @property migrationsCollection: CollectionInterface<D> = null;
+    // @property migrationsCollection: CollectionInterface<D> = null;
+
+    @inject(`Factory<${MIGRATIONS}>`)
+    @property migrationsFactory: () => CollectionInterface<D>;
+
+    @property get migrationsCollection(): CollectionInterface<D> {
+      return this.migrationsFactory();
+    }
 
     @property get migrationNames(): string[] {
-      const app = this.facade
-        .getMediator(APPLICATION_MEDIATOR)
-        .getViewComponent();
-      return app.Module.NS.MIGRATION_NAMES || [];
+      // const app = this.facade
+      //   .getMediator(APPLICATION_MEDIATOR)
+      //   .getViewComponent();
+      return this.ApplicationModule.NS.MIGRATION_NAMES || [];
     }
 
     // @property get migrationsDir(): string {
     //   return `${this.configs.ROOT}/migrations`;
     // }
 
-    @method initializeNotifier(...args) {
-      super.initializeNotifier(...args);
-      this.migrationsCollection = this.facade.getProxy(MIGRATIONS);
-    }
+    // @method initializeNotifier(...args) {
+    //   super.initializeNotifier(...args);
+    //   this.migrationsCollection = this.facade.getProxy(MIGRATIONS);
+    // }
 
     @method async execute(aoNotification: NotificationInterface) {
       const voBody = aoNotification.getBody();
@@ -58,13 +66,14 @@ export default (Module) => {
       this.send(STOPPED_ROLLBACK, { error }, vsType);
     }
 
-    @method async rollback(options: ?{|steps: ?number, until: ?string|}): ?Error {
+    @method async rollback(options: ?{|steps?: ?number, until?: ?string|}): ?Error {
       let executedMigrations = null;
       let err = null;
       if (((options != null ? options.steps : undefined) != null) && !_.isNumber(options.steps)) {
         throw new Error('Not valid steps params');
         return;
       }
+      this.ApplicationModule.requireMigrations();
       executedMigrations = await (
         await this.migrationsCollection.takeAll()
       ).toArray();

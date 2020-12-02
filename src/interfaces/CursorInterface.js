@@ -16,7 +16,7 @@
 // import type { CollectionInterface } from './CollectionInterface';
 
 export interface CursorInterface<
-  Collection, Delegate, Iterable = Array<?Delegate>
+  Collection, Delegate, Iterable = Array<?object>
 > {
   isClosed: boolean;
 

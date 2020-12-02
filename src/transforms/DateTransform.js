@@ -41,11 +41,11 @@ export default (Module) => {
       return this.serializeSync(...args);
     }
 
-    @method static normalizeSync(serialized: ?(string | number | date)): ?date {
+    @method static normalizeSync(serialized: ?(string | number | Date)): ?Date {
       return (_.isNil(serialized) ? null : new Date(serialized));
     }
 
-    @method static serializeSync(deserialized: ?date): ?(string | number | date) {
+    @method static serializeSync(deserialized: ?Date): ?(string | number | Date) {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
         return deserialized.toISOString();
       } else {
@@ -53,7 +53,7 @@ export default (Module) => {
       }
     }
 
-    @method static objectize(deserialized: ?date): ?string {
+    @method static objectize(deserialized: ?Date): ?string {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
         return deserialized.toISOString();
       } else {

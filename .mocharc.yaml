@@ -20,12 +20,12 @@ file:
   - './test/mixins/HttpAdapterMixin-test.js'
   - './test/mixins/RelationsMixin-test.js'
   - './test/mixins/MemoryMigrationMixin-test.js'
-  # - './test/mixins/SchemaModuleMixin-test.js' # TODO: needs corrections in SchemaModuleMixin
   - './test/proxies/Collection-test.js'
   - './test/decorators/attribute-test.js'
   - './test/decorators/computed-test.js'
-  # - './test/commands/MigrateCommand-test.js'
-  # - './test/commands/RollbackCommand-test.js'
+  - './test/MigratableModule-test.js'
+  - './test/commands/MigrateCommand-test.js'
+  - './test/commands/RollbackCommand-test.js'
 full-trace: true
 growl: true
 recursive: false

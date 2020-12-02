@@ -105,6 +105,11 @@ describe('Cursor', () => {
       class ApplicationFacade extends Test.NS.Facade {
         @nameBy static __filename = 'ApplicationFacade';
         @meta static object = {};
+
+        @method initializeFacade(): void {
+          super.initializeFacade();
+          this.rebind('ApplicationModule').toConstructor(this.Module);
+        }
       }
       facade = ApplicationFacade.getInstance('Test');
 

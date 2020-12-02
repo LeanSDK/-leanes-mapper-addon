@@ -27,64 +27,64 @@ export default (Module) => {
 
       @method initializeFacade(): void {
         super.initializeFacade(... arguments)
-        if (!this.container.isBound('CollectionFactory<*>')) {
-          this.container.bind('CollectionFactory<*>').toFactory((context) => {
+        if (!this.isBound('CollectionFactory<*>')) {
+          this.bind('CollectionFactory<*>').toFactory((context) => {
             return (collectionName: string) => {
-              return this.container.get(`Factory<${collectionName}>`)()
+              return this.get(`Factory<${collectionName}>`)()
             }
           });
         }
-        if (!this.container.isBound(SERIALIZER)) {
-          this.container.bind(SERIALIZER).to(this.Module.NS.Serializer);
+        if (!this.isBound(SERIALIZER)) {
+          this.bind(SERIALIZER).to(this.Module.NS.Serializer);
         }
-        if (!this.container.isBound('SerializerFactory<*>')) {
-          this.container.bind('SerializerFactory<*>').toFactory((context) => {
+        if (!this.isBound('SerializerFactory<*>')) {
+          this.bind('SerializerFactory<*>').toFactory((context) => {
             return (name: string, customSerializer: ?string = SERIALIZER) => {
-              const serializer = this.container.get(customSerializer);
+              const serializer = this.get(customSerializer);
               serializer.collectionName = name;
               return serializer;
             }
           });
         }
-        if (!this.container.isBound('Objectizer')) {
-          this.container.bind('Objectizer').to(this.Module.NS.Objectizer);
+        if (!this.isBound('Objectizer')) {
+          this.bind('Objectizer').to(this.Module.NS.Objectizer);
         }
-        if (!this.container.isBound('ObjectizerFactory<*>')) {
-          this.container.bind('ObjectizerFactory<*>').toFactory((context) => {
+        if (!this.isBound('ObjectizerFactory<*>')) {
+          this.bind('ObjectizerFactory<*>').toFactory((context) => {
             return (name: string, customObjectizer: ?string = 'Objectizer') => {
-              const objectizer = this.container.get(customObjectizer);
+              const objectizer = this.get(customObjectizer);
               objectizer.collectionName = name;
               return objectizer;
             }
           });
         }
-        if (!this.container.isBound('RecordNewable<*>')) {
-          this.container.bind('RecordNewable<*>').toFactory((context) => {
+        if (!this.isBound('RecordNewable<*>')) {
+          this.bind('RecordNewable<*>').toFactory((context) => {
             return (delegate: string) => {
-              if (!this.container.isBound(`Newable<${delegate}>`)) {
+              if (!this.isBound(`Newable<${delegate}>`)) {
                 const RecordClass = this.ApplicationModule.NS[delegate];
-                this.container.bind(`Newable<${delegate}>`).toConstructor(RecordClass);
+                this.bind(`Newable<${delegate}>`).toConstructor(RecordClass);
               }
-              return this.container.get(`Newable<${delegate}>`);
+              return this.get(`Newable<${delegate}>`);
             }
           });
         }
-        if (!this.container.isBound('RecordFactory<*>')) {
-          this.container.bind('RecordFactory<*>').toFactory((context) => {
+        if (!this.isBound('RecordFactory<*>')) {
+          this.bind('RecordFactory<*>').toFactory((context) => {
             return (recordClass: string, payload: object, collectionName: string) => {
-              const RecordClass = this.container.get('RecordNewable<*>')(recordClass);
-              const collection = this.container.get('CollectionFactory<*>')(collectionName);
+              const RecordClass = this.get('RecordNewable<*>')(recordClass);
+              const collection = this.get('CollectionFactory<*>')(collectionName);
               return RecordClass.new(payload, collection);
             }
           });
         }
-        if (!this.container.isBound('Cursor')) {
-          this.container.bind('Cursor').to(this.Module.NS.Cursor);
+        if (!this.isBound('Cursor')) {
+          this.bind('Cursor').to(this.Module.NS.Cursor);
         }
-        if (!this.container.isBound('CursorFactory<*>')) {
-          this.container.bind('CursorFactory<*>').toFactory((context) => {
+        if (!this.isBound('CursorFactory<*>')) {
+          this.bind('CursorFactory<*>').toFactory((context) => {
             return (name: ?string, list, customCursor: ?string = 'Cursor') => {
-              const cursor = this.container.get(customCursor);
+              const cursor = this.get(customCursor);
               cursor.collectionName = name;
               cursor.setIterable(list);
               return cursor;
@@ -93,10 +93,10 @@ export default (Module) => {
         }
         this.addAdapter(MEMORY_ADAPTER, 'MemoryAdapter');
         this.addAdapter(HTTP_ADAPTER, 'HttpAdapter');
-        if (!this.container.isBound('AdapterFactory<*>')) {
-          this.container.bind('AdapterFactory<*>').toFactory((context) => {
-            return (name: ?string, customAdapter: ?string = HTTP_ADAPTER) => {
-              return this.container.get(`Factory<${customAdapter}>`)();
+        if (!this.isBound('AdapterFactory<*>')) {
+          this.bind('AdapterFactory<*>').toFactory((context) => {
+            return (name: ?string, customAdapter: ?string = MEMORY_ADAPTER) => {
+              return this.get(`Factory<${customAdapter}>`)();
             }
           });
         }

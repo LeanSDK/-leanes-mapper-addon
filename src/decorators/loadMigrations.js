@@ -25,10 +25,10 @@ export default function loadMigrations(Module) {
   } = Module.NS;
   assert(FsUtils != null, 'Target for `loadMigrations` decorator should has FsUtilsAddon');
   const {
-    Utils: { filesTreeSync }
+    Utils: { filesListSync }
   } = FsUtils.NS;
 
-  (filesTreeSync: (string, ?object) => string[]);
+  (filesListSync: (string, ?object) => string[]);
 
   const vsRoot = Module.prototype.ROOT != null ? Module.prototype.ROOT : '.';
   const vsMigratonsDir = `${vsRoot}/migrations`;
@@ -37,7 +37,7 @@ export default function loadMigrations(Module) {
     const vsPathMatch = i.match(/([\w\-\_]+)\.js$/);
     const [blackhole, migrationName] = vsPathMatch != null ? vsPathMatch : [];
     if (migrationName != null && migrationName !== 'BaseMigration' && !/^\./.test(i)) {
-      mp[migrationName] = `${vsMigratonsDir}/${migrationName}`;
+      mp[migrationName] = `${vsMigratonsDir}/${migrationName.replace(/\.js/, '')}`;
     }
     return mp;
   }, {});

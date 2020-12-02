@@ -13,10 +13,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-export default function requireMigrations(config) {
-  return (acTarget) {
-    assert(acTarget[cpoMetaObject] != null, 'Target for `requireMigrations` decorator must be a Class');
-    // TODO: needs to decide where it will be used
-    return acTarget;
-  }
-};
+import assert from 'assert';
+
+const cpoMetaObject = Symbol.for('~metaObject');
+
+export default function requireMigrations(acTarget) {
+  assert(acTarget[cpoMetaObject] != null, 'Target for `requireMigrations` decorator must be a Class');
+  // TODO: needs to decide where it will be used
+
+  acTarget.prototype.MIGRATION_NAMES.forEach((migrationName) => {
+    acTarget.prototype.Migrations[migrationName];
+  });
+  return acTarget;
+}

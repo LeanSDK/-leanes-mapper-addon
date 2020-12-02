@@ -16,6 +16,7 @@
 import type { CollectionInterface } from '../interfaces/CollectionInterface';
 import type { RecordInterface } from '../interfaces/RecordInterface';
 import type { CursorInterface } from '../interfaces/CursorInterface';
+import type { DriverInterface } from '../interfaces/DriverInterface';
 
 export default (Module) => {
   const {
