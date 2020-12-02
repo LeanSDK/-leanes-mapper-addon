@@ -37,8 +37,7 @@ import MigratifyApplicationMixin from './mixins/MigratifyApplicationMixin';
 import OwnerableRecordMixin from './mixins/OwnerableRecordMixin';
 import RelationsMixin from './mixins/RelationsMixin';
 import TimestampsRecordMixin from './mixins/TimestampsRecordMixin';
-
-import FacadePatch from './patches/FacadePatch';
+import MapperFacadeMixin from './mixins/MapperFacadeMixin';
 
 import ArrayTransform from './transforms/ArrayTransform';
 import BooleanTransform from './transforms/BooleanTransform';
@@ -96,11 +95,14 @@ export { requireMigrations };
 
 export default (Module) => {
   const {
-    initializeMixin, meta, constant, method, patch, decorator, plugin,
+    initializeMixin, meta, constant, method, extend, decorator,
   } = Module.NS;
 
   return ['MapperAddon', (BaseClass) => {
-    @FacadePatch
+    @extend('MapperFacadeMixin', 'Facade')
+
+    @MapperFacadeMixin
+
     @Collection
     @MigrateCommand
     @RollbackCommand
@@ -201,11 +203,6 @@ export default (Module) => {
       @decorator hasMany = hasMany;
       @decorator hasOne = hasOne;
       @decorator relatedTo = relatedTo;
-
-      @method static including() {
-        patch(this.NS.FacadePatch)(this.NS.Facade);
-        // plugin(this.NS.SchemaModuleMixin)(this);
-      }
     }
     return Mixin;
   }]
