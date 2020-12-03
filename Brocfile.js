@@ -18,6 +18,7 @@ const dev = new Rollup(appRoot, {
   rollup: {
     input: __dirname + "/src/index.js",
     external: [
+      'assert',
       'crypto',
       'net',
       'dns',
@@ -89,6 +90,7 @@ const prod = new Rollup(appRoot, {
   rollup: {
     input: __dirname + "/src/index.js",
     external: [
+      'assert',
       'crypto',
       'net',
       'dns',
