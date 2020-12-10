@@ -205,7 +205,7 @@ export default (Module) => {
       return await this.adapter.length(this.delegate);
     }
 
-    @method async normalize(ahData: ?object): Promise<?D> {
+    @method async normalize(ahData: ?object): Promise<?RecordInterface> {
       return await this.serializer.normalize(this.delegate, ahData);
     }
 
