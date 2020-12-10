@@ -39,6 +39,9 @@ export default (Module) => {
     @inject(`Factory<${MIGRATIONS}>`)
     @property migrationsFactory: () => CollectionInterface<D>;
 
+    @inject('RecordFactory<*>')
+    @property _recordFactory: (string, object, string) => D;
+
     @property get migrationsCollection(): CollectionInterface<D> {
       return this.migrationsFactory();
     }
@@ -78,12 +81,13 @@ export default (Module) => {
           const id = String(migrationName);
           const clearedMigrationName = migrationName.replace(/^\d{14}[_]/, '');
           const migrationClassName = inflect.camelize(clearedMigrationName);
-          const vcMigration = this.ApplicationModule.NS[migrationClassName];
+          // const vcMigration = this.ApplicationModule.NS[migrationClassName];
           const type = `${this.ApplicationModule.name}::${migrationClassName}`;
           try {
             voMigration = (await this.migrationsCollection.find(id));
             if (voMigration == null) {
-              voMigration = vcMigration.new({id, type}, this.migrationsCollection);
+              // voMigration = vcMigration.new({id, type}, this.migrationsCollection);
+              voMigration = this._recordFactory(migrationClassName, {id, type}, this.migrationsCollection.getName());
               await voMigration.migrate(UP);
               await voMigration.save();
             }

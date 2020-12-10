@@ -64,6 +64,9 @@ export default (Module) => {
     @inject('CursorFactory<*>')
     @property _cursorFactory: (?string, array, ?string) => CursorInterface<CollectionInterface<D>, D>;
 
+    @inject('CollectionFactory<*>')
+    @property _collectionFactory: () => CollectionInterface<D>;
+
     @property get delegate(): R {
       const proxyData = this.getData();
       const delegate = proxyData != null ? proxyData.delegate : undefined;

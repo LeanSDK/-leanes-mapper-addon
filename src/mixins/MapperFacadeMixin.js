@@ -74,7 +74,13 @@ export default (Module) => {
             return (recordClass: string, payload: object, collectionName: string) => {
               const RecordClass = this.get('RecordNewable<*>')(recordClass);
               const collection = this.get('CollectionFactory<*>')(collectionName);
-              return RecordClass.new(payload, collection);
+              const record = RecordClass.new(payload, collection);
+              Reflect.defineProperty(record, '_container', {
+                configurable: true,
+                enumerable: true,
+                get: () => this._container,
+              });
+              return record;
             }
           });
         }
