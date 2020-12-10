@@ -44,16 +44,17 @@ export default (Module) => {
   @partOf(Module)
   class Collection<
     // D = RecordInterface, R = RecordStaticInterface
-    D = RecordInterface, R = Class<*>
-  > extends Proxy implements CollectionInterface<D>, SerializableInterface<D> {
+    // D = RecordInterface, R = Class<*>
+    R = Class<*>
+  > extends Proxy implements CollectionInterface<RecordInterface>, SerializableInterface<RecordInterface> {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
     @inject('SerializerFactory<*>')
-    @property _serializerFactory: (string, ?string) => SerializerInterface<D>;
+    @property _serializerFactory: (string, ?string) => SerializerInterface<RecordInterface>;
 
     @inject('ObjectizerFactory<*>')
-    @property _objectizerFactory: (string, ?string) => ObjectizerInterface<R, D>;
+    @property _objectizerFactory: (string, ?string) => ObjectizerInterface<R, RecordInterface>;
 
     @inject('AdapterFactory<*>')
     @property _adapterFactory: () => DriverInterface<Class<*>, object>;
@@ -62,10 +63,10 @@ export default (Module) => {
     @property _recordNewable: (string) => R;
 
     @inject('CursorFactory<*>')
-    @property _cursorFactory: (?string, array, ?string) => CursorInterface<CollectionInterface<D>, D>;
+    @property _cursorFactory: (?string, array, ?string) => CursorInterface<CollectionInterface<RecordInterface>, RecordInterface>;
 
     @inject('CollectionFactory<*>')
-    @property _collectionFactory: () => CollectionInterface<D>;
+    @property _collectionFactory: () => CollectionInterface<RecordInterface>;
 
     @property get delegate(): R {
       const proxyData = this.getData();
@@ -79,14 +80,14 @@ export default (Module) => {
       return delegate;
     }
 
-    @property get serializer(): SerializerInterface<D> {
+    @property get serializer(): SerializerInterface<RecordInterface> {
       const proxyData = this.getData();
       const serializer = proxyData != null ? proxyData.serializer : undefined;
       (serializer: ?string);
       return this._serializerFactory(this.getName(), serializer);
     }
 
-    @property get objectizer(): ObjectizerInterface<R, D> {
+    @property get objectizer(): ObjectizerInterface<R, RecordInterface> {
       const proxyData = this.getData();
       const objectizer = proxyData != null ? proxyData.objectizer : undefined;
       (objectizer: ?string);
@@ -118,17 +119,17 @@ export default (Module) => {
 
     @method async generateId(): Promise<string | number> { return; }
 
-    @method async build(properties: object): Promise<D> {
+    @method async build(properties: object): Promise<RecordInterface> {
       const tmp = await this.objectizer.recoverize(this.delegate, properties);
       return tmp;
     }
 
-    @method async create(properties: object): Promise<D> {
+    @method async create(properties: object): Promise<RecordInterface> {
       const voRecord = await this.build(properties);
       return await voRecord.save();
     }
 
-    @method async push(aoRecord: D): Promise<D> {
+    @method async push(aoRecord: RecordInterface): Promise<RecordInterface> {
       const snapshot = await this.serialize(aoRecord);
       const result = await this.adapter.push(this.delegate, snapshot);
       return await this.normalize(result);
@@ -148,31 +149,31 @@ export default (Module) => {
       await this.adapter.remove(this.delegate, id);
     }
 
-    @method async find(id: string | number): Promise<?D> {
+    @method async find(id: string | number): Promise<?RecordInterface> {
       return await this.take(id);
     }
 
-    @method async findMany(ids: Array<string | number>): Promise<CursorInterface<CollectionInterface<D>, D>> {
+    @method async findMany(ids: Array<string | number>): Promise<CursorInterface<CollectionInterface<RecordInterface>, RecordInterface>> {
       return await this.takeMany(ids);
     }
 
-    @method async take(id: string | number): Promise<?D> {
+    @method async take(id: string | number): Promise<?RecordInterface> {
       const result = await this.adapter.take(this.delegate, id);
       if (result == null) return null;
       return await this.normalize(result);
     }
 
-    @method async takeMany(ids: Array<string | number>): Promise<CursorInterface<CollectionInterface<D>, D>> {
+    @method async takeMany(ids: Array<string | number>): Promise<CursorInterface<CollectionInterface<RecordInterface>, RecordInterface>> {
       const result = await this.adapter.takeMany(this.delegate, ids);
       return this._cursorFactory(this.getName(), result);
     }
 
-    @method async takeAll(): Promise<CursorInterface<CollectionInterface<D>, D>> {
+    @method async takeAll(): Promise<CursorInterface<CollectionInterface<RecordInterface>, RecordInterface>> {
       const result = await this.adapter.takeAll(this.delegate);
       return this._cursorFactory(this.getName(), result);
     }
 
-    @method async update(id: string | number, properties: object): Promise<D> {
+    @method async update(id: string | number, properties: object): Promise<RecordInterface> {
       properties.id = id;
       const existedRecord = await this.find(id);
       const receivedRecord = await this.objectizer.recoverize(this.delegate, properties);
@@ -183,17 +184,17 @@ export default (Module) => {
       return await existedRecord.save();
     }
 
-    @method async override(id: string | number, aoRecord: D): Promise<D> {
+    @method async override(id: string | number, aoRecord: RecordInterface): Promise<RecordInterface> {
       const snapshot = await this.serialize(aoRecord);
       const result = await this.adapter.override(this.delegate, id, snapshot);
       return await this.normalize(result);
     }
 
-    @method async clone(aoRecord: D): Promise<D> {
+    @method async clone(aoRecord: RecordInterface): Promise<RecordInterface> {
       return await aoRecord.clone()
     }
 
-    @method async copy(aoRecord: D): Promise<D> {
+    @method async copy(aoRecord: RecordInterface): Promise<RecordInterface> {
       return await aoRecord.copy()
     }
 
@@ -209,7 +210,7 @@ export default (Module) => {
       return await this.serializer.normalize(this.delegate, ahData);
     }
 
-    @method async serialize(aoRecord: ?D, ahOptions: ?object): Promise<?object> {
+    @method async serialize(aoRecord: ?RecordInterface, ahOptions: ?object): Promise<?object> {
       return await this.serializer.serialize(aoRecord, ahOptions);
     }
   }

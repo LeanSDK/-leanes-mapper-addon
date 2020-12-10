@@ -28,18 +28,16 @@ export default (Module) => {
 
   @initialize
   @partOf(Module)
-  class RollbackCommand<
-    D = RecordInterface
-  > extends Command {
+  class RollbackCommand extends Command {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
     // @property migrationsCollection: CollectionInterface<D> = null;
 
     @inject(`Factory<${MIGRATIONS}>`)
-    @property migrationsFactory: () => CollectionInterface<D>;
+    @property migrationsFactory: () => CollectionInterface<RecordInterface>;
 
-    @property get migrationsCollection(): CollectionInterface<D> {
+    @property get migrationsCollection(): CollectionInterface<RecordInterface> {
       return this.migrationsFactory();
     }
 
