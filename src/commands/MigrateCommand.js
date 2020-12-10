@@ -84,13 +84,10 @@ export default (Module) => {
           // const vcMigration = this.ApplicationModule.NS[migrationClassName];
           const type = `${this.ApplicationModule.name}::${migrationClassName}`;
           try {
-            voMigration = (await this.migrationsCollection.find(id));
-            if (voMigration == null) {
-              // voMigration = vcMigration.new({id, type}, this.migrationsCollection);
-              voMigration = this._recordFactory(migrationClassName, {id, type}, this.migrationsCollection.getName());
-              await voMigration.migrate(UP);
-              await voMigration.save();
-            }
+            // voMigration = vcMigration.new({id, type}, this.migrationsCollection);
+            voMigration = this._recordFactory(migrationClassName, {id, type}, this.migrationsCollection.getName());
+            await voMigration.migrate(UP);
+            await voMigration.save();
           } catch (error) {
             err = error;
             const msg = `!!! Error in migration ${migrationName}`;
