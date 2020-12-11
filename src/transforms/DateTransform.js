@@ -47,6 +47,7 @@ export default (Module) => {
 
     @method static serializeSync(deserialized: ?date): ?(string | number | date) {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
+        console.log('?>? deserialized', deserialized);
         return deserialized.toISOString();
       } else {
         return null;
