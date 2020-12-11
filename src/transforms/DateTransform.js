@@ -18,9 +18,8 @@ import type { JoiT } from '../types/JoiT';
 export default (Module) => {
   const {
     CoreObject,
-    assert,
     initialize, partOf, meta, property, method, nameBy,
-    Utils: { _, joi }
+    Utils: { _, joi, assert }
   } = Module.NS;
 
   @initialize
@@ -41,11 +40,12 @@ export default (Module) => {
       return this.serializeSync(...args);
     }
 
-    @method static normalizeSync(serialized: ?(string | number | Date)): ?date {
+    @method static normalizeSync(serialized: ?(string | number | Date)): ?Date {
+      if (_.isString(serialized)) joi.string().isoDate().validate(serialized);
       return (_.isNil(serialized) ? null : new Date(serialized));
     }
 
-    @method static serializeSync(deserialized: ?date): ?(string | number | Date) {
+    @method static serializeSync(deserialized: ?Date): ?(string | number | Date) {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
         return deserialized.toISOString();
       } else {
