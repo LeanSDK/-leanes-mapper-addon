@@ -40,21 +40,23 @@ export default (Module) => {
       return this.serializeSync(...args);
     }
 
-    @method static normalizeSync(serialized: ?(string | number | date)): ?date {
-      if (_.isString(serialized)) joi.string().isoDate().validate(serialized);
+    @method static normalizeSync(serialized: ?(string | number | Date)): ?Date {
+      if (_.isString(serialized)) {
+        console.log('??>?normalizeSync', joi.string().isoDate().validate(serialized));
+      }
       return (_.isNil(serialized) ? null : new Date(serialized));
     }
 
-    @method static serializeSync(deserialized: ?date): ?(string | number | date) {
+    @method static serializeSync(deserialized: ?Date): ?(string | number | Date) {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
-        console.log('?>? deserialized', deserialized);
+        console.log('?>? deserialized', deserialized, joi.date().validate(deserialized));
         return deserialized.toISOString();
       } else {
         return null;
       }
     }
 
-    @method static objectize(deserialized: ?date): ?string {
+    @method static objectize(deserialized: ?Date): ?string {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
         return deserialized.toISOString();
       } else {
