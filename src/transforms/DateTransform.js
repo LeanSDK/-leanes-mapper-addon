@@ -40,12 +40,12 @@ export default (Module) => {
       return this.serializeSync(...args);
     }
 
-    @method static normalizeSync(serialized: ?(string | number | Date)): ?Date {
+    @method static normalizeSync(serialized: ?(string | number | date)): ?date {
       if (_.isString(serialized)) joi.string().isoDate().validate(serialized);
       return (_.isNil(serialized) ? null : new Date(serialized));
     }
 
-    @method static serializeSync(deserialized: ?Date): ?(string | number | Date) {
+    @method static serializeSync(deserialized: ?date): ?(string | number | date) {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
         return deserialized.toISOString();
       } else {
@@ -53,7 +53,7 @@ export default (Module) => {
       }
     }
 
-    @method static objectize(deserialized: ?Date): ?string {
+    @method static objectize(deserialized: ?date): ?string {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
         return deserialized.toISOString();
       } else {
