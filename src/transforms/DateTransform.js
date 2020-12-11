@@ -42,14 +42,16 @@ export default (Module) => {
 
     @method static normalizeSync(serialized: ?(string | number | Date)): ?Date {
       if (_.isString(serialized)) {
-        console.log('??>?normalizeSync', serialized, "jj", joi.string().isoDate().validate(serialized));
+        const { error } = joi.string().isoDate().validate(serialized);
+        if (error != null) throw error;
       }
       return (_.isNil(serialized) ? null : new Date(serialized));
     }
 
     @method static serializeSync(deserialized: ?Date): ?(string | number | Date) {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
-        console.log('?>? deserialized', deserialized, joi.date().validate(deserialized));
+        const { error } = joi.date().validate(deserialized);
+        if (error != null) throw error;
         return deserialized.toISOString();
       } else {
         return null;
@@ -58,6 +60,8 @@ export default (Module) => {
 
     @method static objectize(deserialized: ?Date): ?string {
       if (_.isDate(deserialized) && !_.isNaN(deserialized)) {
+        const { error } = joi.date().validate(deserialized);
+        if (error != null) throw error;
         return deserialized.toISOString();
       } else {
         return null;
