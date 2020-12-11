@@ -42,7 +42,7 @@ export default (Module) => {
 
     @method static normalizeSync(serialized: ?(string | number | Date)): ?Date {
       if (_.isString(serialized)) {
-        console.log('??>?normalizeSync', joi.string().isoDate().validate(serialized));
+        console.log('??>?normalizeSync', serialized, "jj", joi.string().isoDate().validate(serialized));
       }
       return (_.isNil(serialized) ? null : new Date(serialized));
     }
