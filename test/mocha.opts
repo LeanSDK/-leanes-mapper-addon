@@ -2,4 +2,6 @@
 --check-leaks
 --growl
 --full-trace
-test/utils/*.js
+#test/utils/*.js
+test/es/CoreObject-test.js
+test/es/MetaObject-test.js

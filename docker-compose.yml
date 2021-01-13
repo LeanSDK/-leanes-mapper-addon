@@ -1,0 +1,24 @@
+version: '3.5'
+services:
+  app:
+    build: .
+    container_name: app
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+      - ENV=production
+      - APP_PATH=${APP_PATH}
+    volumes:
+      - ${APP_PATH}:/usr/src/app
+      - ${APP_PATH}/.bash_history:/root/.bash_history
+    networks:
+      - common
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: 750m
+networks:
+  common:
+    external:
+      name: common

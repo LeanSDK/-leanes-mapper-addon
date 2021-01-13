@@ -1,72 +1,73 @@
 {
-  "name": "leanes",
-  "version": "1.0.0",
-  "description": "",
-  "main": "lib/index.js",
+  "name": "@leansdk/leanes-mapper-addon",
+  "version": "7.0.0",
+  "description": "LeanES addon with Mapper ORM",
+  "main": "lib/index.min.js",
+  "license": "LGPL-3.0",
   "scripts": {
-    "test": "mocha"
+    "build": "broccoli build --dev; broccoli build --prod",
+    "serve": "broccoli serve",
+    "test": "mocha",
+    "test_build": "ENV=build mocha"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeanSDK/leanes-mapper-addon.git"
+  },
+  "author": "Denis Trayzhon <d.g.trayzhon@gmail.com>",
+  "contributors": [
+    "Irina Markevich"
+  ],
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "keywords": [
+    "MVC",
+    "PureMVC",
+    "LeanES",
+    "leanes-addon"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-syntax-decorators": "^7.10.4",
     "@babel/plugin-transform-flow-strip-types": "^7.9.0",
+    "@babel/plugin-transform-runtime": "7.11.5",
     "@babel/preset-env": "^7.9.6",
+    "@babel/register": "^7.11.5",
+    "@leansdk/leanes": "^7.0.0",
+    "@leansdk/leanes-fs-utils-addon": "^7.0.0",
     "babel-plugin-flow-runtime": "^0.19.0",
     "babel-plugin-globals": "^3.0.0",
     "babel-plugin-import": "^1.13.0",
+    "babel-plugin-parameter-decorator": "1.0.16",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "broccoli": "^3.4.2",
+    "broccoli-cli": "1.0.0",
     "broccoli-funnel": "^3.0.3",
     "broccoli-merge-trees": "^4.2.0",
     "broccoli-rollup": "^4.1.1",
-    "mocha": "^7.2.0",
+    "chai": "4.2.0",
+    "flow-runtime": "^0.17.0",
+    "http-errors": "^1.8.0",
+    "lodash": "^4.17.19",
+    "mocha": "^8.1.3",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-globals": "1.4.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "sinon": "^9.0.3",
+    "sinon-chai": "^3.5.0"
   },
-  "dependencies": {
-    "accepts": "^1.3.5",
-    "assert": "^2.0.0",
-    "axios": "^0.18.0",
-    "babel-plugin-transform-dirname-filename": "^1.1.0",
-    "babel-plugin-transform-globals": "^1.0.1",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
-    "chai": "^4.2.0",
-    "chrome-promise": "^3.0.4",
-    "co-body": "^6.0.0",
-    "content-type": "^1.0.4",
-    "core-decorators": "^0.14.0",
-    "db.js": "^0.15.0",
-    "flow-runtime": "^0.17.0",
-    "http-errors": "^1.6.3",
-    "i": "^0.3.5",
-    "inversify": "^5.0.1",
-    "joi-browser": "^13.4.0",
-    "json-stable-stringify": "^1.0.1",
-    "jsonwebtoken": "^7.4.1",
-    "lodash": "^4.17.19",
-    "lodash-decorators": "^6.0.1",
-    "mime-db": "^1.37.0",
-    "mime-types": "^2.1.22",
-    "moment": "2.24.0",
-    "object-assign": "4.1.0",
-    "parseurl": "^1.3.3",
-    "path": "^0.12.7",
-    "path-to-regexp": "^0.1.7",
-    "pmvc": "^1.4.0",
-    "reflect-metadata": "^0.1.13",
-    "request": "^2.79.0",
-    "sinon-chai": "^3.5.0",
-    "statuses": "^1.4.0",
-    "type-is": "^1.6.16"
+  "dependencies": {},
+  "bugs": {
+    "url": "https://github.com/LeanSDK/leanes-mapper-addon/issues"
   },
-  "peerDependencies": {
-    "co-body": "6.0.0"
-  }
+  "homepage": "https://github.com/LeanSDK/leanes-mapper-addon#readme"
 }
